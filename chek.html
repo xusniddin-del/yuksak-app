@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Elektron chek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/phosphor-fill/style.css">
+<link rel="stylesheet" href="vendor/phosphor-bold/style.css">
+<script src="vendor/qrcode.js"></script>
+<script src="config.js"></script>
+<style>
+:root{--bg1:#1d2b4a;--bg2:#0e1420;--ink:#1b1f24;--ok:#1fa85a;--bad:#e8414a;--blue:#1f7fea}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(120% 80% at 50% 0%,#2a3f6b 0%,var(--bg1) 35%,var(--bg2) 100%);background-color:var(--bg2);color:#fff;font-family:"Onest",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none}
+.wrap{max-width:420px;margin:0 auto;padding:22px 16px 40px;display:flex;flex-direction:column;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;align-self:stretch;animation:fade .5s ease both}
+.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#4fb0ff,#7b4fe0);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;box-shadow:0 6px 16px rgba(79,176,255,.35)}
+.brand b{display:block;font-size:15px}
+.brand span{font-size:12px;opacity:.65}
+.status{margin:18px 0 22px;align-self:stretch;border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);opacity:0;animation:fade .5s ease 2.7s both}
+.status .ic{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.status.ok .ic{background:var(--ok);box-shadow:0 0 0 6px rgba(31,168,90,.18)}
+.status.bad .ic{background:var(--bad);box-shadow:0 0 0 6px rgba(232,65,74,.18)}
+.status b{display:block;font-size:14px}
+.status small{font-size:12px;opacity:.7}
+.printer{width:312px;height:44px;border-radius:16px;background:linear-gradient(180deg,#f2f3f5,#c9cdd3);box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 1px 0 #fff;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;animation:buzz .12s linear 0s 18}
+.slot{width:280px;height:10px;border-radius:6px;background:var(--ink);box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
+.feed{margin-top:-16px;overflow:hidden;width:280px;display:flex;justify-content:center;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
+.roll{animation:print 2.4s cubic-bezier(.4,0,.2,1) .15s both}
+.paper{width:268px;background:linear-gradient(180deg,#e9ebee 0%,#fff 8%,#fbfbfc 70%,#eef0f2 100%);color:var(--ink);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;line-height:1.55;padding:16px 16px 22px;box-shadow:inset 0 10px 14px -10px rgba(0,0,0,.35)}
+.c{text-align:center}.t{font-size:16px;font-weight:800;letter-spacing:.04em}.s{font-size:10px}
+.ln{display:flex;justify-content:space-between;gap:8px}.ln span:last-child{text-align:right}
+.dash{border-top:1.5px dashed #9aa3ad;margin:8px 0}
+.tot{display:flex;justify-content:space-between;font-size:17px;font-weight:800;margin:6px 0 2px}
+.qr{display:flex;flex-direction:column;align-items:center;margin:12px 0 6px}
+.qr .g{width:104px;height:104px;padding:4px;background:#fff;display:grid}
+.qr .g i{display:block}
+.stamp{margin:10px auto 2px;width:max-content;padding:4px 10px;border:2px solid var(--ok);color:var(--ok);border-radius:8px;font-weight:800;font-size:11px;letter-spacing:.06em;transform:rotate(-4deg)}
+.stamp.bad{border-color:var(--bad);color:var(--bad)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:300px;margin-top:18px;animation:fade .4s ease 2.6s both}
+.acts button{height:48px;border-radius:14px;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px}
+.acts .p{background:linear-gradient(180deg,#4fb0ff,#1f7fea);box-shadow:0 8px 18px rgba(31,127,234,.35)}
+.acts .q{background:rgba(255,255,255,.14)}
+.acts .w{grid-column:1/-1;background:transparent;border:1px solid rgba(255,255,255,.2);font-weight:600;font-size:13px;height:42px}
+.foot{margin-top:22px;font-size:11px;opacity:.5;text-align:center;line-height:1.5;animation:fade .4s ease 2.8s both}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:rgba(255,255,255,.96);color:#14202e;padding:11px 16px;border-radius:16px;font-size:13px;font-weight:600;display:flex;gap:8px;align-items:center;box-shadow:0 12px 30px rgba(0,0,0,.25);opacity:0;transition:.25s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes print{0%{transform:translateY(-100%)}12%{transform:translateY(-88%)}16%{transform:translateY(-88%)}34%{transform:translateY(-62%)}38%{transform:translateY(-62%)}58%{transform:translateY(-34%)}62%{transform:translateY(-34%)}84%{transform:translateY(-8%)}100%{transform:translateY(0)}}
+@keyframes buzz{0%,100%{transform:translateX(0)}25%{transform:translateX(-1px)}75%{transform:translateX(1px)}}
+@keyframes fade{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.printer,.roll,.acts,.status,.foot,.brand{animation:none!important;opacity:1}}
+@media print{
+  body{background:#fff}
+  .brand,.status,.printer,.acts,.foot,.toast{display:none!important}
+  .feed{filter:none;margin:0;overflow:visible}.roll{animation:none}
+  .paper{clip-path:none!important;box-shadow:none;background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">YT</div>
+    <div><b>Yuksak ta'lim</b><span>Elektron chek</span></div>
+  </div>
+  <div class="status ok" id="status">
+    <div class="ic"><i class="ph-bold ph-check" id="statusIc"></i></div>
+    <div><b id="statusT">Chek haqiqiy</b><small id="statusS">To'lov markaz bazasida tasdiqlangan</small></div>
+  </div>
+  <div class="printer" id="printer"><div class="slot"></div></div>
+  <div class="feed"><div class="roll" id="roll"><div class="paper" id="paper"></div></div></div>
+  <div class="acts">
+    <button class="p" id="btnPdf"><i class="ph-bold ph-file-pdf"></i>PDF saqlash</button>
+    <button class="q" id="btnShare"><i class="ph-bold ph-share-network"></i>Ulashish</button>
+    <button class="w" id="btnReplay"><i class="ph-bold ph-arrow-counter-clockwise"></i>Qayta chop etish</button>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+<div class="toast" id="toast"><i class="ph-fill ph-check-circle" style="font-size:20px;color:#1fa85a"></i><span id="toastT"></span></div>
+
+<script>
+(function () {
+  var C = window.APP_CONFIG || {};
+  var CENTER = C.CENTER || "Yuksak ta'lim";
+  // Chek ma'lumotlari URL ichida keladi: ?d=<maydonlar ~ bilan>&k=<tekshiruv kodi>
+  // Server kerak emas — QR kodning o'zi chekni olib yuradi.
+  var F = ["no","date","time","student","group","month","mode","price","discount","due","amount","method","left","admin"];
+  var DEMO = ["121","06.09.2026","13:42","Sardor Qodirov","Frontend React","Sentabr 2026","Davomat bo'yicha","596000","","596000","596000","Naqd","0","Nodira Karimova"].join("~");
+  function hash(s){var h=7;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h.toString(16).toUpperCase().padStart(8,"0").slice(0,8);}
+  var qs = new URLSearchParams(location.search);
+  var raw = qs.get("d") || DEMO;
+  var k = qs.get("d") ? (qs.get("k") || "") : hash(DEMO);
+  var parts = raw.split("~"); var r = {};
+  F.forEach(function (f, i) { r[f] = parts[i] || ""; });
+  var valid = hash(raw) === k && parts.length >= F.length;
+  var money = function (n) { return String(parseInt(n || "0", 10)).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm"; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); };
+  var noStr = String(r.no).padStart(6, "0");
+  var vfmt = k ? k.slice(0, 4) + "-" + k.slice(4) : "—";
+  document.title = "Elektron chek №" + noStr + " · " + CENTER;
+
+  if (!valid) {
+    document.getElementById("status").className = "status bad";
+    document.getElementById("statusIc").className = "ph-bold ph-x";
+    document.getElementById("statusT").textContent = "Chekni tasdiqlab bo'lmadi";
+    document.getElementById("statusS").textContent = "Tekshiruv kodi mos kelmadi — markazga murojaat qiling";
+  }
+
+  var ln = function (a, b, bold) { return '<div class="ln"' + (bold ? ' style="font-weight:800"' : '') + '><span>' + esc(a) + '</span><span>' + esc(b) + '</span></div>'; };
+  var html = ''
+    + '<div class="c t">' + esc(CENTER.toUpperCase()) + '</div>'
+    + '<div class="c s">o\'quv markazi</div>'
+    + '<div class="c s" style="margin-top:4px">Manzil: ' + esc(C.ADDRESS || "—") + '</div>'
+    + '<div class="c s">Tel: ' + esc(C.PHONE || "—") + '</div>'
+    + '<div class="dash"></div>'
+    + '<div class="c" style="font-weight:800;font-size:12px">TO\'LOV CHEKI №' + noStr + '</div>'
+    + ln("Sana:", r.date + "  " + r.time)
+    + '<div class="dash"></div>'
+    + ln("O'quvchi:", r.student) + ln("Guruh:", r.group) + ln("Oy:", r.month) + ln("To'lov turi:", r.mode)
+    + '<div class="dash"></div>'
+    + ln("Kurs narxi", money(r.price)) + (r.discount && r.discount !== "0" ? ln("Imtiyoz", "-" + money(r.discount)) : "") + ln("Hisoblangan", money(r.due))
+    + '<div class="tot"><span>JAMI</span><span>' + money(r.amount) + '</span></div>'
+    + ln(r.method, money(r.amount)) + ln("Qoldiq", money(r.left))
+    + '<div class="dash"></div>'
+    + ln("Qabul qildi:", r.admin)
+    + '<div class="stamp' + (valid ? '' : ' bad') + '">' + (valid ? '✓ TO\'LANGAN' : '✕ TASDIQLANMAGAN') + '</div>'
+    + '<div class="qr"><div class="g" id="qr"></div><div class="s" style="margin-top:5px">Tekshiruv kodi: <b>' + esc(vfmt) + '</b></div></div>'
+    + '<div class="dash"></div>'
+    + '<div class="c s">To\'lovingiz uchun rahmat!</div>'
+    + '<div class="c s">Telegram: ' + esc(channelUrl.replace(/^https?:\/\//, "")) + '</div>';
+  var paper = document.getElementById("paper");
+  paper.innerHTML = html;
+  var pts = ["0 0", "100% 0", "100% calc(100% - 8px)"];
+  for (var i = 0; i < 29; i++) pts.push((100 - (i + 0.5) * 100 / 29) + "% " + (i % 2 ? "calc(100% - 8px)" : "100%"));
+  pts.push("0 calc(100% - 8px)");
+  paper.style.clipPath = "polygon(" + pts.join(",") + ")";
+
+  // QR — Telegram kanal; ulashish — shu chek sahifasi
+  var channelUrl = C.CHANNEL_URL || "https://t.me/Xusniddintech";
+  var selfUrl = location.href;
+  var g = document.getElementById("qr");
+  try {
+    var q = qrcode(0, "L"); q.addData(channelUrl); q.make();
+    var N = q.getModuleCount(); g.style.gridTemplateColumns = "repeat(" + N + ",1fr)"; g.style.gridTemplateRows = "repeat(" + N + ",1fr)";
+    var out = ""; for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) out += '<i style="background:' + (q.isDark(y, x) ? "#1b1f24" : "transparent") + '"></i>';
+    g.innerHTML = out;
+  } catch (e) { g.style.display = "none"; }
+
+  document.getElementById("foot").innerHTML = "Bu chek " + esc(CENTER) + " o'quv markazi tomonidan elektron shaklda berilgan.<br>Savollar uchun: " + esc(C.PHONE || "");
+  document.querySelector(".brand b").textContent = CENTER;
+  var toastEl = document.getElementById("toast"), tt;
+  function toast(m) { document.getElementById("toastT").textContent = m; toastEl.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("on"); }, 2200); }
+
+  document.getElementById("btnPdf").onclick = function () { window.print(); };
+  document.getElementById("btnShare").onclick = function () {
+    var data = { title: "Elektron chek №" + noStr, text: "Yuksak ta'lim · to'lov cheki №" + noStr, url: selfUrl };
+    if (navigator.share) { navigator.share(data).catch(function () {}); return; }
+    try { navigator.clipboard.writeText(selfUrl).then(function () { toast("Havola nusxalandi"); }, function () { toast("Havolani nusxalab bo'lmadi"); }); }
+    catch (e) { toast("Havolani nusxalab bo'lmadi"); }
+  };
+  document.getElementById("btnReplay").onclick = function () {
+    ["printer", "roll"].forEach(function (id) { var el = document.getElementById(id); el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
+  };
+})();
+</script>
+</body>
+</html>
