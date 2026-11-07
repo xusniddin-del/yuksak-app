@@ -18,7 +18,7 @@
 <script src="student-analytics.js"></script>
 <script src="vendor/qrcode.js"></script>
 <style>
-html,body{height:100%;overscroll-behavior:none}body{margin:0;background:#2f6fe0;font-family:"Onest",system-ui,sans-serif;color:#fff}
+.lt::placeholder{color:#8a94a3;opacity:1}html,body{height:100%;overscroll-behavior:none}body{margin:0;background:#2f6fe0;font-family:"Onest",system-ui,sans-serif;color:#fff}
 a{color:#7cc4ff}a:hover{color:#a8d8ff}
 input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.6)}
 button{font-family:inherit;cursor:pointer;border:none}
@@ -59,6 +59,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <i class="ph-bold ph-caret-right" style="opacity:0.7"></i>
           </button>
 
+          <sc-if value="{{ v2.isDir }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ v2.openDash }}" style="background:linear-gradient(135deg,#6a5ad8,#9a7fe0);border-radius:22px;padding:16px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left;box-shadow:0 12px 28px rgba(90,70,200,0.35)">
+              <span style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-chart-bar" style="font-size:26px"></i></span>
+              <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:17px;font-weight:800">Direktor paneli</span><span style="font-size:12px;opacity:0.9">{{ v2.dashHint }}</span></div>
+              <i class="ph-bold ph-caret-right"></i>
+            </button>
+          </sc-if>
           <sc-if value="{{ hero.show }}" hint-placeholder-val="{{ true }}">
             <div style="background:linear-gradient(135deg,#ffbf3a 0%,#ff9500 100%);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 12px 28px rgba(255,140,0,0.35),inset 0 1px 0 rgba(255,255,255,0.5)">
               <div style="display:flex;justify-content:space-between;align-items:center">
@@ -160,6 +167,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div style="display:flex;justify-content:center;padding:4px 0">
             <span style="{{ grp.iconWrapXl }}"><i class="{{ grp.icon }}" style="font-size:36px"></i></span>
           </div>
+<sc-if value="{{ v2.isDir }}" hint-placeholder-val="{{ false }}">
+            <label style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+              <i class="ph-fill ph-chalkboard-teacher" style="font-size:20px"></i><span style="font-size:13px;opacity:0.9">Ustoz</span>
+              <select value="{{ v2.grpTeacher }}" onChange="{{ v2.onGrpTeacher }}" style="flex:1;min-width:0;height:36px;border-radius:10px;border:none;background:rgba(255,255,255,0.92);color:#14202e;font:inherit;font-size:14px;font-weight:700;padding:0 8px">
+                <sc-for list="{{ v2.teacherOpts }}" as="o" hint-placeholder-count="2"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+              </select>
+            </label>
+          </sc-if>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
             <button onClick="{{ grp.attend }}" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:16px;height:66px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><i class="ph-fill ph-list-checks" style="font-size:22px"></i><span style="font-size:12px;font-weight:600">Davomat</span></button>
             <button onClick="{{ grp.schedule }}" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:16px;height:66px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><i class="ph-fill ph-calendar-dots" style="font-size:22px"></i><span style="font-size:12px;font-weight:600">Jadval</span></button>
@@ -328,6 +343,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             </div>
             <i class="ph-fill ph-coins" style="font-size:60px;opacity:0.9"></i>
           </div>
+          <button onClick="{{ v2.qr.scan }}" style="background:#fff;color:#1f7a45;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;text-align:left;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
+            <span style="width:44px;height:44px;border-radius:14px;background:linear-gradient(180deg,#3ed17a,#1fa85a);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-bold ph-qr-code" style="font-size:24px"></i></span>
+            <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Darsga keldim</span><span style="font-size:12px;color:#4a6b57">Ustoz ekranidagi QR kodni skanerlang</span></div>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
+          <button onClick="{{ v2.qr.toggle }}" style="align-self:center;background:transparent;color:#fff;font-size:12px;font-weight:600;opacity:0.9;text-decoration:underline;margin-top:-6px">Kodni qo'lda kiritish</button>
+          <sc-if value="{{ v2.qr.manual }}" hint-placeholder-val="{{ false }}">
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px;display:flex;gap:8px">
+              <input inputMode="numeric" placeholder="______" value="{{ v2.qr.code }}" onChange="{{ v2.qr.onCode }}" style="flex:1;min-width:0;height:46px;border-radius:12px;border:none;background:rgba(255,255,255,0.95);color:#14202e;font:inherit;font-size:22px;font-weight:800;letter-spacing:6px;text-align:center;outline:none">
+              <button onClick="{{ v2.qr.send }}" style="height:46px;padding:0 16px;border-radius:12px;background:#fff;color:#1f7a45;font-size:14px;font-weight:800">Yuborish</button>
+            </div>
+          </sc-if>
           <sc-if value="{{ me.hasNext }}" hint-placeholder-val="{{ true }}">
             <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center">
               <span style="{{ me.groupIcon }}"><i class="{{ me.icon }}" style="font-size:20px"></i></span>
@@ -726,6 +753,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div style="display:flex;justify-content:center;padding:4px 0">
             <span style="{{ ng.preview }}"><i class="{{ ng.icon }}" style="font-size:34px"></i></span>
           </div>
+          <sc-if value="{{ v2.isDir }}" hint-placeholder-val="{{ false }}">
+            <label style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+              <i class="ph-fill ph-chalkboard-teacher" style="font-size:20px"></i><span style="font-size:13px;opacity:0.9">Ustoz</span>
+              <select value="{{ v2.ngTeacher }}" onChange="{{ v2.onNgTeacher }}" style="flex:1;min-width:0;height:36px;border-radius:10px;border:none;background:rgba(255,255,255,0.92);color:#14202e;font:inherit;font-size:14px;font-weight:700;padding:0 8px">
+                <sc-for list="{{ v2.teacherOpts }}" as="o" hint-placeholder-count="2"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+              </select>
+            </label>
+          </sc-if>
+          
           <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:4px 14px">
             <label style="display:flex;flex-direction:column;gap:3px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.18)">
               <span style="font-size:12px;opacity:0.85">Guruh nomi</span>
@@ -939,7 +975,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <select value="{{ taskBox.group }}" onChange="{{ taskBox.onGroup }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 10px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e">
               <sc-for list="{{ taskBox.groups }}" as="gn" hint-placeholder-count="3"><option value="{{ gn }}">{{ gn }}</option></sc-for>
             </select>
-            <input placeholder="Vazifa nomi, masalan: Kalkulyator ilovasi" value="{{ taskBox.title }}" onChange="{{ taskBox.onTitle }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none">
+            <input class="lt" placeholder="Vazifa nomi, masalan: Kalkulyator ilovasi" value="{{ taskBox.title }}" onChange="{{ taskBox.onTitle }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none">
             <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px">
               <input type="date" value="{{ taskBox.due }}" onChange="{{ taskBox.onDue }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 10px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;min-width:0">
               <button onClick="{{ taskBox.add }}" style="height:42px;padding:0 16px;border-radius:12px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff;font-size:14px;font-weight:800">Berish</button>
@@ -1009,6 +1045,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               </sc-for>
             </div>
           </div>
+          <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
+            <div style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-gift" style="font-size:22px;color:#e8337f"></i><span style="font-size:16px;font-weight:800;flex:1">Do'kon so'rovlari</span>
+              <sc-if value="{{ v2.isDir }}" hint-placeholder-val="{{ false }}"><button onClick="{{ v2.ordersBox.openShop }}" style="height:34px;padding:0 12px;border-radius:10px;background:#f1ecff;color:#5a3fc0;font-size:13px;font-weight:800">Sovg'alar</button></sc-if>
+            </div>
+            <sc-if value="{{ v2.ordersBox.has }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ v2.ordersBox.list }}" as="o" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #eef0f3">
+                  <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:14px;font-weight:700">{{ o.who }}</span><span style="font-size:12px;color:#6b7684">{{ o.title }} · {{ o.price }} coin · {{ o.group }}</span></div>
+                  <button onClick="{{ o.approve }}" style="width:38px;height:38px;border-radius:11px;background:#dff7e8;color:#17804a;font-size:18px"><i class="ph-bold ph-check"></i></button>
+                  <button onClick="{{ o.reject }}" style="width:38px;height:38px;border-radius:11px;background:#fde4e6;color:#c22f38;font-size:18px"><i class="ph-bold ph-x"></i></button>
+                </div>
+              </sc-for>
+            </sc-if>
+            <span style="font-size:12px;color:#6b7684">{{ v2.ordersBox.note }}</span>
+          </div>
           <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Guruhni tanlang</span>
           <sc-for list="{{ coinGroups }}" as="g" hint-placeholder-count="4">
             <button onClick="{{ g.openCoins }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px 14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left">
@@ -1021,6 +1072,156 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               <i class="ph-bold ph-caret-right" style="opacity:0.7"></i>
             </button>
           </sc-for>
+        </div>
+      </sc-if>
+
+
+      <sc-if value="{{ is.dash }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+            <sc-for list="{{ v2.dash.kpis }}" as="k" hint-placeholder-count="6">
+              <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:6px">
+                <span style="{{ k.iconStyle }}"><i class="{{ k.icon }}" style="font-size:19px"></i></span>
+                <span style="font-size:11px;opacity:0.9">{{ k.l }}</span>
+                <span style="font-size:22px;font-weight:800;line-height:1">{{ k.v }}</span>
+                <span style="font-size:11px;opacity:0.85">{{ k.s }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Oylik daromad</span>
+          <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px 12px 10px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:flex-end;gap:8px;height:140px">
+              <sc-for list="{{ v2.dash.months }}" as="m" hint-placeholder-count="6">
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px"><span style="font-size:10px;font-weight:700;white-space:nowrap">{{ m.v }}</span><div style="{{ m.barStyle }}"></div></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px"><sc-for list="{{ v2.dash.months }}" as="m" hint-placeholder-count="6"><span style="flex:1;text-align:center;font-size:11px;opacity:0.9">{{ m.label }}</span></sc-for></div>
+          </div>
+          <sc-if value="{{ v2.dash.hasGroups }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Guruhlar davomati (shu oy)</span>
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ v2.dash.groups }}" as="g" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;font-size:13px"><span>{{ g.name }}</span><span style="font-weight:800">{{ g.label }}</span></div><div style="height:8px;border-radius:6px;background:rgba(255,255,255,0.2)"><div style="{{ g.barStyle }}"></div></div></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Qarzdorlar</span>
+          <sc-if value="{{ v2.dash.noDebtors }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;font-size:14px">🎉 Shu oy uchun qarzdor yo'q</div></sc-if>
+          <sc-if value="{{ v2.dash.hasDebtors }}" hint-placeholder-val="{{ true }}">
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:4px 12px;display:flex;flex-direction:column">
+              <sc-for list="{{ v2.dash.debtors }}" as="d" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.15)">
+                  <button onClick="{{ d.open }}" style="display:flex;flex-direction:column;flex:1;min-width:0;background:transparent;color:#fff;text-align:left"><span style="font-size:14px;font-weight:700">{{ d.name }}</span><span style="font-size:12px;opacity:0.85">{{ d.group }} · {{ d.status }}</span></button>
+                  <span style="font-size:13px;font-weight:800;white-space:nowrap">{{ d.sum }}</span>
+                  <button onClick="{{ d.remind }}" title="Ota-onaga eslatma" style="width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,0.92);color:#1f7fea;font-size:17px"><i class="ph-fill ph-paper-plane-tilt"></i></button>
+                </div>
+              </sc-for>
+              <span style="font-size:12px;opacity:0.85;padding:8px 0">{{ v2.dash.moreDebtors }}</span>
+            </div>
+          </sc-if>
+          <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Ustozlar</span>
+          <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:4px 14px">
+            <sc-for list="{{ v2.dash.teachers }}" as="t" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.15)"><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:14px;font-weight:700">{{ t.name }}</span><span style="font-size:12px;opacity:0.85">{{ t.meta }}</span></div><span style="font-size:13px;font-weight:800">{{ t.att }}</span></div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+            <button onClick="{{ v2.dash.openTeachers }}" style="height:50px;border-radius:16px;background:#fff;color:#5a3fc0;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-fill ph-chalkboard-teacher" style="font-size:20px"></i>Ustozlar</button>
+            <button onClick="{{ v2.dash.openShop }}" style="height:50px;border-radius:16px;background:#fff;color:#c2337a;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-fill ph-gift" style="font-size:20px"></i>Coin do'koni</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.teachers }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
+            <div style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-user-plus" style="font-size:22px;color:#7b4fe0"></i><span style="font-size:16px;font-weight:800">Yangi ustoz qo'shish</span></div>
+            <input placeholder="Ism familiya" value="{{ v2.teachersV.form.name }}" onChange="{{ v2.teachersV.onName }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+            <input placeholder="Telefon raqami" value="{{ v2.teachersV.form.phone }}" onChange="{{ v2.teachersV.onPhone }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+            <input placeholder="Yo'nalishi, masalan: Ingliz tili" value="{{ v2.teachersV.form.spec }}" onChange="{{ v2.teachersV.onSpec }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+            <button onClick="{{ v2.teachersV.add }}" style="height:46px;border-radius:13px;background:linear-gradient(180deg,#b48cff,#7b4fe0);color:#fff;font-size:15px;font-weight:800">Qo'shish va parol yaratish</button>
+            <span style="font-size:12px;color:#6b7684">Ustoz kirish ekranida "Ustoz" rolini tanlab, shu parol bilan kiradi va faqat o'z guruhlarini ko'radi. Guruhni ustozga guruh sahifasida biriktirasiz.</span>
+          </div>
+          <sc-if value="{{ v2.teachersV.none }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;font-size:14px">Hali ustoz qo'shilmagan</div></sc-if>
+          <sc-for list="{{ v2.teachersV.list }}" as="t" hint-placeholder-count="2">
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:12px;align-items:center">
+                <div style="{{ t.avatarStyle }}">{{ t.initials }}</div>
+                <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">{{ t.name }}</span><span style="font-size:12px;opacity:0.85">{{ t.meta }}</span></div>
+                <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.92);color:#14202e;border-radius:12px;padding:5px 10px"><span style="font-size:10px;color:#6b7684">parol</span><span style="font-size:17px;font-weight:800;letter-spacing:2px">{{ t.pin }}</span></div>
+              </div>
+              <span style="font-size:12px;opacity:0.9">{{ t.groupsLabel }}{{ t.phoneLabel }}</span>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+                <button onClick="{{ t.repin }}" style="height:38px;border-radius:11px;background:rgba(255,255,255,0.92);color:#5a3fc0;font-size:13px;font-weight:800">Yangi parol</button>
+                <button onClick="{{ t.remove }}" style="height:38px;border-radius:11px;background:rgba(232,65,74,0.85);color:#fff;font-size:13px;font-weight:800">O'chirish</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.shopAdmin }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
+            <div style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-gift" style="font-size:22px;color:#e8337f"></i><span style="font-size:16px;font-weight:800">Sovg'a qo'shish</span></div>
+            <input placeholder="Sovg'a nomi, masalan: Brendli ruchka" value="{{ v2.shopAdmin.form.title }}" onChange="{{ v2.shopAdmin.onTitle }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+              <input inputMode="numeric" placeholder="Narxi (coin)" value="{{ v2.shopAdmin.form.price }}" onChange="{{ v2.shopAdmin.onPrice }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+              <input inputMode="numeric" placeholder="Soni (dona)" value="{{ v2.shopAdmin.form.qty }}" onChange="{{ v2.shopAdmin.onQty }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;background:linear-gradient(135deg,#ff9fc8,#e8337f);border-radius:14px;padding:8px">
+              <sc-for list="{{ v2.shopAdmin.icons }}" as="ic" hint-placeholder-count="10"><button onClick="{{ ic.pick }}" style="{{ ic.style }}">{{ ic.ic }}</button></sc-for>
+            </div>
+            <button onClick="{{ v2.shopAdmin.add }}" style="height:46px;border-radius:13px;background:linear-gradient(180deg,#ff6fae,#e8337f);color:#fff;font-size:15px;font-weight:800">Do'konga qo'shish</button>
+          </div>
+          <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Do'kondagi sovg'alar</span>
+          <sc-if value="{{ v2.shopAdmin.hasItems }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ v2.shopAdmin.items }}" as="i" hint-placeholder-count="2">
+              <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px;display:flex;align-items:center;gap:12px">
+                <span style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">{{ i.icon }}</span>
+                <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">{{ i.title }}</span><span style="font-size:12px;opacity:0.85">{{ i.meta }}</span></div>
+                <button onClick="{{ i.plus }}" title="+1 dona" style="width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,0.92);color:#17804a;font-size:16px"><i class="ph-bold ph-plus"></i></button>
+                <button onClick="{{ i.remove }}" title="O'chirish" style="width:36px;height:36px;border-radius:11px;background:rgba(232,65,74,0.85);color:#fff;font-size:16px"><i class="ph-bold ph-trash"></i></button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ v2.shopAdmin.hasHistory }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:20px;font-weight:800;padding:6px 4px 0">So'rovlar tarixi</span>
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:4px 14px">
+              <sc-for list="{{ v2.shopAdmin.history }}" as="o" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.15)"><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:14px;font-weight:700">{{ o.who }}</span><span style="font-size:12px;opacity:0.85">{{ o.title }} · {{ o.price }} coin · {{ o.date }}</span></div><span style="{{ o.tagStyle }}">{{ o.statusLabel }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.s_shop }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:linear-gradient(135deg,#ffbf3a 0%,#ff9500 100%);border-radius:24px;padding:18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 28px rgba(255,140,0,0.35)">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600">Ishlatish mumkin</span><span style="font-size:40px;font-weight:800;line-height:1">{{ v2.sShop.avail }}</span><span style="font-size:12px;font-weight:600">Jami {{ v2.sShop.coins }} coin{{ v2.sShop.pendingLabel }}</span></div>
+            <i class="ph-fill ph-gift" style="font-size:58px;opacity:0.9"></i>
+          </div>
+          <sc-if value="{{ v2.sShop.noItems }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;font-size:14px">Do'konda hali sovg'a yo'q. Tez orada qo'shiladi! 🎁</div></sc-if>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+            <sc-for list="{{ v2.sShop.items }}" as="i" hint-placeholder-count="4">
+              <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+                <span style="width:58px;height:58px;border-radius:18px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;font-size:30px">{{ i.icon }}</span>
+                <span style="font-size:14px;font-weight:800;line-height:1.25;min-height:35px">{{ i.title }}</span>
+                <span style="display:flex;align-items:center;gap:4px;font-size:15px;font-weight:800"><i class="ph-fill ph-coins" style="color:#ffd66b"></i>{{ i.priceLabel }}</span>
+                <span style="font-size:11px;opacity:0.85">{{ i.stockLabel }}</span>
+                <button onClick="{{ i.buy }}" style="{{ i.btnStyle }};width:100%">{{ i.btnLabel }}</button>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ v2.sShop.hasOrders }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:20px;font-weight:800;padding:6px 4px 0">Mening so'rovlarim</span>
+            <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:4px 14px">
+              <sc-for list="{{ v2.sShop.orders }}" as="o" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.15)"><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:14px;font-weight:700">{{ o.title }}</span><span style="font-size:12px;opacity:0.85">{{ o.price }} coin · {{ o.date }}</span></div><span style="{{ o.tagStyle }}">{{ o.statusLabel }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
         </div>
       </sc-if>
 
@@ -1108,6 +1309,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             </sc-for>
           </div>
           <div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:0 4px"><i class="ph-fill ph-coins" style="color:#ffd66b;font-size:18px"></i><span>Kelgani uchun 1 coin, faol ishtirok uchun yana 1 coin. "Sababli" dars to'lovdan ayriladi, "Sababsiz" ayrilmaydi.</span></div>
+          <button onClick="{{ v2.qrT.openFn }}" style="background:#fff;color:#2d3a7a;border-radius:16px;padding:13px 14px;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 18px rgba(0,0,0,0.15)"><i class="ph-bold ph-qr-code" style="font-size:20px"></i>QR orqali davomat</button>
           <button onClick="{{ markAll }}" style="align-self:flex-start;background:rgba(255,255,255,0.92);color:#2d3a7a;border-radius:12px;padding:8px 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><i class="ph-bold ph-checks"></i>Hammasi keldi</button>
           <sc-for list="{{ attRows }}" as="r" hint-placeholder-count="5">
             <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px">
@@ -1288,6 +1490,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         {{ receiptEl }}
       </div>
     </sc-if>
+    <sc-if value="{{ v2.qrT.open }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:9;background:rgba(10,16,30,0.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;color:#fff;overflow-y:auto">
+        <span style="font-size:18px;font-weight:800;text-align:center">{{ v2.qrT.title }}</span>
+        <div style="background:#fff;border-radius:22px;padding:14px">{{ v2.qrT.el }}</div>
+        <span style="font-size:34px;font-weight:800;letter-spacing:6px;font-family:'JetBrains Mono',ui-monospace,monospace">{{ v2.qrT.code }}</span>
+        <div style="width:230px;height:6px;border-radius:3px;background:rgba(255,255,255,0.2);overflow:hidden"><div style="{{ v2.qrT.bar }}"></div></div>
+        <span style="font-size:12px;opacity:0.8;text-align:center">O'quvchilar ilovada "Darsga keldim" tugmasini bosib skanerlaydi.<br>Kod har 20 soniyada yangilanadi.</span>
+        <span style="font-size:20px;font-weight:800;background:rgba(62,209,122,0.2);border-radius:14px;padding:8px 16px">Keldi: {{ v2.qrT.came }} / {{ v2.qrT.total }}</span>
+        <span style="font-size:13px;opacity:0.9;text-align:center;max-width:320px;line-height:1.5">{{ v2.qrT.names }}</span>
+        <button onClick="{{ v2.qrT.close }}" style="height:48px;padding:0 22px;border-radius:14px;background:#fff;color:#14202e;font-size:15px;font-weight:800">Yopish va davomatga qaytish</button>
+      </div>
+    </sc-if>
     <sc-if value="{{ booting }}" hint-placeholder-val="{{ false }}">
       <div style="position:absolute;inset:0;z-index:20;background:linear-gradient(170deg,#2f6fe0 0%,#5a8fe8 45%,#7b5fd8 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
         <span style="width:76px;height:76px;border-radius:24px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;box-shadow:0 12px 26px rgba(31,127,234,0.45)">YT</span>
@@ -1324,7 +1538,7 @@ const WEEK_OF_MONTH = Math.floor((_now.getDate() - 1) / 7) + 1;
 const LBL = { today: `${WD_FULL[_now.getDay()]}, ${_now.getDate()}-${MON_NAME}`, dnum: `${_now.getDate()}-${MON_NAME}`, mon: MON_NAME, monCap: MON_CAP, next: NEXT_MON, nextCap: NEXT_CAP, address: CFG.ADDRESS || "—", phone: CFG.PHONE || "—" };
 const TEACHERS = [];
 const ADMINS = () => [...TEACHERS.slice(0, 1), ...(CFG.ADMINS || [])].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
-const SYNC_KEYS = ["students", "lessons", "hw", "tasks", "att", "grades", "actv", "custom", "outbox", "botCfg", "teacher", "pins", "notif"];
+const SYNC_KEYS = ["students", "lessons", "hw", "tasks", "att", "grades", "actv", "custom", "outbox", "botCfg", "teacher", "pins", "notif", "teachers", "shop", "orders"];
 
 const GROUPS = [];
 const NOGROUP = { id: "-", name: "Guruh yo'q", icon: "ph-fill ph-users-three", c: "#8a94a3,#5b6573", days: [], time: "—", end: "—", room: "—", level: "Boshlang'ich", fee: "0", start: "" };
@@ -1394,7 +1608,11 @@ const BG = {
   coinGroup: "linear-gradient(170deg,#d8862a 0%,#e0a45c 50%,#b86a3a 100%)",
   profile: "linear-gradient(170deg,#6f6fe0 0%,#9a8fe0 50%,#5c7fd0 100%)",
   attendance: "linear-gradient(170deg,#4d6bbd 0%,#7a8fd4 50%,#5c5ea3 100%)",
-  add: "linear-gradient(170deg,#2f8fe6 0%,#55aee8 55%,#2e9f8e 100%)"
+  add: "linear-gradient(170deg,#2f8fe6 0%,#55aee8 55%,#2e9f8e 100%)",
+  dash: "linear-gradient(170deg,#5a4fd0 0%,#8a6fe0 50%,#3f7fd0 100%)",
+  teachers: "linear-gradient(170deg,#6f5fe0 0%,#9a7fe0 50%,#5c7fd0 100%)",
+  shopAdmin: "linear-gradient(170deg,#d0508f 0%,#e07fa8 45%,#8f6fd8 100%)",
+  s_shop: "linear-gradient(170deg,#e0912f 0%,#e6a95a 45%,#c2733a 100%)"
 };
 const AV = ["#ffbf3a,#ff9500", "#4fb0ff,#1f7fea", "#ff6fae,#e8337f", "#3ed17a,#1fa85a", "#b48cff,#7b4fe0"];
 const av = (id, size = 42) => `width:${size}px;height:${size}px;border-radius:50%;background:linear-gradient(180deg,${AV[id % AV.length]});display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${Math.round(size * 0.36)}px;flex-shrink:0;border:2px solid rgba(255,255,255,0.6)`;
@@ -1442,7 +1660,7 @@ class Component extends DCLogic {
   state = {
     teacher: { name: "Ustoz", spec: "", phone: "", tg: "", email: "", dirs: "", exp: "", branch: "", birth: "", bio: "", photo: null }, tDraft: null, pins: {},
     screen: this.props.startScreen ?? "login", stack: [], role: "teacher", loginRole: null, pin: "", pinErr: "", subLink: {}, day: TODAY, lessons: buildLessons(), hw: HW, hwFilter: "new",
-    students: STUDENTS, groupId: "fe", studentId: 1, attLesson: null, att: {}, grades: {}, actv: {}, coinGroupId: "fe", custom: {}, ng: emptyNg(), gv: 0, botTo: "parent", botDay: "d5", outbox: [], tasks: [], booting: false, meId: null,
+    students: STUDENTS, groupId: "fe", studentId: 1, attLesson: null, att: {}, grades: {}, actv: {}, coinGroupId: "fe", custom: {}, ng: emptyNg(), gv: 0, botTo: "parent", botDay: "d5", outbox: [], tasks: [], booting: false, meId: null, teachers: [], shop: [], orders: [], isDir: false,
     botCfg: { daily: true, payRemind: true, overdue: true, monthly: true, cancel: true }, showArchive: true, showLeft: false,
     form: emptyForm(), dialog: null, toast: null, notif: true
   };
@@ -1620,26 +1838,26 @@ class Component extends DCLogic {
     GROUPS.splice(0, GROUPS.length, ...(d.groups || []));
     (d.students || []).forEach(x => { if (x.pw) USED_PW.add(x.pw); });
     const T = d.teacher || this.state.teacher;
-    TEACHERS.splice(0, TEACHERS.length, T.name, ...(CFG.TEACHERS || []).filter(n => n !== T.name));
-    const raw = { teacher: T, pins: d.pins || {}, lessons: d.lessons || [], hw: d.hw || [], tasks: d.tasks || [], students: d.students || [], att: d.att || {}, grades: d.grades || {}, actv: d.actv || {}, custom: d.custom || {}, outbox: d.outbox || [], botCfg: d.botCfg || this.state.botCfg, notif: d.notif !== undefined ? d.notif : true };
+    TEACHERS.splice(0, TEACHERS.length, T.name, ...(r.role === "director" ? (d.teachers || []).map(t => t.name) : []), ...(CFG.TEACHERS || []).filter(n => n !== T.name));
+    const raw = { teachers: d.teachers || [], shop: d.shop || [], orders: d.orders || [], teacher: T, pins: d.pins || {}, lessons: d.lessons || [], hw: d.hw || [], tasks: d.tasks || [], students: d.students || [], att: d.att || {}, grades: d.grades || {}, actv: d.actv || {}, custom: d.custom || {}, outbox: d.outbox || [], botCfg: d.botCfg || this.state.botCfg, notif: d.notif !== undefined ? d.notif : true };
     this._saved = { ...raw };
     this._groupsJson = JSON.stringify(GROUPS);
-    this._role = r.role; this._pending = new Set();
+    this._role = r.role; this._tid = r.tid || null; this._pending = new Set();
     const st = { ...raw, lessons: this.ensureWeek(raw.lessons) };
     const firstG = GROUPS.find(g => !g.archived) || G0();
     const keepG = GROUPS.some(g => g.id === this.state.groupId);
-    const nav = go ? { role: r.role, meId: r.meId, screen: r.role === "teacher" ? "home" : "s_home", stack: [], loginRole: null, pin: "", pinErr: "", groupId: firstG.id, coinGroupId: firstG.id, studentId: (st.students[0] || {}).id, form: emptyForm(firstG) }
+    const nav = go ? { role: r.role === "student" ? "student" : "teacher", meId: r.meId, screen: r.role === "student" ? "s_home" : "home", stack: [], loginRole: null, pin: "", pinErr: "", groupId: firstG.id, coinGroupId: firstG.id, studentId: (st.students[0] || {}).id, form: emptyForm(firstG) }
       : { meId: r.meId, ...(keepG ? {} : { groupId: firstG.id, coinGroupId: firstG.id }) };
-    this.setState({ ...st, ...nav, booting: false, gv: (this.state.gv || 0) + 1 });
+    this.setState({ ...st, ...nav, isDir: r.role === "director", booting: false, gv: (this.state.gv || 0) + 1 });
   }
   componentDidUpdate() {
     if (!this._role || this.state.booting) return;
     const s = this.state;
-    if (this._role === "teacher" && this._prevAtt && (s.att !== this._prevAtt || s.grades !== this._prevGr)) { this._prevAtt = s.att; this._prevGr = s.grades; this.recalcStudents(); }
+    if (this._role !== "student" && this._prevAtt && (s.att !== this._prevAtt || s.grades !== this._prevGr)) { this._prevAtt = s.att; this._prevGr = s.grades; this.recalcStudents(); }
     this._prevAtt = s.att; this._prevGr = s.grades;
-    const keys = this._role === "teacher" ? SYNC_KEYS : ["hw"];
+    const keys = this._role === "student" ? ["hw", "orders"] : this._role === "teacher" ? SYNC_KEYS.filter(k => k !== "teachers" && k !== "shop") : SYNC_KEYS;
     const dirty = keys.filter(k => s[k] !== this._saved[k]);
-    if (this._role === "teacher" && JSON.stringify(GROUPS) !== this._groupsJson) dirty.push("groups");
+    if (this._role !== "student" && JSON.stringify(GROUPS) !== this._groupsJson) dirty.push("groups");
     if (dirty.length) { dirty.forEach(k => this._pending.add(k)); clearTimeout(this._st); this._st = setTimeout(() => this.flush(), 1200); }
   }
   recalcStudents() {
@@ -1698,15 +1916,35 @@ class Component extends DCLogic {
     this._lastLoad = Date.now();
     this.hydrate(r, true);
     const me = r.role === "student" ? (r.data.students || []).find(x => x.id === r.meId) : null;
-    this.flash(me ? `Xush kelibsiz, ${me.name}!` : `Xush kelibsiz, ${(r.data.teacher || {}).name || "ustoz"}!`);
+    this.flash(me ? `Xush kelibsiz, ${me.name}!` : `Xush kelibsiz, ${(r.data.teacher || {}).name || "ustoz"}!${r.role === "director" ? " (direktor)" : ""}`);
   }
   doLogout() {
     this.flush();
     if (this._token) this.call("logout");
     this.dropToken(); this._role = null; this._saved = {}; this._pending = new Set();
     GROUPS.splice(0, GROUPS.length);
-    this.setState({ students: [], lessons: [], hw: [], tasks: [], att: {}, grades: {}, actv: {}, outbox: [], meId: null });
+    this.stopQrPoll();
+    this.setState({ students: [], lessons: [], hw: [], tasks: [], att: {}, grades: {}, actv: {}, outbox: [], meId: null, teachers: [], shop: [], orders: [], isDir: false, qrLesson: null });
   }
+  startQrPoll(lid) {
+    this.stopQrPoll(); let n = 0;
+    this._qrI = setInterval(async () => {
+      this.setState({ qrTick: Date.now() });
+      if (++n % 3 || this._qrBusy) return;
+      this._qrBusy = true;
+      const r = await this.call("att", { lid });
+      this._qrBusy = false;
+      if (!r.ok || !r.att || !this.state.qrLesson) return;
+      const cur = (this.state.att || {})[lid] || {};
+      const add = Object.keys(r.att).filter(k => cur[k] === undefined);
+      if (!add.length) return;
+      const merged = { ...r.att, ...cur };
+      const att = { ...this.state.att, [lid]: merged };
+      if (this._saved.att === this.state.att) this._saved.att = att;
+      this.setState({ att });
+    }, 1000);
+  }
+  stopQrPoll() { clearInterval(this._qrI); this._qrI = null; }
   async sendReceipt(r, query) {
     await this.flush();
     this.flash("Yuborilmoqda…");
@@ -1813,7 +2051,7 @@ class Component extends DCLogic {
       const end = `${String(h + 1 + (m >= 30 ? 1 : 0)).padStart(2, "0")}:${String((m + 30) % 60).padStart(2, "0")}`;
       const id = "g" + Date.now();
       const days = N.days === "Du·Ch·Ju" ? ["Du", "Ch", "Ju"] : ["Se", "Pa", "Sh"];
-      GROUPS.push({ id, name: N.name.trim(), course: course.name, icon: course.icon, c: course.c, days, time: N.time, end, room: N.room || "—", level: N.level, fee: N.fee ? money(toNum(N.fee)) : "—", start: LBL.dnum });
+      GROUPS.push({ id, name: N.name.trim(), course: course.name, icon: course.icon, c: course.c, days, time: N.time, end, room: N.room || "—", level: N.level, fee: N.fee ? money(toNum(N.fee)) : "—", start: LBL.dnum, teacherId: this._role === "teacher" ? this._tid : (s.ngTeacher || null) });
       const newLessons = DAYS.filter(d => days.includes(d.short) && d.date >= TODAY).map((d, i) => ({ id: `${id}-${d.date}`, date: d.date, time: N.time, end, g: id, room: N.room || "—", status: "plan" }));
       this.setState(st => ({ lessons: [...st.lessons, ...newLessons], ng: emptyNg(), screen: "group", groupId: id, stack: ["groups"] }));
       this.flash(`"${N.name.trim()}" guruhi yaratildi`);
@@ -2232,7 +2470,8 @@ class Component extends DCLogic {
       this.back(); this.flash(pin ? "Profil va parol saqlandi" : "Profil saqlandi");
     };
     const ROLES = [
-      { k: "teacher", title: "Ustoz", sub: "Guruhlar, davomat va vazifalar", icon: "ph-fill ph-chalkboard-teacher", c: "#b48cff,#7b4fe0", home: "home" },
+      { k: "director", title: "Direktor", sub: "Barcha guruhlar, ustozlar va daromad", icon: "ph-fill ph-crown-simple", c: "#ffbf3a,#ff9500", home: "home" },
+      { k: "teacher", title: "Ustoz", sub: "O'z guruhlari, davomat va vazifalar", icon: "ph-fill ph-chalkboard-teacher", c: "#b48cff,#7b4fe0", home: "home" },
       { k: "student", title: "O'quvchi", sub: "Shaxsiy 4 xonali parol bilan", icon: "ph-fill ph-student", c: "#3ed17a,#1fa85a", home: "s_home" }
     ];
     const LR = ROLES.find(r => r.k === s.loginRole);
@@ -2324,21 +2563,214 @@ class Component extends DCLogic {
     };
 
     const scr = s.screen;
-    const sub = ["group", "student", "attendance", "add", "coinGroup", "groupNew", "payment", "report", "bot", "profileEdit"].includes(scr);
+    const sub = ["group", "student", "attendance", "add", "coinGroup", "groupNew", "payment", "report", "bot", "profileEdit", "dash", "teachers", "shopAdmin"].includes(scr);
     const heads = {
-      home: ["Yuksak ta'lim", "Ustoz paneli"], groups: ["Guruhlarim", `${GROUPS.length} ta guruh · ${s.students.length} o'quvchi`],
+      home: ["Yuksak ta'lim", s.isDir ? "Direktor" : "Ustoz paneli"], groups: ["Guruhlarim", `${GROUPS.length} ta guruh · ${s.students.length} o'quvchi`],
       group: [G.name, `${daysLabel(G)} · ${G.time}`], student: ["O'quvchi", gById(X.g).name],
       schedule: ["Dars jadvali", `${MON_CAP}, ${WEEK_OF_MONTH}-hafta`], homework: ["Vazifalar", `${pendingHw} ta tekshirilmagan`], profile: ["Profil", "Ustoz"],
       groupNew: ["Yangi guruh", "Kurs va jadvalni tanlang"], payment: ["To'lov qabul qilish", MON_CAP + " oyi"], report: ["Tahlil va prognoz", X.name], bot: ["Bot xabarlari", X.name],
       login: ["Yuksak ta'lim", "Kirish"], profileEdit: ["Profilni tahrirlash", "Ustoz"], profile: ["Profil", TT.name], s_home: ["Bosh sahifa", "O'quvchi"], s_hw: ["Vazifalarim", MEG.name], s_rank: ["Reyting", `${MEG.name} · coin`],
       p_home: ["Farzandim", ME.pname || "Ota-ona"], p_pay: ["To'lov", ME.name], p_msgs: ["Xabarlar", "Bot bildirishnomalari"],
+      dash: ["Direktor paneli", `${MON_CAP} oyi`], teachers: ["Ustozlar", `${(s.teachers || []).length} ta ustoz`], shopAdmin: ["Coin do'koni", "Sovg'alar va so'rovlar"], s_shop: ["Do'kon", "Coinlarni sovg'aga almashtiring"],
       coins: ["Coinlar", "Guruh tanlang"], coinGroup: [CG.name, `${cms.length} o'quvchi · coin berish`],
       attendance: [gById(attL.g).name, `Davomat · ${attL.time}–${attL.end} · ${marked}/${ids.length}`], add: ["Yangi o'quvchi", s.form.group]
     };
     const roleHome = { teacher: "home", parent: "p_home", student: "s_home" }[s.role];
     const isRoot = scr === roleHome || scr === "login";
-    const tabDefs = s.role === "student" ? [["s_home", "Bosh", "ph-house"], ["s_hw", "Vazifalar", "ph-check-square"], ["s_rank", "Reyting", "ph-trophy"]]
+    const tabDefs = s.role === "student" ? [["s_home", "Bosh", "ph-house"], ["s_hw", "Vazifalar", "ph-check-square"], ["s_rank", "Reyting", "ph-trophy"], ["s_shop", "Do'kon", "ph-gift"]]
       : s.role === "parent" ? [["p_home", "Farzandim", "ph-house"], ["p_pay", "To'lov", "ph-wallet"], ["p_msgs", "Xabarlar", "ph-bell"]] : [["home", "Bosh", "ph-house"], ["groups", "Guruhlar", "ph-users-three"], ["schedule", "Jadval", "ph-calendar-dots"], ["homework", "Vazifalar", "ph-check-square"], ["coins", "Coin", "ph-coins"], ["profile", "Profil", "ph-user-circle"]];
+    // ===================== V2: direktor, ustozlar, do'kon, QR davomat =====================
+    const E = React.createElement;
+    const isDir = !!s.isDir;
+    const TCH = s.teachers || [];
+    const dirName = (s.teacher && s.teacher.name) || "Direktor";
+    const teacherOpts = [{ v: "", l: dirName + " (direktor)" }, ...TCH.map(t => ({ v: t.id, l: t.name }))];
+    const tNameOf = id => id ? ((TCH.find(t => t.id === id) || {}).name || "—") : dirName;
+    const qrHash = str => { let hh = 7; for (let i = 0; i < str.length; i++) hh = (hh * 31 + str.charCodeAt(i)) >>> 0; return String(hh % 1000000).padStart(6, "0"); };
+    const sNameOf = id => (s.students.find(x => x.id === id) || {}).name || "—";
+    const tagSt = (bg, fg) => `font-size:11px;font-weight:800;padding:4px 9px;border-radius:9px;background:${bg};color:${fg};white-space:nowrap`;
+    const ORD = { new: ["Kutilmoqda", "#fff3d6", "#9a5b00"], done: ["Berildi", "#dff7e8", "#17804a"], rejected: ["Rad etildi", "#fde4e6", "#c22f38"] };
+
+    // ---- QR davomat (ustoz ekrani) ----
+    const qL = s.qrLesson ? s.lessons.find(l => l.id === s.qrLesson) : null;
+    const qrT = {
+      open: false,
+      openFn: () => {
+        const L = attL; if (!L || L.id === "-") { this.flash("Avval darsni tanlang"); return; }
+        if (!L.qrKey) { const key = Math.random().toString(36).slice(2, 10); this.setState(st => ({ lessons: st.lessons.map(l => l.id === L.id ? { ...l, qrKey: key } : l) })); }
+        this.setState({ qrLesson: L.id });
+        setTimeout(() => this.flush(), 60);
+        this.startQrPoll(L.id);
+      }
+    };
+    if (qL && qL.qrKey) {
+      const win = Math.floor(Date.now() / 20000);
+      const code = qrHash(`${qL.id}|${win}|${qL.qrKey}`);
+      const left = 20 - Math.floor((Date.now() % 20000) / 1000);
+      let cells = [], n = 21;
+      try { const q = window.qrcode(0, "M"); q.addData("YT:" + code); q.make(); n = q.getModuleCount(); for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) cells.push(E("div", { key: x + "-" + y, style: { background: q.isDark(y, x) ? "#14202e" : "#fff" } })); } catch (e) {}
+      const grpS = s.students.filter(x => x.g === qL.g && !x.left);
+      const am = s.att[qL.id] || {};
+      const came = grpS.filter(x => am[x.id] === "keldi" || am[x.id] === "kech");
+      Object.assign(qrT, {
+        open: true, code: code.slice(0, 3) + " " + code.slice(3), title: `${gById(qL.g).name} · ${qL.time}`,
+        el: E("div", { style: { width: 230, height: 230, display: "grid", gridTemplateColumns: `repeat(${n},1fr)`, gridTemplateRows: `repeat(${n},1fr)` } }, cells),
+        bar: `height:100%;width:${Math.round(left / 20 * 100)}%;background:#3ed17a;transition:width 1s linear`,
+        came: came.length, total: grpS.length, names: came.length ? came.map(x => x.name.split(" ")[0]).join(", ") : "Hali hech kim skanerlamadi",
+        close: () => { this.stopQrPoll(); this.setState({ qrLesson: null }); this.flash(`QR orqali ${came.length} ta o'quvchi belgilandi`); }
+      });
+    }
+
+    // ---- QR davomat (o'quvchi) ----
+    const sendQr = async raw => {
+      const code = String(raw || "").replace(/\D/g, "").slice(-6);
+      if (code.length !== 6) { this.flash("Kod 6 xonali bo'lishi kerak"); return; }
+      this.flash("Tekshirilmoqda…");
+      const r = await this.call("qr", { code });
+      this.flash(r.message || (r.ok ? "Belgilandi" : "Kod noto'g'ri"));
+      if (r.ok) { this.setState({ qrManual: false, qrCode: "" }); this._lastLoad = 0; setTimeout(() => this.reload(), 300); }
+    };
+    const qr = {
+      scan: () => {
+        const tg = window.Telegram && window.Telegram.WebApp;
+        if (tg && tg.initData && tg.showScanQrPopup && (!tg.isVersionAtLeast || tg.isVersionAtLeast("6.4"))) {
+          try { tg.showScanQrPopup({ text: "Ustoz ekranidagi QR kodni skanerlang" }, t => { sendQr(t); return true; }); return; } catch (e) {}
+        }
+        this.setState({ qrManual: true });
+      },
+      toggle: () => this.setState({ qrManual: !s.qrManual }), manual: !!s.qrManual,
+      code: s.qrCode || "", onCode: e => this.setState({ qrCode: e.target.value.replace(/\D/g, "").slice(0, 6) }), send: () => sendQr(s.qrCode)
+    };
+
+    // ---- Coin do'koni ----
+    const SHOP = (s.shop || []).filter(i => !i.hidden);
+    const ORDERS = s.orders || [];
+    const doneCnt = id => ORDERS.filter(o => o.itemId === id && o.status !== "rejected").length;
+    const leftOf = i => Math.max(0, (Number(i.qty) || 0) - doneCnt(i.id));
+    const myOrders = ORDERS.filter(o => o.sid === ME.id);
+    const pendingSum = myOrders.filter(o => o.status === "new").reduce((a, o) => a + (Number(o.price) || 0), 0);
+    const avail = (ME.coins || 0) - pendingSum;
+    const sShop = {
+      coins: ME.coins || 0, avail, pending: pendingSum, hasPending: pendingSum > 0, pendingLabel: pendingSum ? ` · ${pendingSum} coin tasdiq kutmoqda` : "",
+      hasItems: SHOP.length > 0, noItems: SHOP.length === 0,
+      items: SHOP.map(i => { const left = leftOf(i), can = left > 0 && avail >= i.price; return { ...i, icon: i.icon || "🎁", priceLabel: `${i.price} coin`, stockLabel: left > 0 ? `${left} ta qoldi` : "Tugagan",
+        btnLabel: left <= 0 ? "Tugagan" : can ? "Olish" : `Yana ${i.price - avail} coin`,
+        btnStyle: `height:40px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:800;${can ? "background:linear-gradient(180deg,#ffbf3a,#ff9500);color:#fff" : "background:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85)"}`,
+        buy: () => { if (!can) return; this.setState(st => ({ orders: [...(st.orders || []), { id: "o" + Date.now(), sid: ME.id, itemId: i.id, title: i.title, price: i.price, status: "new", at: TODAY }] })); this.flash("So'rov yuborildi · ustoz tasdiqlagach coin yechiladi"); } }; }),
+      orders: myOrders.slice().reverse().slice(0, 20).map(o => ({ ...o, statusLabel: ORD[o.status][0], tagStyle: tagSt(ORD[o.status][1], ORD[o.status][2]), date: dayLabel(o.at) })),
+      hasOrders: myOrders.length > 0
+    };
+    const decide = (o, ok) => () => {
+      if (ok) { const stu = s.students.find(x => x.id === o.sid); if (!stu || (stu.coins || 0) < o.price) { this.flash("O'quvchida coin yetarli emas"); return; } }
+      this.setState(st => ({
+        orders: st.orders.map(x => x.id === o.id ? { ...x, status: ok ? "done" : "rejected", decidedAt: TODAY } : x),
+        students: ok ? st.students.map(x => x.id === o.sid ? { ...x, coins: (x.coins || 0) - o.price } : x) : st.students
+      }));
+      this.flash(ok ? `${sNameOf(o.sid)}ga "${o.title}" berildi · ${o.price} coin yechildi` : "So'rov rad etildi");
+    };
+    const pendingOrders = ORDERS.filter(o => o.status === "new" && s.students.some(x => x.id === o.sid));
+    const ordersBox = {
+      has: pendingOrders.length > 0, count: pendingOrders.length, note: pendingOrders.length ? "✓ tasdiqlasangiz coin o'quvchidan yechiladi" : "Hozircha yangi so'rov yo'q",
+      list: pendingOrders.map(o => ({ ...o, who: sNameOf(o.sid), group: gById((s.students.find(x => x.id === o.sid) || {}).g).name, approve: decide(o, true), reject: decide(o, false) })),
+      openShop: () => this.push("shopAdmin")
+    };
+    const SF = s.shopForm || { title: "", price: "", qty: "", icon: "🎁" };
+    const shopAdmin = {
+      form: SF,
+      onTitle: e => this.setState({ shopForm: { ...SF, title: e.target.value } }),
+      onPrice: e => this.setState({ shopForm: { ...SF, price: e.target.value.replace(/\D/g, "") } }),
+      onQty: e => this.setState({ shopForm: { ...SF, qty: e.target.value.replace(/\D/g, "") } }),
+      icons: ["🎁", "🖊️", "📓", "🎧", "👕", "🍫", "🎮", "📚", "⌨️", "🏆"].map(ic => ({ ic, pick: () => this.setState({ shopForm: { ...SF, icon: ic } }), style: `width:40px;height:40px;border-radius:12px;font-size:20px;background:${SF.icon === ic ? "#fff" : "rgba(255,255,255,0.2)"}` })),
+      add: () => {
+        if (!SF.title.trim() || !toNum(SF.price)) { this.flash("Sovg'a nomi va narxini kiriting"); return; }
+        this.setState(st => ({ shop: [...(st.shop || []), { id: "i" + Date.now(), title: SF.title.trim(), price: toNum(SF.price), qty: toNum(SF.qty) || 1, icon: SF.icon }], shopForm: { title: "", price: "", qty: "", icon: "🎁" } }));
+        this.flash("Sovg'a do'konga qo'shildi");
+      },
+      items: SHOP.map(i => ({ ...i, icon: i.icon || "🎁", meta: `${i.price} coin · ${leftOf(i)}/${i.qty} ta qoldi · ${doneCnt(i.id)} ta berilgan`,
+        plus: () => this.setState(st => ({ shop: st.shop.map(x => x.id === i.id ? { ...x, qty: (Number(x.qty) || 0) + 1 } : x) })),
+        remove: () => this.setState(st => ({ shop: st.shop.map(x => x.id === i.id ? { ...x, hidden: true } : x) })) })),
+      hasItems: SHOP.length > 0,
+      history: ORDERS.slice().reverse().slice(0, 30).map(o => ({ ...o, who: sNameOf(o.sid), statusLabel: ORD[o.status][0], tagStyle: tagSt(ORD[o.status][1], ORD[o.status][2]), date: dayLabel(o.at) })),
+      hasHistory: ORDERS.length > 0
+    };
+
+    // ---- Ustozlar (direktor) ----
+    const TF2 = s.tForm || { name: "", phone: "", spec: "" };
+    const usedPins = () => new Set([...(TCH.map(t => t.pin)), ...USED_PW, s.pins && s.pins.teacher].filter(Boolean));
+    const newPin = () => { const used = usedPins(); for (let i = 0; i < 300; i++) { const p = genPw(); if (!used.has(p)) return p; } return genPw(); };
+    const teachersV = {
+      form: TF2,
+      onName: e => this.setState({ tForm: { ...TF2, name: e.target.value } }),
+      onPhone: e => this.setState({ tForm: { ...TF2, phone: e.target.value } }),
+      onSpec: e => this.setState({ tForm: { ...TF2, spec: e.target.value } }),
+      add: () => {
+        if (!TF2.name.trim()) { this.flash("Ustoz ismini kiriting"); return; }
+        const pin = newPin();
+        this.setState(st => ({ teachers: [...(st.teachers || []), { id: "t" + Date.now(), name: TF2.name.trim(), phone: TF2.phone.trim(), spec: TF2.spec.trim(), pin, created: TODAY }], tForm: { name: "", phone: "", spec: "" } }));
+        this.flash(`${TF2.name.trim()} qo'shildi · kirish paroli: ${pin}`);
+      },
+      list: TCH.map(t => {
+        const gs = GROUPS.filter(g => g.teacherId === t.id && !g.archived);
+        const cnt = s.students.filter(x => gs.some(g => g.id === x.g) && !x.left).length;
+        return { ...t, initials: ini(t.name), avatarStyle: av(t.name.length, 44), meta: `${gs.length} guruh · ${cnt} o'quvchi${t.spec ? " · " + t.spec : ""}`, groupsLabel: gs.map(g => g.name).join(", ") || "Guruh biriktirilmagan", phoneLabel: t.phone ? " · " + t.phone : "",
+          repin: () => { const pin = newPin(); this.setState(st => ({ teachers: st.teachers.map(x => x.id === t.id ? { ...x, pin } : x) })); this.flash(`${t.name} uchun yangi parol: ${pin}`); },
+          remove: () => { if (gs.length) { this.flash("Avval guruhlarini boshqa ustozga o'tkazing"); return; } this.setState(st => ({ teachers: st.teachers.filter(x => x.id !== t.id) })); this.flash("Ustoz o'chirildi"); } };
+      }),
+      has: TCH.length > 0, none: TCH.length === 0
+    };
+
+    // ---- Direktor paneli ----
+    let dash = { show: false };
+    if (isDir && (scr === "dash" || scr === "home")) {
+      const act = s.students.filter(x => !x.left && GROUPS.some(g => g.id === x.g && !g.archived));
+      const pis = act.map(x => ({ x, pi: payInfo(x) }));
+      const allPays = s.students.flatMap(x => (x.payments || []).map(p => ({ ...p, sid: x.id })));
+      const income = allPays.filter(p => String(p.date) >= MONTH_START).reduce((a, p) => a + (Number(p.amount) || 0), 0);
+      const expected = pis.reduce((a, { pi }) => a + (pi.due || 0), 0);
+      const debt = pis.filter(({ pi }) => pi.remaining > 0 && pi.status !== "free").sort((a, b) => b.pi.remaining - a.pi.remaining);
+      const debtSum = debt.reduce((a, { pi }) => a + pi.remaining, 0);
+      const monthLs = s.lessons.filter(l => l.date >= MONTH_START && l.date <= TODAY && s.att[l.id]);
+      const attOf = ls => { let c = 0, t = 0; ls.forEach(l => Object.entries(s.att[l.id] || {}).forEach(([sid, v]) => { t++; if (v === "keldi" || v === "kech") c++; })); return t ? Math.round(c / t * 100) : null; };
+      const avgAtt = attOf(monthLs);
+      const months = [];
+      for (let k = 5; k >= 0; k--) { const d = new Date(_now.getFullYear(), _now.getMonth() - k, 1); const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`; months.push({ label: MON_L[d.getMonth()].slice(0, 3), sum: allPays.filter(p => String(p.date).startsWith(key)).reduce((a, p) => a + (Number(p.amount) || 0), 0), cur: k === 0 }); }
+      const maxM = Math.max(1, ...months.map(m => m.sum));
+      const short = n => n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1) + " mln" : n >= 1e3 ? Math.round(n / 1e3) + " ming" : String(n);
+      const grpAtt = GROUPS.filter(g => !g.archived).map(g => ({ name: g.name, pct: attOf(monthLs.filter(l => l.g === g.id)) })).filter(g => g.pct !== null);
+      const tRows = [{ id: null, name: dirName + " (direktor)" }, ...TCH].map(t => {
+        const gs = GROUPS.filter(g => (g.teacherId || null) === t.id && !g.archived);
+        const st = act.filter(x => gs.some(g => g.id === x.g));
+        const a = attOf(monthLs.filter(l => gs.some(g => g.id === l.g)));
+        return { name: t.name, meta: `${gs.length} guruh · ${st.length} o'quvchi`, att: a === null ? "—" : a + "%" };
+      }).filter(t => t.meta[0] !== "0" || t.name.includes("direktor"));
+      dash = {
+        show: true,
+        kpis: [
+          { l: `${MON_CAP} daromadi`, v: short(income), s: `${money(income)} so'm`, c: "#3ed17a,#1fa85a", icon: "ph-fill ph-money" },
+          { l: "Kutilayotgan", v: short(expected), s: expected ? `${Math.round(income / expected * 100)}% yig'ildi` : "—", c: "#4fb0ff,#1f7fea", icon: "ph-fill ph-target" },
+          { l: "Qarzdorlar", v: String(debt.length), s: `${money(debtSum)} so'm`, c: "#ff8a5b,#e8414a", icon: "ph-fill ph-warning-circle" },
+          { l: "O'quvchilar", v: String(act.length), s: `${GROUPS.filter(g => !g.archived).length} guruh · ${TCH.length + 1} ustoz`, c: "#b48cff,#7b4fe0", icon: "ph-fill ph-student" },
+          { l: "Davomat (oy)", v: avgAtt === null ? "—" : avgAtt + "%", s: `${monthLs.length} ta dars`, c: "#ffbf3a,#ff9500", icon: "ph-fill ph-list-checks" },
+          { l: "Do'kon so'rovlari", v: String(pendingOrders.length), s: "tasdiq kutmoqda", c: "#4fd1c5,#1f9e94", icon: "ph-fill ph-gift" }
+        ].map(k => ({ ...k, iconStyle: iw(k.c, 36, 11) })),
+        months: months.map(m => ({ ...m, v: m.sum ? short(m.sum) : "", barStyle: `width:100%;max-width:34px;height:${Math.max(4, Math.round(m.sum / maxM * 110))}px;border-radius:8px 8px 3px 3px;background:${m.cur ? "linear-gradient(180deg,#ffd66b,#ff9500)" : "rgba(255,255,255,0.75)"}` })),
+        groups: grpAtt.map(g => ({ ...g, label: g.pct + "%", barStyle: `height:100%;width:${g.pct}%;border-radius:6px;background:${g.pct >= 85 ? "#3ed17a" : g.pct >= 60 ? "#ffbf3a" : "#ff6b6b"}` })), hasGroups: grpAtt.length > 0,
+        debtors: debt.slice(0, 15).map(({ x, pi }) => ({ name: x.name, group: gById(x.g).name, sum: money(pi.remaining) + " so'm", status: pi.status === "partial" ? "Qisman" : "To'lamagan",
+          remind: async () => { const r = await this.call("remind", { sid: x.id }); this.flash(r.message || (r.ok ? "Eslatma yuborildi" : "Yuborilmadi")); },
+          open: () => this.push("student", { studentId: x.id }) })),
+        hasDebtors: debt.length > 0, noDebtors: debt.length === 0, moreDebtors: debt.length > 15 ? `Yana ${debt.length - 15} ta…` : "",
+        teachers: tRows,
+        hint: `${short(income)} so'm daromad · ${debt.length} qarzdor`,
+        openTeachers: () => this.push("teachers"), openShop: () => this.push("shopAdmin")
+      };
+    }
+
+    const v2 = {
+      isDir, notDir: !isDir, dash, teachersV, shopAdmin, ordersBox, sShop, qr, qrT,
+      openDash: () => this.push("dash"), dashHint: dash.hint || "Daromad, qarzdorlar, davomat",
+      teacherOpts, grpTeacher: (G && G.teacherId) || "", onGrpTeacher: e => { const g = GROUPS.find(x => x.id === G.id); if (g) { g.teacherId = e.target.value || null; const tn = tNameOf(g.teacherId); this.setState(st => ({ students: st.students.map(x => x.g === g.id ? { ...x, teacher: tn } : x), gv: (st.gv || 0) + 1 })); this.flash("Guruh ustozi: " + tn); } },
+      ngTeacher: s.ngTeacher || "", onNgTeacher: e => this.setState({ ngTeacher: e.target.value })
+    };
     const goGroup = gid => e => { e.preventDefault(); this.setState({ screen: "group", stack: ["groups"], groupId: gid }); };
     return {
       bg: BG[scr], title: heads[scr][0], subtitle: heads[scr][1],
@@ -2347,7 +2779,7 @@ class Component extends DCLogic {
       onTopLeft: () => scr === "login" ? (s.loginRole ? this.setState({ loginRole: null, pin: "", pinErr: "" }) : (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.close && window.Telegram.WebApp.close())) : sub ? this.back() : scr === roleHome ? this.doLogout() || this.setState({ screen: "login", stack: [], loginRole: null }) : this.tab(roleHome),
       showTabs: !sub && scr !== "login", tabCount: tabDefs.length,
       receipt: { open: !!s.receipt }, receiptEl: s.receipt ? this.renderReceipt(s.receipt) : null,
-      login, me, goParentPayTab: () => this.tab("p_pay"), showMap: () => this.flash("Manzil: " + (CFG.ADDRESS || "—")),
+      v2, login, me, goParentPayTab: () => this.tab("p_pay"), showMap: () => this.flash("Manzil: " + (CFG.ADDRESS || "—")),
       logout: () => { this.doLogout(); this.setState({ screen: "login", stack: [], loginRole: null, pin: "" }); this.flash("Akkauntdan chiqdingiz"); },
       tabs: tabDefs.map(([k, label, icon]) => ({ label, icon, go: () => this.tab(k),
         style: `display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:18px;background:${scr === k ? "#fff" : "transparent"};color:${scr === k ? "#1f5fae" : "#fff"};box-shadow:${scr === k ? "0 4px 12px rgba(0,0,0,0.12)" : "none"}` })),
