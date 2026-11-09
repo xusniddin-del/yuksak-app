@@ -6,6 +6,16 @@
 <title>Yuksak ta'lim</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="config.js"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2f6fe0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Yuksak ta'lim">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<script src="scan.js"></script>
+<script src="install.js" defer></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -2636,6 +2646,7 @@ class Component extends DCLogic {
         if (tg && tg.initData && tg.showScanQrPopup && (!tg.isVersionAtLeast || tg.isVersionAtLeast("6.4"))) {
           try { tg.showScanQrPopup({ text: "Ustoz ekranidagi QR kodni skanerlang" }, t => { sendQr(t); return true; }); return; } catch (e) {}
         }
+        if (window.ytScanQR && window.ytScanQR(t => sendQr(t))) return;
         this.setState({ qrManual: true });
       },
       toggle: () => this.setState({ qrManual: !s.qrManual }), manual: !!s.qrManual,
