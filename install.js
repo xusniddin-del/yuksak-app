@@ -15,7 +15,7 @@
     var el = document.createElement("div");
     el.id = "yt-install";
     el.style.cssText = "position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:99;max-width:520px;margin:0 auto;background:#fff;color:#14202e;border-radius:18px;padding:12px 12px 12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 14px 34px rgba(0,0,0,.28);font-family:Onest,system-ui,sans-serif";
-    el.innerHTML = '<img src="icons/icon-192.png" alt="" style="width:42px;height:42px;border-radius:12px;flex-shrink:0">' +
+    el.innerHTML = '<img src="icon-192.png" alt="" style="width:42px;height:42px;border-radius:12px;flex-shrink:0">' +
       '<div style="flex:1;min-width:0;font-size:13px;line-height:1.35">' + html + '</div>' +
       (onInstall ? '<button id="yt-inst-btn" style="height:38px;padding:0 14px;border:none;border-radius:11px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff;font:inherit;font-size:14px;font-weight:800">O\'rnatish</button>' : '') +
       '<button id="yt-inst-x" aria-label="Yopish" style="width:30px;height:30px;border:none;border-radius:9px;background:#eef1f5;color:#4a5563;font-size:16px">✕</button>';

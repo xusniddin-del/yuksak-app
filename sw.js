@@ -1,9 +1,9 @@
 // Yuksak ta'lim — ilovani telefonda tez ochilishi uchun fayllarni saqlab qo'yadi.
 // Ma'lumotlar (o'quvchilar, davomat) har doim serverdan olinadi, bu yerda saqlanmaydi.
-const CACHE = "yt-v3";
+const CACHE = "yt-v4";
 const CORE = ["./", "./index.html", "./config.js", "./support.js", "./student-analytics.js", "./manifest.webmanifest",
   "./vendor/react.production.min.js", "./vendor/react-dom.production.min.js", "./vendor/qrcode.js",
-  "./vendor/phosphor-fill/style.css", "./vendor/phosphor-bold/style.css", "./icons/icon-192.png"];
+  "./vendor/phosphor-fill/style.css", "./vendor/phosphor-bold/style.css", "./icon-192.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
