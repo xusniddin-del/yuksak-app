@@ -1,7 +1,7 @@
 // Yuksak ta'lim — ilovani telefonda tez ochilishi uchun fayllarni saqlab qo'yadi.
 // Ma'lumotlar (o'quvchilar, davomat) har doim serverdan olinadi, bu yerda saqlanmaydi.
-const CACHE = "yt-v4";
-const CORE = ["./", "./index.html", "./config.js", "./support.js", "./student-analytics.js", "./manifest.webmanifest",
+const CACHE = "yt-v5";
+const CORE = ["./", "./index.html", "./config.js", "./support.js", "./student-analytics.js", "./face.js", "./manifest.webmanifest",
   "./vendor/react.production.min.js", "./vendor/react-dom.production.min.js", "./vendor/qrcode.js",
   "./vendor/phosphor-fill/style.css", "./vendor/phosphor-bold/style.css", "./icon-192.png"];
 

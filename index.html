@@ -15,6 +15,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <script src="scan.js"></script>
+<script src="face.js"></script>
 <script src="install.js" defer></script>
 <script src="./support.js"></script>
 </head>
@@ -76,6 +77,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               <i class="ph-bold ph-caret-right"></i>
             </button>
           </sc-if>
+          <button onClick="{{ v3.openChats }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left">
+            <span style="width:44px;height:44px;border-radius:14px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-chats-circle" style="font-size:24px"></i></span>
+            <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Guruh chatlari</span><span style="font-size:12px;opacity:0.9">O'quvchilar bilan yozishish · kim online</span></div>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
           <sc-if value="{{ hero.show }}" hint-placeholder-val="{{ true }}">
             <div style="background:linear-gradient(135deg,#ffbf3a 0%,#ff9500 100%);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 12px 28px rgba(255,140,0,0.35),inset 0 1px 0 rgba(255,255,255,0.5)">
               <div style="display:flex;justify-content:space-between;align-items:center">
@@ -185,6 +191,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               </select>
             </label>
           </sc-if>
+          <button onClick="{{ v3.openGroupChat }}" style="height:48px;border-radius:16px;background:#fff;color:#1f5fae;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 18px rgba(0,0,0,0.12)"><i class="ph-fill ph-chats-circle" style="font-size:20px"></i>Guruh chati</button>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
             <button onClick="{{ grp.attend }}" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:16px;height:66px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><i class="ph-fill ph-list-checks" style="font-size:22px"></i><span style="font-size:12px;font-weight:600">Davomat</span></button>
             <button onClick="{{ grp.schedule }}" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:16px;height:66px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><i class="ph-fill ph-calendar-dots" style="font-size:22px"></i><span style="font-size:12px;font-weight:600">Jadval</span></button>
@@ -410,6 +417,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
                   <input placeholder="GitHub / Figma havola yoki fayl nomi" value="{{ t.link }}" onChange="{{ t.onLink }}" style="flex:1;min-width:0;height:40px;border-radius:12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.28);color:#fff;font:inherit;font-size:13px;padding:0 12px;outline:none">
                   <button onClick="{{ t.submit }}" style="height:40px;padding:0 14px;border-radius:12px;background:#fff;color:#1f5fae;font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px"><i class="ph-bold ph-upload-simple"></i>Topshirish</button>
                 </div>
+                <label style="height:42px;border-radius:12px;background:rgba(255,255,255,0.92);color:#1f7a45;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer">
+                  <input type="file" accept="image/*,application/pdf" onChange="{{ t.onFile }}" style="display:none"><i class="ph-bold ph-paperclip" style="font-size:18px"></i>{{ t.upLabel }}
+                </label>
               </sc-if>
             </div>
           </sc-for>
@@ -936,6 +946,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
             <a href="{{ stu.tgHref }}" onClick="{{ stu.onWrite }}" style="height:46px;border-radius:14px;background:#fff;color:#1f5fae;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none"><i class="ph-fill ph-telegram-logo"></i>O'quvchiga yozish</a>
             <a href="{{ stu.telHref }}" onClick="{{ stu.onCall }}" style="height:46px;border-radius:14px;background:rgba(255,255,255,0.2);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none"><i class="ph-fill ph-phone"></i>Ota-onaga qo'ng'iroq</a>
           </div>
+          <button onClick="{{ stu.edit }}" style="height:50px;border-radius:16px;background:#fff;color:#1f5fae;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 18px rgba(0,0,0,0.12)"><i class="ph-bold ph-pencil-simple" style="font-size:18px"></i>Ma'lumotlarni tahrirlash</button>
           <button onClick="{{ stu.openBot }}" style="height:50px;border-radius:16px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 18px rgba(31,127,234,0.4)"><i class="ph-fill ph-telegram-logo" style="font-size:18px"></i>Bot xabarlari</button>
           <button onClick="{{ stu.openReport }}" style="height:50px;border-radius:16px;background:linear-gradient(180deg,#b48cff,#7b4fe0);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 18px rgba(123,79,224,0.4)"><i class="ph-fill ph-chart-line-up" style="font-size:18px"></i>Tahlil va prognoz</button>
           <button onClick="{{ stu.remove }}" style="height:46px;border-radius:14px;background:rgba(232,65,74,0.9);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-bold ph-sign-out"></i>Kursdan chiqarish</button>
@@ -1012,9 +1023,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
                 </div>
               </div>
               <span style="font-size:14px;line-height:1.35">{{ h.task }}</span>
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.14);border-radius:12px;padding:8px 10px;font-size:13px">
-                <i class="{{ h.fileIcon }}" style="font-size:16px"></i><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ h.file }}</span><i class="ph-bold ph-arrow-square-out" style="opacity:0.8"></i>
-              </div>
+              <sc-if value="{{ h.hasThumb }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ h.open }}" style="padding:0;border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.14);display:block"><img src="{{ h.thumb }}" alt="Vazifa rasmi" style="width:100%;max-height:260px;object-fit:cover;display:block"></button>
+              </sc-if>
+              <button onClick="{{ h.open }}" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.14);border-radius:12px;padding:8px 10px;font-size:13px;color:#fff;text-align:left">
+                <i class="{{ h.fileIcon }}" style="font-size:16px"></i><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ h.fileLabel }}</span><i class="ph-bold ph-arrow-square-out" style="opacity:0.8"></i>
+              </button>
               <sc-if value="{{ h.isNew }}" hint-placeholder-val="{{ true }}">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
                   <button onClick="{{ h.accept }}" style="height:42px;border-radius:12px;background:linear-gradient(180deg,#3ed17a,#1fa85a);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 6px 14px rgba(31,168,90,0.35)"><i class="ph-bold ph-check"></i>Qabul</button>
@@ -1144,6 +1158,33 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
       <sc-if value="{{ is.teachers }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-if value="{{ v3.tEditV.open }}" hint-placeholder-val="{{ false }}">
+            <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
+              <div style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-pencil-simple" style="font-size:22px;color:#7b4fe0"></i><span style="font-size:16px;font-weight:800;flex:1">Ustozni tahrirlash</span>
+                <button onClick="{{ v3.tEditV.cancel }}" style="width:34px;height:34px;border-radius:10px;background:#eef1f5;color:#4a5563"><i class="ph-bold ph-x"></i></button></div>
+              <input class="lt" placeholder="Ism familiya" value="{{ v3.tEditV.d.name }}" onChange="{{ v3.tEditV.onName }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+              <input class="lt" placeholder="Telefon raqami" value="{{ v3.tEditV.d.phone }}" onChange="{{ v3.tEditV.onPhone }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+              <input class="lt" placeholder="Yo'nalishi" value="{{ v3.tEditV.d.spec }}" onChange="{{ v3.tEditV.onSpec }}" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px"><i class="ph-fill ph-scan-smiley" style="font-size:22px;color:#1f7fea"></i><span style="font-size:15px;font-weight:800;flex:1">Face ID</span><span style="font-size:12px;color:#6b7684">{{ v3.tEditV.faceCount }}/3 rasm</span></div>
+              <span style="font-size:12px;color:#4a5563;line-height:1.4">Ustozning 3 ta aniq rasmini yuklang: to'g'ridan, chapdan va o'ngdan. Rasmda faqat ustoz bo'lsin, yuz yorug' va aniq ko'rinsin. Face ID yoqilgach, ustoz parolni kiritgandan keyin kamerada yuzini tasdiqlaydi.</span>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                <sc-for list="{{ v3.tEditV.slots }}" as="f" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:5px;align-items:stretch">
+                    <label style="aspect-ratio:3/4;border-radius:14px;overflow:hidden;border:2px dashed #c3cad4;position:relative;cursor:pointer;display:block">
+                      <input type="file" accept="image/*" onChange="{{ f.onFile }}" style="display:none">
+                      <div style="{{ f.thumbStyle }}"></div>
+                      <sc-if value="{{ f.none }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#6b7684;font-size:12px;font-weight:700"><i class="ph-bold ph-camera-plus" style="font-size:24px"></i>Yuklash</span></sc-if>
+                    </label>
+                    <span style="font-size:12px;font-weight:800;text-align:center">{{ f.label }}</span>
+                    <span style="font-size:11px;color:#6b7684;text-align:center">{{ f.status }}</span>
+                    <sc-if value="{{ f.has }}" hint-placeholder-val="{{ false }}"><button onClick="{{ f.remove }}" style="height:28px;border-radius:9px;background:#fdecee;color:#c22f38;font-size:12px;font-weight:700">O'chirish</button></sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <button onClick="{{ v3.tEditV.save }}" style="height:46px;border-radius:13px;background:linear-gradient(180deg,#b48cff,#7b4fe0);color:#fff;font-size:15px;font-weight:800">Saqlash</button>
+              <sc-if value="{{ v3.tEditV.faceOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ v3.tEditV.faceOff }}" style="height:38px;border-radius:12px;background:#eef1f5;color:#c22f38;font-size:13px;font-weight:700">Face ID ni o'chirish</button></sc-if>
+            </div>
+          </sc-if>
           <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(0,0,0,0.15)">
             <div style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-user-plus" style="font-size:22px;color:#7b4fe0"></i><span style="font-size:16px;font-weight:800">Yangi ustoz qo'shish</span></div>
             <input placeholder="Ism familiya" value="{{ v2.teachersV.form.name }}" onChange="{{ v2.teachersV.onName }}" class="lt" style="height:42px;border-radius:12px;border:1px solid #d5dbe3;padding:0 12px;font:inherit;font-size:14px;background:#f6f8fb;color:#14202e;outline:none;min-width:0">
@@ -1161,7 +1202,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
                 <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.92);color:#14202e;border-radius:12px;padding:5px 10px"><span style="font-size:10px;color:#6b7684">parol</span><span style="font-size:17px;font-weight:800;letter-spacing:2px">{{ t.pin }}</span></div>
               </div>
               <span style="font-size:12px;opacity:0.9">{{ t.groupsLabel }}{{ t.phoneLabel }}</span>
-              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+              <span style="font-size:12px;font-weight:700">{{ t.faceLabel }}</span>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                <button onClick="{{ t.edit }}" style="height:38px;border-radius:11px;background:#fff;color:#1f5fae;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:5px"><i class="ph-bold ph-pencil-simple"></i>Tahrir</button>
                 <button onClick="{{ t.repin }}" style="height:38px;border-radius:11px;background:rgba(255,255,255,0.92);color:#5a3fc0;font-size:13px;font-weight:800">Yangi parol</button>
                 <button onClick="{{ t.remove }}" style="height:38px;border-radius:11px;background:rgba(232,65,74,0.85);color:#fff;font-size:13px;font-weight:800">O'chirish</button>
               </div>
@@ -1232,6 +1275,84 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               </sc-for>
             </div>
           </sc-if>
+        </div>
+      </sc-if>
+
+
+      <sc-if value="{{ is.s_prof }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0">
+            <label style="position:relative;cursor:pointer">
+              <input type="file" accept="image/*" onChange="{{ v3.sProf.onPhoto }}" style="display:none">
+              <div style="{{ v3.sProf.avatarStyle }}">{{ v3.sProf.initials }}</div>
+              <span style="position:absolute;right:0;bottom:4px;width:34px;height:34px;border-radius:50%;background:#fff;color:#1f7fea;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.2)"><i class="ph-bold ph-camera" style="font-size:18px"></i></span>
+            </label>
+            <span style="font-size:22px;font-weight:800;text-align:center">{{ v3.sProf.name }}</span>
+            <span style="font-size:13px;opacity:0.9">{{ v3.sProf.group }} · {{ v3.sProf.coins }} coin</span>
+            <sc-if value="{{ v3.sProf.hasPhoto }}" hint-placeholder-val="{{ false }}"><button onClick="{{ v3.sProf.removePhoto }}" style="background:transparent;color:#fff;font-size:12px;text-decoration:underline;opacity:0.9">Rasmni o'chirish</button></sc-if>
+          </div>
+          <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:2px 14px">
+            <sc-for list="{{ v3.sProf.rows }}" as="r" hint-placeholder-count="5"><div style="{{ r.style }}"><span style="opacity:0.85">{{ r.label }}</span><span style="font-weight:700;text-align:right">{{ r.value }}</span></div></sc-for>
+          </div>
+          <div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:14px;display:flex;align-items:center;gap:12px">
+            <i class="ph-fill ph-lock-key" style="font-size:24px"></i>
+            <div style="display:flex;flex-direction:column;flex:1"><span style="font-size:12px;opacity:0.85">Kirish parolim</span><span style="font-size:22px;font-weight:800;letter-spacing:4px">{{ v3.sProf.pw }}</span></div>
+            <button onClick="{{ v3.sProf.togglePw }}" style="height:36px;padding:0 12px;border-radius:11px;background:rgba(255,255,255,0.92);color:#1f7a45;font-size:13px;font-weight:800">{{ v3.sProf.pwBtn }}</button>
+          </div>
+          <span style="font-size:12px;opacity:0.85;padding:0 4px;line-height:1.4">Parolni unutsangiz, botga /parol deb yozing. Ma'lumotlaringizda xato bo'lsa, ustozingizga ayting.</span>
+          <button onClick="{{ v3.sProf.logout }}" style="height:48px;border-radius:16px;background:rgba(232,65,74,0.9);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-bold ph-sign-out"></i>Chiqish</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.chats }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-if value="{{ v3.roomsV.loading }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:16px;font-size:14px;text-align:center">Yuklanmoqda…</div></sc-if>
+          <sc-if value="{{ v3.roomsV.none }}" hint-placeholder-val="{{ false }}"><div style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:16px;font-size:14px">Hali guruh yo'q</div></sc-if>
+          <sc-for list="{{ v3.roomsV.list }}" as="r" hint-placeholder-count="3">
+            <button onClick="{{ r.open }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left">
+              <span style="{{ r.iconStyle }}"><i class="{{ r.icon }}" style="font-size:24px"></i></span>
+              <div style="display:flex;flex-direction:column;flex:1;min-width:0;gap:2px">
+                <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><span style="font-size:11px;opacity:0.85">{{ r.time }}</span></div>
+                <span style="font-size:13px;opacity:0.9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.lastLine }}</span>
+                <span style="font-size:11px;font-weight:700;color:#b9f5cf">● {{ r.onlineLabel }}</span>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.chat }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:8px;min-height:100%">
+          <button onClick="{{ v3.chatV.toggleMembers }}" style="align-self:center;background:rgba(255,255,255,0.2);color:#fff;border-radius:14px;padding:6px 14px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#3ed17a"></span>{{ v3.chatV.sub }} <i class="ph-bold ph-caret-down"></i></button>
+          <sc-if value="{{ v3.chatV.showMembers }}" hint-placeholder-val="{{ false }}">
+            <div style="background:rgba(255,255,255,0.95);color:#14202e;border-radius:18px;padding:6px 12px;display:flex;flex-direction:column">
+              <sc-for list="{{ v3.chatV.members }}" as="m" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #eef0f3">
+                  <div style="position:relative;flex-shrink:0"><div style="{{ m.avStyle }}">{{ m.initials }}</div><span style="{{ m.dotStyle }}"></span></div>
+                  <span style="font-size:14px;font-weight:700;flex:1;min-width:0">{{ m.name }}</span><span style="font-size:12px;color:#6b7684">{{ m.status }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ v3.chatV.loading }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;font-size:13px;opacity:0.9;padding:20px">Yuklanmoqda…</div></sc-if>
+          <sc-if value="{{ v3.chatV.empty }}" hint-placeholder-val="{{ false }}"><div style="align-self:center;background:rgba(255,255,255,0.2);border-radius:14px;padding:10px 14px;font-size:13px;text-align:center;margin-top:20px">Hali xabar yo'q. Birinchi bo'lib yozing 👋</div></sc-if>
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;justify-content:flex-end">
+            <sc-for list="{{ v3.chatV.msgs }}" as="m" hint-placeholder-count="4">
+              <div style="{{ m.rowStyle }}">
+                <sc-if value="{{ m.theirs }}" hint-placeholder-val="{{ true }}"><div style="{{ m.avStyle }}">{{ m.initials }}</div></sc-if>
+                <div style="{{ m.bubbleStyle }}">
+                  <sc-if value="{{ m.showName }}" hint-placeholder-val="{{ false }}"><span style="{{ m.nameColor }}">{{ m.name }}</span></sc-if>
+                  <span>{{ m.text }}</span>
+                  <span style="align-self:flex-end;font-size:10px;color:#6b8a5a">{{ m.time }}</span>
+                </div>
+              </div>
+            </sc-for>
+            <div id="chat-end" style="height:1px"></div>
+          </div>
+          <div style="position:sticky;bottom:0;display:flex;gap:8px;align-items:flex-end;padding:8px 0 2px">
+            <textarea rows="1" placeholder="Xabar yozing…" value="{{ v3.chatV.text }}" onChange="{{ v3.chatV.onText }}" onKeyDown="{{ v3.chatV.onKey }}" class="lt" style="flex:1;min-width:0;min-height:46px;max-height:120px;border-radius:23px;border:none;padding:12px 16px;font:inherit;font-size:15px;background:#fff;color:#14202e;outline:none;resize:none;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></textarea>
+            <button onClick="{{ v3.chatV.send }}" style="width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(31,127,234,0.4)"><i class="ph-fill ph-paper-plane-right" style="font-size:20px"></i></button>
+          </div>
         </div>
       </sc-if>
 
@@ -1520,7 +1641,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     </sc-if>
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div style="position:absolute;left:14px;right:14px;top:58px;background:rgba(255,255,255,0.96);color:#14202e;padding:12px 16px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,0.2);font-size:14px;font-weight:600;display:flex;gap:10px;align-items:center;z-index:6">
-        <i class="ph-fill ph-check-circle" style="font-size:22px;color:#1fa85a"></i>{{ toast }}
+        <i class="{{ toastIcon }}" style="{{ toastIconStyle }}"></i>{{ toast }}
       </div>
     </sc-if>
   </div>
@@ -1622,7 +1743,10 @@ const BG = {
   dash: "linear-gradient(170deg,#5a4fd0 0%,#8a6fe0 50%,#3f7fd0 100%)",
   teachers: "linear-gradient(170deg,#6f5fe0 0%,#9a7fe0 50%,#5c7fd0 100%)",
   shopAdmin: "linear-gradient(170deg,#d0508f 0%,#e07fa8 45%,#8f6fd8 100%)",
-  s_shop: "linear-gradient(170deg,#e0912f 0%,#e6a95a 45%,#c2733a 100%)"
+  s_shop: "linear-gradient(170deg,#e0912f 0%,#e6a95a 45%,#c2733a 100%)",
+  chats: "linear-gradient(170deg,#3a6fd8 0%,#5a8fe8 50%,#6a5fd0 100%)",
+  chat: "linear-gradient(170deg,#6b8fbf 0%,#8fb0c8 50%,#7f9fb8 100%)",
+  s_prof: "linear-gradient(170deg,#2f9a9a 0%,#56b2d0 55%,#3b7fd1 100%)"
 };
 const AV = ["#ffbf3a,#ff9500", "#4fb0ff,#1f7fea", "#ff6fae,#e8337f", "#3ed17a,#1fa85a", "#b48cff,#7b4fe0"];
 const av = (id, size = 42) => `width:${size}px;height:${size}px;border-radius:50%;background:linear-gradient(180deg,${AV[id % AV.length]});display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${Math.round(size * 0.36)}px;flex-shrink:0;border:2px solid rgba(255,255,255,0.6)`;
@@ -1790,7 +1914,7 @@ class Component extends DCLogic {
       amount: mny(p.amount) + " so'm", method: p.method === "Karta" ? "Karta (terminal)" : p.method || "Naqd", left: mny(Math.max(0, pi.due - pi.paidSum - p.amount)) + " so'm",
       admin: p.admin || ADMINS()[0], note: p.note || "" };
   }
-  flash(t) { this.setState({ toast: t }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: null }), 2200); }
+  flash(t) { this.setState({ toast: t }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: null }), Math.max(2200, String(t).length * 70)); }
   tab(screen) { this.setState({ screen, stack: [], dialog: null }); }
   push(screen, extra = {}) { this.setState(st => ({ screen, stack: [...st.stack, st.screen], dialog: null, ...extra })); }
   back() { this.setState(st => { const stack = [...st.stack]; const screen = stack.pop() || "home"; return { screen, stack }; }); }
@@ -1812,6 +1936,7 @@ class Component extends DCLogic {
       else this.reload();
     });
     window.addEventListener("pagehide", () => this.flush());
+    this._pingI = setInterval(() => { if (this._role && document.visibilityState === "visible") this.call("ping"); }, 45000);
     let tok = null; try { tok = localStorage.getItem("yt_token"); } catch (e) {}
     this.setState({ tgUserId: u ? u.id : null, booting: !!(tok && this._api) });
     if (tok && this._api) {
@@ -1863,6 +1988,7 @@ class Component extends DCLogic {
   componentDidUpdate() {
     if (!this._role || this.state.booting) return;
     const s = this.state;
+    this.chatTick(s);
     if (this._role !== "student" && this._prevAtt && (s.att !== this._prevAtt || s.grades !== this._prevGr)) { this._prevAtt = s.att; this._prevGr = s.grades; this.recalcStudents(); }
     this._prevAtt = s.att; this._prevGr = s.grades;
     const keys = this._role === "student" ? ["hw", "orders"] : this._role === "teacher" ? SYNC_KEYS.filter(k => k !== "teachers" && k !== "shop") : SYNC_KEYS;
@@ -1920,7 +2046,20 @@ class Component extends DCLogic {
   }
   async doLogin(LR, p) {
     this.setState({ pin: p, pinErr: "Tekshirilmoqda…" });
-    const r = await this.call("login", { role: LR.k, pin: p });
+    let r = await this.call("login", { role: LR.k, pin: p });
+    if (!r.ok && r.needFace) {
+      this.setState({ pinErr: "Face ID: yuzingizni tasdiqlang" });
+      for (let attempt = 0; attempt < 3 && !r.ok; attempt++) {
+        let descs;
+        try { descs = await window.YTFace.verifyLive("Face ID · " + (r.name || "Ustoz")); }
+        catch (e) { this.setState({ pin: "", pinErr: e.message || "Face ID bekor qilindi" }); return; }
+        this.setState({ pinErr: "Tekshirilmoqda…" });
+        const f = await this.call("faceLogin", { faceToken: r.faceToken, descs });
+        if (f.ok) { r = f; break; }
+        this.flash(f.message || "Yuz mos kelmadi");
+        if (f.expired) { this.setState({ pin: "", pinErr: f.message }); return; }
+      }
+    }
     if (!r.ok) { this.setState({ pin: "", pinErr: r.message || "Xatolik yuz berdi" }); return; }
     this._token = r.token; try { localStorage.setItem("yt_token", r.token); } catch (e) {}
     this._lastLoad = Date.now();
@@ -1933,8 +2072,8 @@ class Component extends DCLogic {
     if (this._token) this.call("logout");
     this.dropToken(); this._role = null; this._saved = {}; this._pending = new Set();
     GROUPS.splice(0, GROUPS.length);
-    this.stopQrPoll();
-    this.setState({ students: [], lessons: [], hw: [], tasks: [], att: {}, grades: {}, actv: {}, outbox: [], meId: null, teachers: [], shop: [], orders: [], isDir: false, qrLesson: null });
+    this.stopQrPoll(); clearInterval(this._chatI); this._chatI = null; this._chatRoom = null;
+    this.setState({ rooms: null, chat: null, chatRoom: null, students: [], lessons: [], hw: [], tasks: [], att: {}, grades: {}, actv: {}, outbox: [], meId: null, teachers: [], shop: [], orders: [], isDir: false, qrLesson: null });
   }
   startQrPoll(lid) {
     this.stopQrPoll(); let n = 0;
@@ -1955,6 +2094,35 @@ class Component extends DCLogic {
     }, 1000);
   }
   stopQrPoll() { clearInterval(this._qrI); this._qrI = null; }
+  chatTick(s) {
+    // Chat ekrani ochiq bo'lsa — har 3 soniyada yangi xabarlarni olamiz
+    if (s.screen === "chat") {
+      if (s.role === "student" && !s.chatRoom) { const me = s.students.find(x => x.id === s.meId); if (me) { this.setState({ chatRoom: me.g, chat: { msgs: [], members: [], loaded: false } }); } return; }
+      if (s.chatRoom && this._chatRoom !== s.chatRoom) { this._chatRoom = s.chatRoom; this._chatLast = 0; clearInterval(this._chatI); this.pollChat(); this._chatI = setInterval(() => this.pollChat(), 3000); }
+    } else if (this._chatI) { clearInterval(this._chatI); this._chatI = null; this._chatRoom = null; }
+    if (s.screen === "chats" && !s.rooms && !this._roomsBusy) { this._roomsBusy = true; this.call("rooms").then(r => { this._roomsBusy = false; this.setState({ rooms: r.ok ? r.rooms : [] }); }); }
+  }
+  async pollChat(text) {
+    const room = this._chatRoom; if (!room || (this._chatBusy && !text)) return;
+    this._chatBusy = true;
+    const r = await this.call("chat", { room, after: this._chatLast || 0, text: text || "" });
+    this._chatBusy = false;
+    if (!r.ok || room !== this._chatRoom) { if (r && r.message && text) this.flash(r.message); return; }
+    const cur = (this.state.chat && this.state.chat.loaded) ? this.state.chat.msgs.filter(m => !m.pending) : [];
+    const ids = {}; cur.forEach(m => ids[m.id] = 1);
+    const add = r.msgs.filter(m => !ids[m.id]);
+    const keepPending = text ? [] : ((this.state.chat && this.state.chat.msgs) || []).filter(m => m.pending);
+    this._chatLast = r.last;
+    this.setState({ chat: { msgs: [...cur, ...add, ...keepPending], members: r.members, me: r.me, loaded: true } });
+    if (add.length || text) setTimeout(() => { const el = document.getElementById("chat-end"); if (el) el.scrollIntoView({ block: "end" }); }, 50);
+  }
+  sendChat() {
+    const text = (this.state.chatText || "").trim(); if (!text) return;
+    const ch = this.state.chat || { msgs: [], members: [] };
+    this.setState({ chatText: "", chat: { ...ch, msgs: [...ch.msgs, { id: "p" + Date.now(), who: ch.me, name: "", text, at: Date.now(), pending: true }] } });
+    setTimeout(() => { const el = document.getElementById("chat-end"); if (el) el.scrollIntoView({ block: "end" }); }, 50);
+    this.pollChat(text);
+  }
   async sendReceipt(r, query) {
     await this.flush();
     this.flash("Yuborilmoqda…");
@@ -2037,7 +2205,7 @@ class Component extends DCLogic {
       attend: () => { const l = this.lessonFor(G.id); l ? this.openAtt(l.id) : this.flash("Bu guruhda hali dars yo'q — jadvalga dars qo'shing"); },
       schedule: () => { const l = this.state.lessons.find(x => x.g === G.id && x.date >= TODAY); this.setState({ screen: "schedule", stack: [], day: l ? l.date : TODAY }); },
       hw: () => this.setState({ screen: "homework", stack: [], hwFilter: "new" }),
-      add: () => this.push("add", { form: emptyForm(G) }),
+      add: () => this.push("add", { form: emptyForm(G), editId: null }),
       del: () => GROUPS.length > 1 ? this.setState({ dialog: { mode: "delGroup", gid: G.id, notify: true } }) : this.flash("Oxirgi guruhni o'chirib bo'lmaydi")
     };
     const N = s.ng;
@@ -2430,7 +2598,7 @@ class Component extends DCLogic {
     const PINS = s.pins;
     const TT = s.teacher;
     const tIni = (TT.name || "?").split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
-    const phStyle = p => p && !/^data:/.test(p) ? `width:100%;height:100%;background-image:url(${p});background-size:cover;background-position:center` : "";
+    const phStyle = p => p && !/^blob:/.test(p) ? `width:100%;height:100%;background-image:url(${p});background-size:cover;background-position:center` : "";
     const T = { ...TT, photoStyle: phStyle(TT.photo), initials: tIni, first: (TT.name || "").split(" ")[0], hasPhoto: !!phStyle(TT.photo), noPhoto: !phStyle(TT.photo), hasBio: !!(TT.bio || "").trim(),
       edit: () => this.push("profileEdit", { tDraft: { ...TT, pin: "", pin2: "", oldPin: "" }, showPw: {} }) };
     const TD = s.tDraft || { ...TT, pin: "", pin2: "" };
@@ -2442,8 +2610,8 @@ class Component extends DCLogic {
     ];
     const TE = { ...TD, photoStyle: phStyle(TD.photo), initials: ((TD.name || "?").split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2) || "?").toUpperCase(), hasPhoto: !!phStyle(TD.photo), noPhoto: !phStyle(TD.photo),
       onPhoto: e => { const f = e.target.files && e.target.files[0]; if (!f) return;
-        if (f.size > 5 * 1024 * 1024) { this.flash("Rasm 5 MB dan katta bo'lmasin"); return; }
-        setTD({ photo: URL.createObjectURL(f) }); this.flash("Rasm yuklandi"); e.target.value = ""; },
+        e.target.value = "";
+        window.YTImg.resize(f, 320, 0.8).then(photo => { setTD({ photo }); this.flash("Rasm yuklandi · Saqlash ni bosing"); }, er => this.flash(er.message)); },
       removePhoto: () => setTD({ photo: null }),
       pwFields: (() => {
         const sp = s.showPw || {};
@@ -2573,7 +2741,7 @@ class Component extends DCLogic {
     };
 
     const scr = s.screen;
-    const sub = ["group", "student", "attendance", "add", "coinGroup", "groupNew", "payment", "report", "bot", "profileEdit", "dash", "teachers", "shopAdmin"].includes(scr);
+    const sub = ["group", "student", "attendance", "add", "coinGroup", "groupNew", "payment", "report", "bot", "profileEdit", "dash", "teachers", "shopAdmin", "chats"].includes(scr) || (scr === "chat" && s.role !== "student");
     const heads = {
       home: ["Yuksak ta'lim", s.isDir ? "Direktor" : "Ustoz paneli"], groups: ["Guruhlarim", `${GROUPS.length} ta guruh · ${s.students.length} o'quvchi`],
       group: [G.name, `${daysLabel(G)} · ${G.time}`], student: ["O'quvchi", gById(X.g).name],
@@ -2587,7 +2755,7 @@ class Component extends DCLogic {
     };
     const roleHome = { teacher: "home", parent: "p_home", student: "s_home" }[s.role];
     const isRoot = scr === roleHome || scr === "login";
-    const tabDefs = s.role === "student" ? [["s_home", "Bosh", "ph-house"], ["s_hw", "Vazifalar", "ph-check-square"], ["s_rank", "Reyting", "ph-trophy"], ["s_shop", "Do'kon", "ph-gift"]]
+    const tabDefs = s.role === "student" ? [["s_home", "Bosh", "ph-house"], ["s_hw", "Vazifalar", "ph-check-square"], ["s_rank", "Reyting", "ph-trophy"], ["s_shop", "Do'kon", "ph-gift"], ["chat", "Chat", "ph-chats-circle"], ["s_prof", "Profil", "ph-user-circle"]]
       : s.role === "parent" ? [["p_home", "Farzandim", "ph-house"], ["p_pay", "To'lov", "ph-wallet"], ["p_msgs", "Xabarlar", "ph-bell"]] : [["home", "Bosh", "ph-house"], ["groups", "Guruhlar", "ph-users-three"], ["schedule", "Jadval", "ph-calendar-dots"], ["homework", "Vazifalar", "ph-check-square"], ["coins", "Coin", "ph-coins"], ["profile", "Profil", "ph-user-circle"]];
     // ===================== V2: direktor, ustozlar, do'kon, QR davomat =====================
     const E = React.createElement;
@@ -2782,6 +2950,165 @@ class Component extends DCLogic {
       teacherOpts, grpTeacher: (G && G.teacherId) || "", onGrpTeacher: e => { const g = GROUPS.find(x => x.id === G.id); if (g) { g.teacherId = e.target.value || null; const tn = tNameOf(g.teacherId); this.setState(st => ({ students: st.students.map(x => x.g === g.id ? { ...x, teacher: tn } : x), gv: (st.gv || 0) + 1 })); this.flash("Guruh ustozi: " + tn); } },
       ngTeacher: s.ngTeacher || "", onNgTeacher: e => this.setState({ ngTeacher: e.target.value })
     };
+    // ===================== V3: Face ID, rasmlar, o'quvchini tahrirlash, profil, chat, fayl yuklash =====================
+    const photoBg = p => p ? `;background-image:url(${p});background-size:cover;background-position:center;color:transparent` : "";
+    const openUrl = u => { const tg = window.Telegram && window.Telegram.WebApp; if (tg && tg.initData && tg.openLink) tg.openLink(u); else window.open(u, "_blank"); };
+    const myRole = this._role || (s.role === "student" ? "student" : "teacher");
+
+    // Avatarlarda rasm
+    Object.assign(stu, { avatarStyle: stu.avatarStyle + photoBg(X.photo) });
+    Object.assign(me, { avatarStyle: me.avatarStyle + photoBg(ME.photo) });
+
+    // ---- O'quvchini tahrirlash ----
+    const formFromStudent = x => {
+      const g = gById(x.g), b = x.benefit || { type: "none" };
+      return { ...x, group: g.name, teacher: x.teacher || TEACHERS[0] || "", fee: x.fee || g.fee,
+        payModeLabel: x.payMode === "davomat" ? "Davomat bo'yicha — kelgan darsiga" : "Oylik — to'liq to'laydi",
+        benefitLabel: b.type === "kam" ? "Kam ta'minlangan oila (bepul)" : b.type === "chegirma" ? `Chegirma ${b.pct}%` : "Yo'q" };
+    };
+    stu.edit = () => this.push("add", { form: formFromStudent(X), editId: X.id });
+    const saveEdit = () => {
+      const f = s.form;
+      if (!f.name || !f.phone) { this.flash("Ism va telefon raqamini kiriting"); return; }
+      const g = GROUPS.find(x => x.name === f.group) || gById(f.g);
+      const old = s.students.find(x => x.id === s.editId);
+      if (!old) { this.flash("O'quvchi topilmadi"); return; }
+      const pwChanged = f.pw && f.pw !== old.pw;
+      if (pwChanged && s.students.some(x => x.id !== old.id && x.pw === f.pw)) { this.flash("Bu parol band, yangisini yarating"); return; }
+      if (pwChanged) USED_PW.add(f.pw);
+      const keep = ["name", "phone", "teacher", "fee", "birth", "level", "tg", "pname", "pphone", "ptg", "source", "address"];
+      const upd = { ...old };
+      keep.forEach(k => { if (f[k] !== undefined) upd[k] = typeof f[k] === "string" ? f[k].trim() : f[k]; });
+      Object.assign(upd, { g: g.id, pw: f.pw || old.pw,
+        payMode: (f.payModeLabel || "").startsWith("Davomat") ? "davomat" : "oylik",
+        benefit: (f.benefitLabel || "").startsWith("Kam") ? { type: "kam" } : (f.benefitLabel || "").startsWith("Chegirma") ? { type: "chegirma", pct: toNum(f.benefitLabel) } : { type: "none" } });
+      if (upd.tg !== old.tg && upd.tg) upd.botMsg = "pending";            // yangi Telegram ID — bot birinchi xabarni qayta yuboradi
+      if (upd.ptg !== old.ptg) upd.parentWelcomed = false;
+      this.setState(st => ({ students: st.students.map(x => x.id === old.id ? upd : x), editId: null, studentId: old.id, groupId: g.id }));
+      this.back();
+      this.flash(`${upd.name} ma'lumotlari saqlandi${pwChanged ? " · yangi parol: " + upd.pw : ""}`);
+    };
+
+    // ---- Profil rasmi (o'quvchi o'zi) ----
+    const pickPhoto = async (e, after) => {
+      const f = e.target.files && e.target.files[0]; e.target.value = "";
+      if (!f) return;
+      if (!/^image\//.test(f.type)) { this.flash("Rasm tanlang (JPG yoki PNG)"); return; }
+      try { const data = await window.YTImg.resize(f, 320, 0.8); after(data); } catch (er) { this.flash(er.message); }
+    };
+    const myPhotoSave = async data => {
+      this.flash("Saqlanmoqda…");
+      const r = await this.call("photo", { photo: data });
+      this.flash(r.message || (r.ok ? "Saqlandi" : "Saqlanmadi"));
+      if (r.ok) this.setState(st => { const students = st.students.map(x => x.id === ME.id ? { ...x, photo: data } : x); if (this._saved.students === st.students) this._saved.students = students; return { students }; });
+    };
+    const sProf = {
+      name: ME.name, group: MEG.name, teacherName: s.teacher.name || "—", phone: ME.phone || "—", coins: ME.coins || 0,
+      avatarStyle: av(ME.id, 104) + ";border:3px solid rgba(255,255,255,0.85);font-size:36px" + photoBg(ME.photo), initials: ini(ME.name), hasPhoto: !!ME.photo,
+      onPhoto: e => pickPhoto(e, myPhotoSave), removePhoto: () => myPhotoSave(null),
+      pw: s.showMyPw ? (ME.pw || "—") : "••••", togglePw: () => this.setState({ showMyPw: !s.showMyPw }), pwBtn: s.showMyPw ? "Yashirish" : "Ko'rsatish",
+      tgLabel: ME.tg ? "Ulangan ✓" : "Ulanmagan", pLabel: ME.pname ? `${ME.pname}${ME.ptg ? " · botga ulangan ✓" : ""}` : "—",
+      rows: rows([["Guruh", MEG.name], ["Dars vaqti", `${(MEG.days || []).join("-")} · ${MEG.time}–${MEG.end}`], ["Ustoz", s.teacher.name || "—"], ["Telefon", ME.phone || "—"], ["Telegram", ME.tg ? "Ulangan ✓" : "Ulanmagan"], ["Ota-ona", ME.pname || "—"]]),
+      logout: () => { this.doLogout(); this.setState({ screen: "login", stack: [], loginRole: null, pin: "", pinErr: "" }); }
+    };
+
+    // ---- Uyga vazifa: rasm yoki PDF yuborish ----
+    const submitHw = (t, file, extra) => {
+      const h = s.hw.find(x => x.sid === ME.id && x.task === t.title);
+      this.setState(st => ({ hw: h ? st.hw.map(x => x === h ? { ...x, status: "new", file, sent: "hozir", ...extra } : x) : [...st.hw, { id: Date.now(), sid: ME.id, g: ME.g, sent: "hozir", task: t.title, file, status: "new", ...extra }] }));
+    };
+    me.tasks = me.tasks.map(t => ({ ...t, uploading: s.upTask === t.id, upLabel: s.upTask === t.id ? "Yuklanmoqda…" : "Rasm / PDF",
+      onFile: async e => {
+        const f = e.target.files && e.target.files[0]; e.target.value = "";
+        if (!f) return;
+        const isImg = /^image\//.test(f.type), isPdf = f.type === "application/pdf" || /\.pdf$/i.test(f.name);
+        if (!isImg && !isPdf) { this.flash("Faqat rasm yoki PDF yuborish mumkin"); return; }
+        if (f.size > 10 * 1024 * 1024) { this.flash("Fayl 10 MB dan katta bo'lmasin"); return; }
+        this.setState({ upTask: t.id }); this.flash("Yuklanmoqda…");
+        try {
+          const data = isImg ? await window.YTImg.resize(f, 1600, 0.82) : await window.YTImg.toBase64(f);
+          const r = await this.call("upload", { name: isImg ? (f.name || "rasm").replace(/\.\w+$/, "") + ".jpg" : f.name, data: isPdf ? data.replace(/^data:[^;]*;/, "data:application/pdf;") : data });
+          if (!r.ok) { this.flash(r.message || "Yuklanmadi"); return; }
+          submitHw(t, r.url, { thumb: r.thumb || "", mime: r.mime, fname: f.name });
+          this.flash("Vazifa ustozga yuborildi ✓");
+        } catch (er) { this.flash(er.message || "Xatolik"); } finally { this.setState({ upTask: null }); }
+      } }));
+    hwRows.forEach(h => Object.assign(h, {
+      hasThumb: !!h.thumb, isLink: /^https?:\/\//.test(h.file || ""),
+      fileLabel: h.mime === "application/pdf" ? (h.fname || "PDF fayl") : h.thumb ? (h.fname || "Rasm") : h.file,
+      fileIcon: h.mime === "application/pdf" ? "ph-fill ph-file-pdf" : h.thumb ? "ph-fill ph-image" : h.fileIcon,
+      open: () => { const u = /^https?:\/\//.test(h.file) ? h.file : /^[\w.-]+\.(com|uz|io|org|dev|app)\//.test(h.file) ? "https://" + h.file : ""; if (u) openUrl(u); else this.flash(h.file); }
+    }));
+
+    // ---- Hodimlar: tahrirlash va Face ID ----
+    const tEd = s.tEdit;
+    const FACE_SLOTS = [["front", "To'g'ridan"], ["left", "Chapdan"], ["right", "O'ngdan"]];
+    const tEditV = !tEd ? { open: false } : {
+      open: true, closed: false, d: tEd,
+      onName: e => this.setState({ tEdit: { ...tEd, name: e.target.value } }),
+      onPhone: e => this.setState({ tEdit: { ...tEd, phone: e.target.value } }),
+      onSpec: e => this.setState({ tEdit: { ...tEd, spec: e.target.value } }),
+      faceOn: !!(tEd.face && Object.keys(tEd.face).length), faceCount: Object.keys(tEd.face || {}).length,
+      slots: FACE_SLOTS.map(([k, label]) => { const f = (tEd.face || {})[k]; const busy = s.faceBusy === k;
+        return { k, label, has: !!f, none: !f, busy, thumbStyle: `width:100%;height:100%;background:#eef1f5${f ? `;background-image:url(${f.thumb});background-size:cover;background-position:center` : ""}`,
+          status: busy ? "Tekshirilmoqda…" : f ? "✓ Yuz topildi" : "Rasm yuklang",
+          onFile: async e => {
+            const file = e.target.files && e.target.files[0]; e.target.value = "";
+            if (!file) return;
+            this.setState({ faceBusy: k }); this.flash("Yuz aniqlanmoqda… (birinchi marta 10–20 soniya)");
+            try { const r = await window.YTFace.fromFile(file); this.setState(st => ({ tEdit: { ...st.tEdit, face: { ...(st.tEdit.face || {}), [k]: { desc: r.desc, thumb: r.thumb } } } })); this.flash(label + " rasm qabul qilindi ✓"); }
+            catch (er) { this.flash(er.message || "Yuz aniqlanmadi"); }
+            finally { this.setState({ faceBusy: null }); }
+          },
+          remove: () => this.setState(st => { const face = { ...(st.tEdit.face || {}) }; delete face[k]; return { tEdit: { ...st.tEdit, face } }; }) }; }),
+      save: () => {
+        if (!tEd.name.trim()) { this.flash("Ism kiriting"); return; }
+        const fk = Object.keys(tEd.face || {});
+        const face = fk.length ? { descs: fk.map(k => tEd.face[k].desc), thumbs: Object.fromEntries(fk.map(k => [k, tEd.face[k].thumb])), updated: TODAY } : null;
+        this.setState(st => ({ teachers: st.teachers.map(t => t.id === tEd.id ? { ...t, name: tEd.name.trim(), phone: (tEd.phone || "").trim(), spec: (tEd.spec || "").trim(), face } : t), tEdit: null }));
+        this.flash(face ? `Saqlandi · Face ID yoqildi (${fk.length} rasm)` : "Saqlandi · Face ID o'chirilgan");
+      },
+      cancel: () => this.setState({ tEdit: null }),
+      faceOff: () => this.setState(st => ({ tEdit: { ...st.tEdit, face: {} } }))
+    };
+    teachersV.list.forEach(t => {
+      const src = TCH.find(x => x.id === t.id) || {};
+      const thumbs = (src.face && src.face.thumbs) || {};
+      Object.assign(t, { faceLabel: src.face && src.face.descs && src.face.descs.length ? `🔒 Face ID yoqilgan (${src.face.descs.length} rasm)` : "Face ID yoqilmagan", hasFace: !!(src.face && src.face.descs && src.face.descs.length),
+        avatarStyle: t.avatarStyle + photoBg(src.photo || thumbs.front),
+        edit: () => this.setState({ tEdit: { id: src.id, name: src.name || "", phone: src.phone || "", spec: src.spec || "", face: Object.fromEntries(Object.keys(thumbs).map((k, i) => [k, { thumb: thumbs[k], desc: src.face.descs[i] }])) } }) });
+    });
+
+    // ---- Chat ----
+    const CH = s.chat || { msgs: [], members: [], me: "" };
+    const mem = {}; (CH.members || []).forEach(m => mem[m.key] = m);
+    const hm = ms => { const d = new Date(ms); return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+    const ago = ms => { if (!ms) return "uzoq vaqt oldin"; const m = Math.round((Date.now() - ms) / 60000); return m < 60 ? `${m} daqiqa oldin` : m < 1440 ? `${Math.round(m / 60)} soat oldin` : `${Math.round(m / 1440)} kun oldin`; };
+    const roomG = gById(s.chatRoom);
+    const onlineN = (CH.members || []).filter(m => m.online).length;
+    let prevWho = null;
+    const chatV = {
+      title: roomG.name, sub: `${onlineN} online · ${(CH.members || []).length} a'zo`,
+      loading: !CH.loaded, empty: CH.loaded && !CH.msgs.length,
+      members: (CH.members || []).slice().sort((a, b) => (b.online - a.online)).map(m => ({ ...m, first: m.name.split(" ")[0], initials: ini(m.name.replace(" (direktor)", "")),
+        avStyle: av(m.name.length, 40) + photoBg(m.photo), dotStyle: `position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:${m.online ? "#3ed17a" : "#9aa3ad"}`,
+        status: m.online ? "online" : ago(m.lastSeen) })),
+      msgs: (CH.msgs || []).map(m => { const mine = m.who === CH.me; const showName = !mine && prevWho !== m.who; prevWho = m.who; const who = mem[m.who] || { name: m.name };
+        return { ...m, mine, theirs: !mine, showName, time: hm(m.at), nameColor: `font-size:12px;font-weight:800;color:${["#e8337f", "#1f7fea", "#1fa85a", "#7b4fe0", "#d9480f"][m.who.length % 5]}`,
+          rowStyle: `display:flex;gap:6px;align-items:flex-end;${mine ? "justify-content:flex-end" : ""}`,
+          avStyle: av(m.name.length, 30) + photoBg(who.photo) + (showName ? "" : ";visibility:hidden"), initials: ini(m.name || "?"),
+          bubbleStyle: `max-width:78%;padding:8px 11px 6px;border-radius:${mine ? "16px 16px 4px 16px" : "16px 16px 16px 4px"};background:${mine ? "#e1f7c7" : "#fff"};color:#14202e;box-shadow:0 1px 2px rgba(0,0,0,0.12);display:flex;flex-direction:column;gap:2px;white-space:pre-wrap;word-break:break-word;font-size:15px;line-height:1.35` }; }),
+      text: s.chatText || "", onText: e => this.setState({ chatText: e.target.value }),
+      onKey: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.sendChat(); } },
+      send: () => this.sendChat(), showMembers: !!s.chatMembers, toggleMembers: () => this.setState({ chatMembers: !s.chatMembers })
+    };
+    const roomsV = { loading: !s.rooms, list: (s.rooms || []).map(r => ({ ...r, iconStyle: iw(r.c || "#4fb0ff,#1f7fea", 48, 15), lastLine: r.last ? `${r.last.name.split(" ")[0]}: ${r.last.text}` : "Hali xabar yo'q", time: r.last ? hm(r.last.at) : "", onlineLabel: `${r.online}/${r.total} online`,
+      open: () => this.push("chat", { chatRoom: r.id, chat: { msgs: [], members: [], loaded: false } }) })), none: s.rooms && !s.rooms.length };
+
+    const v3 = { saveEdit, sProf, tEditV, chatV, roomsV, isEdit: !!s.editId, editLabel: "Ma'lumotlarni tahrirlash",
+      openChats: () => this.push("chats", { rooms: null }), openGroupChat: () => this.push("chat", { chatRoom: G.id, chat: { msgs: [], members: [], loaded: false } }) };
+    Object.assign(heads, { chats: ["Guruh chatlari", "Guruhni tanlang"], chat: [chatV.title, chatV.sub], s_prof: ["Profilim", ME.name] });
+    if (s.editId) heads.add = ["O'quvchini tahrirlash", s.form.name || ""];
     const goGroup = gid => e => { e.preventDefault(); this.setState({ screen: "group", stack: ["groups"], groupId: gid }); };
     return {
       bg: BG[scr], title: heads[scr][0], subtitle: heads[scr][1],
@@ -2790,11 +3117,11 @@ class Component extends DCLogic {
       onTopLeft: () => scr === "login" ? (s.loginRole ? this.setState({ loginRole: null, pin: "", pinErr: "" }) : (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.close && window.Telegram.WebApp.close())) : sub ? this.back() : scr === roleHome ? this.doLogout() || this.setState({ screen: "login", stack: [], loginRole: null }) : this.tab(roleHome),
       showTabs: !sub && scr !== "login", tabCount: tabDefs.length,
       receipt: { open: !!s.receipt }, receiptEl: s.receipt ? this.renderReceipt(s.receipt) : null,
-      v2, login, me, goParentPayTab: () => this.tab("p_pay"), showMap: () => this.flash("Manzil: " + (CFG.ADDRESS || "—")),
+      v2, v3, login, me, goParentPayTab: () => this.tab("p_pay"), showMap: () => this.flash("Manzil: " + (CFG.ADDRESS || "—")),
       logout: () => { this.doLogout(); this.setState({ screen: "login", stack: [], loginRole: null, pin: "" }); this.flash("Akkauntdan chiqdingiz"); },
       tabs: tabDefs.map(([k, label, icon]) => ({ label, icon, go: () => this.tab(k),
         style: `display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:52px;border-radius:18px;background:${scr === k ? "#fff" : "transparent"};color:${scr === k ? "#1f5fae" : "#fff"};box-shadow:${scr === k ? "0 4px 12px rgba(0,0,0,0.12)" : "none"}` })),
-      pay, mainBtn: scr === "profileEdit" ? { show: true, label: "Saqlash", onClick: saveTeacher } : scr === "payment" ? { show: true, label: "To'lovni tasdiqlash", onClick: savePay } : scr === "groupNew" ? { show: true, label: "Guruhni yaratish", onClick: saveGroup } : scr === "add" ? { show: true, label: "O'quvchini saqlash", onClick: saveStudent } : scr === "attendance" ? { show: true, label: "Davomatni saqlash", onClick: saveAtt } : { show: false },
+      pay, mainBtn: scr === "profileEdit" ? { show: true, label: "Saqlash", onClick: saveTeacher } : scr === "payment" ? { show: true, label: "To'lovni tasdiqlash", onClick: savePay } : scr === "groupNew" ? { show: true, label: "Guruhni yaratish", onClick: saveGroup } : scr === "add" ? { show: true, label: s.editId ? "O'zgarishlarni saqlash" : "O'quvchini saqlash", onClick: s.editId ? () => v3.saveEdit() : saveStudent } : scr === "attendance" ? { show: true, label: "Davomatni saqlash", onClick: saveAtt } : { show: false },
       jumps: [
         { label: "Kirish (rol + parol)", go: e => { e.preventDefault(); this.setState({ screen: "login", stack: [], loginRole: null, pin: "" }); } },
         { label: "Bosh sahifa", go: e => { e.preventDefault(); this.tab("home"); } },
@@ -2835,7 +3162,7 @@ class Component extends DCLogic {
       tgLine: s.tgUserId ? `Telegram ID: ${String(s.tgUserId).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}` : (/source=(apk|app)/.test(location.search) || window.matchMedia("(display-mode: standalone)").matches ? "Yuksak ta'lim ilovasi" : "Telegram ichida oching"),
       groupNames: GROUPS.map(g => g.name),
       dialog, closeDialog: () => this.setState({ dialog: null }), stop: e => e.stopPropagation(),
-      toast: s.toast
+      toast: s.toast, toastIcon: /topilmadi|xato|bo'lmadi|mos kel|ruxsat|yuklanmadi|aniqlanmadi|katta|Saqlanmadi|ishlamaydi|tugadi|bekor/i.test(s.toast || "") ? "ph-fill ph-warning-circle" : "ph-fill ph-check-circle", toastIconStyle: "font-size:22px;flex-shrink:0;color:" + (/topilmadi|xato|bo'lmadi|mos kel|ruxsat|yuklanmadi|aniqlanmadi|katta|Saqlanmadi|ishlamaydi|tugadi|bekor/i.test(s.toast || "") ? "#e0453a" : "#1fa85a")
     };
   }
 }

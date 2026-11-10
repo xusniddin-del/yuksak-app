@@ -390,7 +390,7 @@
   }
   function cssToObj(css) {
     const o = {};
-    for (const decl of css.split(";")) {
+    for (const decl of css.split(/;(?![^(]*\))/)) {
       const i = decl.indexOf(":");
       if (i < 0) continue;
       const prop = decl.slice(0, i).trim();
