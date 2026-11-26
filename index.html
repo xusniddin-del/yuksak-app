@@ -77,6 +77,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               <i class="ph-bold ph-caret-right"></i>
             </button>
           </sc-if>
+          <button onClick="{{ openOyq }}" style="background:linear-gradient(135deg,#ffc94a 0%,#ff9f1a 100%);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left;box-shadow:0 10px 24px rgba(255,150,20,0.32)">
+            <span style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-trophy" style="font-size:24px"></i></span>
+            <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Oy o'quvchisi</span><span style="font-size:12px;opacity:0.95">Har oyning eng yaxshisi · plakat va PDF</span></div>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
           <button onClick="{{ v3.openChats }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left">
             <span style="width:44px;height:44px;border-radius:14px;background:linear-gradient(180deg,#4fb0ff,#1f7fea);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-chats-circle" style="font-size:24px"></i></span>
             <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Guruh chatlari</span><span style="font-size:12px;opacity:0.9">O'quvchilar bilan yozishish · kim online</span></div>
@@ -1616,6 +1621,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <iframe src="hisobot.dc.html?download=1" title="Hisobot" style="flex:1;width:100%;max-width:900px;border:none;border-radius:14px;background:#e9edf2"></iframe>
       </div>
     </sc-if>
+    <sc-if value="{{ oyqOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:50;background:rgba(8,12,20,0.8);display:flex;flex-direction:column;align-items:center;padding:12px;gap:10px">
+        <div style="width:100%;max-width:700px;display:flex;justify-content:space-between;align-items:center;color:#fff">
+          <span style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-trophy" style="color:#ffc94a"></i>Oy o'quvchisi</span>
+          <button onClick="{{ closeOyq }}" style="background:rgba(255,255,255,0.15);color:#fff;border-radius:10px;height:38px;padding:0 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><i class="ph-bold ph-x"></i>Yopish</button>
+        </div>
+        <iframe src="oy-oquvchisi.html" title="Oy o'quvchisi" style="flex:1;width:100%;max-width:700px;border:none;border-radius:14px;background:#e6eaf1"></iframe>
+      </div>
+    </sc-if>
     <sc-if value="{{ receipt.open }}" hint-placeholder-val="{{ false }}">
       <div style="position:absolute;inset:0;z-index:8;background:rgba(14,20,32,0.82);backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;padding:70px 18px 24px;gap:14px;overflow-y:auto">
         {{ receiptEl }}
@@ -3142,6 +3156,20 @@ class Component extends DCLogic {
       goProfile: () => this.tab("profile"), goGroups: () => this.tab("groups"), goHw: () => this.setState({ screen: "homework", stack: [], hwFilter: "new" }),
       bot, openBotSettings: () => this.push("bot"),
       grp, stu, rep, pdfOpen: !!s.pdfOpen, closePdf: () => this.setState({ pdfOpen: false }),
+      oyqOpen: !!s.oyqOpen, closeOyq: () => this.setState({ oyqOpen: false }),
+      openOyq: () => {
+        // Oy o'quvchisi sahifasiga kerakli ma'lumotlarni beramiz (fayllar va to'lovlarsiz — joy tejash uchun)
+        const pack = withPhoto => ({
+          students: s.students.map(x => ({ id: x.id, name: x.name, g: x.g, teacher: x.teacher || "", photo: withPhoto ? x.photo || null : null })),
+          lessons: s.lessons.map(l => ({ id: l.id, g: l.g, date: l.date, status: l.status })),
+          att: s.att, grades: s.grades, actv: s.actv,
+          hw: (s.hw || []).map(h => ({ id: h.id, sid: h.sid, g: h.g, status: h.status, grade: h.grade, date: h.date })),
+          tasks: (s.tasks || []).map(t => ({ id: t.id, g: t.g, created: t.created, due: t.due })),
+          groups: GROUPS.map(g => ({ id: g.id, name: g.name })), teacher: { name: s.teacher.name || "" } });
+        try { localStorage.setItem("yt-oyq-v1", JSON.stringify(pack(true))); }
+        catch (e) { try { localStorage.setItem("yt-oyq-v1", JSON.stringify(pack(false))); } catch (e2) {} }
+        this.flush(); this.setState({ oyqOpen: true });
+      },
       days: DAYS.map(x => { const on = x.date === s.day; const has = s.lessons.some(l => l.date === x.date && l.status !== "cancel" && l.status !== "moved");
         return { ...x, pick: () => this.setState({ day: x.date }),
           style: `display:flex;flex-direction:column;align-items:center;gap:1px;height:64px;justify-content:center;border-radius:15px;background:${on ? "#fff" : "transparent"};color:${on ? "#3d2a6b" : "#fff"};box-shadow:${on ? "0 4px 12px rgba(0,0,0,0.12)" : "none"}`,

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oy o'quvchisi · Yuksak ta'lim</title>
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/phosphor-fill/style.css">
+<link rel="stylesheet" href="vendor/phosphor-bold/style.css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#e6eaf1;font-family:"Onest",system-ui,sans-serif;color:#14202e;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none}
+
+/* ---------- boshqaruv paneli (PDF ga kirmaydi) ---------- */
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #dde3eb;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.months{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.months::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;height:36px;padding:0 14px;border-radius:12px;background:#eef2f7;color:#2a3746;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.chip.on{background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff}
+.chip small{font-size:11px;font-weight:600;opacity:.8}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{height:40px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;background:#eef2f7;color:#14202e}
+.btn.main{background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff}
+.btn:disabled{opacity:.55}
+.note{font-size:12.5px;color:#5a6676}
+.demo{background:#fff4dc;color:#8a5a00;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:10px}
+
+.stage{padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.frame{width:100%;max-width:640px;position:relative;border-radius:18px;overflow:hidden;box-shadow:0 18px 40px rgba(20,32,46,.18)}
+.frame > .poster{position:absolute;top:0;left:0;transform-origin:0 0}
+
+.rank{width:100%;max-width:640px;background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.rank h3{margin:0 0 4px;font-size:16px}
+.rank p{margin:0 0 6px;font-size:12.5px;color:#5a6676}
+.row{display:grid;grid-template-columns:28px 1fr auto auto;gap:10px;align-items:center;padding:8px 6px;border-radius:12px;font-size:14px}
+.row:nth-child(odd){background:#f5f7fa}
+.row b{font-weight:800}
+.row .n{color:#7a8594;font-weight:700;text-align:center}
+.row .s{font-weight:800;color:#1f6fe0}
+.row button{height:30px;padding:0 10px;border-radius:9px;background:#e7f0ff;color:#1f6fe0;font-size:12px;font-weight:700}
+.row.pick button{background:#1f7fea;color:#fff}
+.empty{max-width:640px;background:#fff;border-radius:18px;padding:28px;text-align:center;color:#4a5563;line-height:1.5}
+
+/* ---------- PLAKAT 1080 × 1350 ---------- */
+.poster{width:1080px;height:1350px;background:#eef1f6;padding:50px 60px 40px;display:flex;flex-direction:column;gap:18px;color:#14202e;overflow:hidden;position:relative}
+.poster .glow{position:absolute;top:-180px;right:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(79,176,255,.28),rgba(79,176,255,0) 70%)}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.pill{display:inline-flex;height:40px;align-items:center;padding:0 20px;border-radius:20px;background:#dceaff;color:#1f6fe0;font-size:16px;font-weight:800;letter-spacing:.14em}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:54px;height:54px;border-radius:15px}
+.brand div{display:flex;flex-direction:column;line-height:1}
+.brand b{font-size:27px;font-weight:900;letter-spacing:-.02em}
+.brand span{font-size:15px;color:#5a6676;font-weight:600;margin-top:5px}
+.p-title{margin-top:-6px;position:relative}
+.p-title .t1{font-size:54px;font-weight:900;letter-spacing:-.035em;line-height:1.02}
+.p-title .t2{font-size:54px;font-weight:900;letter-spacing:-.035em;line-height:1.08;color:#1f6fe0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.card{background:#fff;border-radius:30px;border-bottom:9px solid #1f7fea;box-shadow:0 14px 28px rgba(31,111,224,.10);position:relative}
+.r1{display:grid;grid-template-columns:1.72fr 1fr;gap:22px;height:268px;flex-shrink:0}
+.card{overflow:hidden}
+.hero{display:flex;gap:26px;padding:24px 28px;align-items:center}
+.ph{border-radius:24px;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;overflow:hidden}
+.hero .ph{width:206px;height:220px;font-size:76px;position:relative}
+.hero .info{display:flex;flex-direction:column;min-width:0;flex:1}
+.lab{font-size:15px;font-weight:800;letter-spacing:.14em;color:#6b7686;text-transform:uppercase}
+.score{font-size:100px;font-weight:900;letter-spacing:-.05em;color:#1f6fe0;line-height:1;margin:8px 0 10px;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.score small{font-size:28px;color:#9aa5b4;letter-spacing:-.01em;font-weight:800}
+.hero .sub{font-size:18px;color:#5a6676;line-height:1.4;font-weight:500;display:flex;flex-direction:column}
+.hero .sub span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero .sub b{color:#14202e;font-weight:700}
+
+.trend{padding:22px 24px 12px;display:flex;flex-direction:column}
+.trend .top{display:flex;justify-content:space-between;align-items:flex-start}
+.trend .big{font-size:56px;font-weight:900;letter-spacing:-.04em;line-height:1}
+.trend .cap{font-size:15.5px;color:#6b7686;margin-top:6px;font-weight:500}
+.arrow{width:46px;height:46px;border-radius:50%;background:#dceaff;color:#1f6fe0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.trend svg{margin-top:auto}
+
+.r2{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;height:110px;flex-shrink:0}
+.stat{display:flex;align-items:center;gap:16px;padding:0 26px}
+.stat .v{font-size:50px;font-weight:900;letter-spacing:-.04em;line-height:1;white-space:nowrap}
+.stat .d{font-size:15.5px;color:#5a6676;line-height:1.32;font-weight:500}
+
+.r3{background:#fff;border-radius:30px;padding:22px 24px 22px;height:262px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
+.r3 .hd{display:flex;justify-content:space-between;align-items:center}
+.r3 .hd b{font-size:24px;font-weight:800;letter-spacing:-.01em}
+.r3 .hd span{font-size:14px;font-weight:800;letter-spacing:.14em;color:#7a8594}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1}
+.t3{background:#f3f6fa;border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.t3 .h{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;color:#1f6fe0;white-space:nowrap}
+.t3 .h i{width:34px;height:28px;border-radius:9px;background:#1f7fea;color:#fff;font-style:normal;font-size:14px;display:flex;align-items:center;justify-content:center}
+.t3 .b{display:flex;gap:12px;flex:1;min-height:0}
+.t3 .ph{width:104px;height:120px;font-size:38px;border-radius:18px}
+.t3 .who{display:flex;flex-direction:column;min-width:0;flex:1}
+.tag{align-self:flex-start;max-width:100%;padding:5px 11px;border-radius:12px;background:#dceaff;color:#1f6fe0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t3 .nm{font-size:19px;font-weight:800;line-height:1.15;margin-top:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.t3 .sc{margin-top:auto;font-size:34px;font-weight:900;letter-spacing:-.03em;color:#1f6fe0;line-height:1}
+.t3 .sc small{font-size:15px;color:#9aa5b4;font-weight:800;margin-left:3px}
+
+.r4{display:grid;grid-template-columns:1fr 1.08fr;gap:22px;flex:1;min-height:0}
+.funnel{background:#fff;border-radius:30px;padding:22px 24px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.funnel > b{font-size:23px;font-weight:800;margin-bottom:4px}
+.fs{display:flex;align-items:center;gap:14px;background:#f3f6fa;border-radius:18px;padding:9px 14px;position:relative}
+.fs .ic{width:48px;height:48px;border-radius:16px;background:#dceaff;color:#1f6fe0;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0}
+.fs .vv{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.fs .vv small{font-size:16px;color:#7a8594;font-weight:700;margin-left:5px}
+.fs .dd{font-size:14.5px;color:#5a6676;margin-top:3px;font-weight:500}
+.fs .k{position:absolute;right:14px;top:11px;font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#1f6fe0;background:#fff;padding:4px 9px;border-radius:10px}
+.fs.last{background:#dceaff}
+.fs.last .ic{background:#1f7fea;color:#fff}
+
+.mix{border-radius:30px;padding:22px 26px;color:#fff;background:linear-gradient(150deg,#2f86f0 0%,#1f5fd0 55%,#173f9e 100%);display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+.mix .ring{position:absolute;right:-70px;bottom:-90px;width:280px;height:280px;border-radius:50%;border:42px solid rgba(255,255,255,.07)}
+.mix > b{font-size:23px;font-weight:800;position:relative}
+.mx{position:relative;display:flex;flex-direction:column;gap:7px}
+.mx .l{display:flex;justify-content:space-between;font-size:16px;font-weight:600}
+.mx .l span:last-child{font-weight:800}
+.mx .tr{height:12px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}
+.mx .tr div{height:100%;border-radius:6px;background:linear-gradient(90deg,#9ed8ff,#ffffff)}
+.mix .foot{margin-top:auto;font-size:13.5px;opacity:.85;position:relative;line-height:1.35}
+
+.p-foot{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;font-size:16px;color:#6b7686;font-weight:600}
+.p-foot .l{display:flex;align-items:center;gap:14px}
+.p-foot .l i{width:44px;height:4px;border-radius:2px;background:#1f7fea;display:block}
+.p-foot b{color:#14202e}
+
+#exportBox{position:fixed;left:-30000px;top:0}
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <div class="months" id="months"></div>
+  <div class="actions">
+    <button class="btn main" id="bPdf"><i class="ph-bold ph-file-pdf"></i>Shu oy · PDF</button>
+    <button class="btn" id="bAll"><i class="ph-bold ph-files"></i>Barcha oylar · PDF</button>
+    <button class="btn" id="bPng"><i class="ph-bold ph-image"></i>PNG (Instagram)</button>
+    <span class="note" id="note"></span>
+  </div>
+  <div class="demo" id="demo" style="display:none">Bu namuna ma'lumot. Ilova ichidagi «Oy o'quvchisi» tugmasi orqali ochsangiz, haqiqiy davomat bo'yicha hisoblanadi.</div>
+</div>
+<div class="stage" id="stage"></div>
+<div id="exportBox"></div>
+
+<script>
+(function () {
+  const CFG = window.APP_CONFIG || {};
+  const CENTER = CFG.CENTER || "Yuksak ta'lim";
+  const MON = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const pad = n => String(n).padStart(2, "0");
+  const now = new Date();
+  const TODAY = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const CUR_M = TODAY.slice(0, 7);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const dec = (n, d = 1) => (Math.round(n * 10 ** d) / 10 ** d).toFixed(d).replace(".", ",").replace(/,0$/, "");
+  const mLabel = m => `${cap(MON[+m.slice(5) - 1])} ${m.slice(0, 4)}`;
+  const ini = n => String(n || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  const GRADS = ["#4fb0ff,#1f6fe0", "#6a8cff,#3b5bdb", "#36c2d8,#1f7fea", "#7b8cff,#4a5fe0", "#4f9dff,#2b4fc4"];
+  const phStyle = x => x.photo
+    ? `background-image:url('${String(x.photo).replace(/'/g, "%27")}')`
+    : `background:linear-gradient(160deg,${GRADS[(String(x.id).split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % GRADS.length]})`;
+  const phInner = x => x.photo ? "" : esc(ini(x.name));
+
+  // ================= MA'LUMOT =================
+  let D = null, isDemo = false;
+  function fromStorage() { try { return JSON.parse(localStorage.getItem("yt-oyq-v1") || "null"); } catch (e) { return null; } }
+  async function fromApi() {
+    let tok = null; try { tok = localStorage.getItem("yt_token"); } catch (e) {}
+    if (!tok || !CFG.API_URL) return null;
+    try {
+      const r = await (await fetch(CFG.API_URL, { method: "POST", body: JSON.stringify({ action: "load", token: tok, initData: "" }) })).json();
+      if (!r.ok) return null;
+      const d = r.data || {};
+      return { students: d.students || [], lessons: d.lessons || [], att: d.att || {}, grades: d.grades || {}, actv: d.actv || {}, hw: d.hw || [], tasks: d.tasks || [], groups: d.groups || [], teacher: d.teacher || {} };
+    } catch (e) { return null; }
+  }
+  function demoData() {
+    const names = ["Asilbek Karimov", "Madina Yusupova", "Jasurbek Toshpo'latov", "Shahzoda Rahimova", "Behruz Qodirov", "Mohinur Ergasheva", "Sardor Aliyev", "Dilnoza Mirzayeva", "Abdulaziz Nazarov", "Sevinch Hamidova", "Ozodbek Sobirov", "Gulnoza Tursunova", "Islom Abdullayev", "Zarina Ismoilova", "Javohir Olimov", "Malika Sharipova", "Bekzod Umarov", "Nilufar Komilova"];
+    const groups = [{ id: "kd1", name: "Kids · Kompyuter savodxonligi", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }, { id: "kd2", name: "Kids · Grafik dizayn", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }, { id: "kd3", name: "Kids · Scratch", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }];
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const students = names.map((n, i) => ({ id: i + 1, name: n, g: groups[i % 3].id, teacher: groups[i % 3].teacher, skill: 0.55 + rnd() * 0.45 }));
+    const lessons = [], att = {}, grades = {}, actv = {};
+    const start = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+    for (let d = new Date(start); d <= now; d.setDate(d.getDate() + 1)) {
+      if (![2, 4, 6].includes(d.getDay())) continue;
+      const iso = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      groups.forEach(g => {
+        const id = `${g.id}-${iso}`; lessons.push({ id, g: g.id, date: iso, status: "done" });
+        att[id] = {}; grades[id] = {}; actv[id] = {};
+        students.filter(x => x.g === g.id).forEach(x => {
+          const r = rnd(); const st = r < x.skill * 0.98 ? "keldi" : r < x.skill + 0.08 ? "kech" : rnd() < 0.5 ? "sababli" : "sababsiz";
+          att[id][x.id] = st;
+          if (st === "keldi" || st === "kech") { if (rnd() < 0.6) grades[id][x.id] = Math.min(5, Math.max(2, Math.round(2.4 + x.skill * 2.6 + (rnd() - 0.5)))); if (rnd() < x.skill * 0.8) actv[id][x.id] = true; }
+        });
+      });
+    }
+    return { students: students.map(({ skill, ...x }) => x), lessons, att, grades, actv, hw: [], tasks: [], groups, teacher: { name: "Xusniddin Sharofiddinov" } };
+  }
+
+  // ================= BALL HISOBLASH =================
+  // Davomat 40 + Baho 30 + Faol ishtirok 15 + Uyga vazifa 15 = 100
+  const W = { att: 40, grade: 30, actv: 15, hw: 15 };
+  const ATT_V = { keldi: 1, kech: 0.6, sababli: 0.5, sababsiz: 0 };
+  const MIN_LESSONS = 3;
+  const gName = id => ((D.groups || []).find(g => g.id === id) || {}).name || "—";
+  const gTeacher = id => { const g = (D.groups || []).find(z => z.id === id) || {}; return g.teacher || g.teacherName || (D.teacher && D.teacher.name) || ""; };
+  const hwMonth = h => { const t = Number(h.id); if (t > 1e12) { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; } return h.date ? String(h.date).slice(0, 7) : null; };
+
+  function monthsList() {
+    const set = new Set();
+    D.lessons.forEach(l => { if (l.date && l.date <= TODAY && D.att[l.id] && Object.keys(D.att[l.id]).length) set.add(l.date.slice(0, 7)); });
+    return [...set].sort();
+  }
+
+  function scoreMonth(m) {
+    const lessons = D.lessons.filter(l => l.date && l.date.slice(0, 7) === m && l.date <= TODAY && l.status !== "cancel" && l.status !== "moved");
+    const rows = [];
+    D.students.forEach(x => {
+      const my = lessons.filter(l => l.g === x.g && D.att[l.id] && D.att[l.id][x.id] != null);
+      if (!my.length) return;
+      const n = my.length;
+      const came = my.filter(l => ["keldi", "kech"].includes(D.att[l.id][x.id])).length;
+      const attS = my.reduce((a, l) => a + (ATT_V[D.att[l.id][x.id]] ?? 0), 0) / n;
+      const gr = my.map(l => Number((D.grades[l.id] || {})[x.id])).filter(v => v > 0);
+      const avg = gr.length ? gr.reduce((a, b) => a + b, 0) / gr.length : null;
+      const gradeS = avg != null ? avg / 5 : 0.7;
+      const act = my.filter(l => (D.actv[l.id] || {})[x.id]).length;
+      const actS = came ? act / came : 0;
+      const tasksN = (D.tasks || []).filter(t => t.g === x.g && String(t.created || t.due || "").slice(0, 7) === m).length;
+      const hwOk = (D.hw || []).filter(h => h.sid === x.id && hwMonth(h) === m && h.status === "accepted").length;
+      const hwS = tasksN ? Math.min(1, hwOk / tasksN) : (hwOk ? 1 : 0.7);
+      const parts = { att: attS * W.att, grade: gradeS * W.grade, actv: actS * W.actv, hw: hwS * W.hw };
+      const total = parts.att + parts.grade + parts.actv + parts.hw;
+      rows.push({ x, n, came, attPct: Math.round(came / n * 100), avg, fives: gr.filter(v => v === 5).length, act, actPct: came ? Math.round(act / came * 100) : 0, hwOk, tasksN, parts, total, ok: n >= MIN_LESSONS });
+    });
+    rows.sort((a, b) => (b.ok - a.ok) || (b.total - a.total) || (b.came - a.came) || (b.fives - a.fives));
+    return { m, rows, lessonsN: new Set(lessons.filter(l => D.att[l.id]).map(l => l.id)).size };
+  }
+
+  // ================= PLAKAT =================
+  const pickOverride = {};
+  function winnerOf(S) { const id = pickOverride[S.m]; return (id != null && S.rows.find(r => r.x.id === id)) || S.rows.find(r => r.ok) || S.rows[0]; }
+
+  function trendSvg(pts) {
+    const w = 290, h = 112, px = 18, py = 24;
+    const vals = pts.map(p => p.v), mn = Math.min(...vals) - 4, mx = Math.max(...vals) + 2;
+    const X = i => px + (pts.length === 1 ? (w - 2 * px) / 2 : i * (w - 2 * px) / (pts.length - 1));
+    const Y = v => py + (1 - (v - mn) / Math.max(1, mx - mn)) * (h - py - 22);
+    let d = `M${X(0)},${Y(vals[0])}`;
+    for (let i = 1; i < pts.length; i++) { const x0 = X(i - 1), x1 = X(i), cx = (x0 + x1) / 2; d += ` C${cx},${Y(vals[i - 1])} ${cx},${Y(vals[i])} ${x1},${Y(vals[i])}`; }
+    const area = `${d} L${X(pts.length - 1)},${h - 20} L${X(0)},${h - 20} Z`;
+    const last = pts.length - 1;
+    return `<svg width="${w}" height="${h + 6}" viewBox="0 0 ${w} ${h + 6}">
+      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f7fea" stop-opacity=".28"/><stop offset="1" stop-color="#1f7fea" stop-opacity="0"/></linearGradient></defs>
+      <line x1="${px - 6}" y1="${h - 20}" x2="${w - px + 6}" y2="${h - 20}" stroke="#e3e8ef" stroke-width="2"/>
+      <path d="${area}" fill="url(#ga)"/><path d="${d}" fill="none" stroke="#1f7fea" stroke-width="5" stroke-linecap="round"/>
+      ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.v)}" r="${i === last ? 9 : 6}" fill="#fff" stroke="#1f7fea" stroke-width="${i === last ? 5 : 4}"/>
+      <text x="${X(i)}" y="${h + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="#7a8594" font-family="Onest">${esc(p.l)}</text>`).join("")}
+      <text x="${X(last)}" y="${Y(vals[last]) - 16}" text-anchor="${pts.length === 1 ? "middle" : "end"}" font-size="17" font-weight="800" fill="#1f6fe0" font-family="Onest">${dec(vals[last])}</text>
+    </svg>`;
+  }
+
+  function barsSvg(rows, w) {
+    const W2 = 290, H = 112, n = rows.length, bw = 30, gap = (W2 - n * bw) / Math.max(1, n);
+    const mx = Math.max(...rows.map(r => r.total)), mn = Math.min(...rows.map(r => r.total)) - 8;
+    return `<svg width="${W2}" height="${H + 6}" viewBox="0 0 ${W2} ${H + 6}">
+      <line x1="0" y1="${H - 20}" x2="${W2}" y2="${H - 20}" stroke="#e3e8ef" stroke-width="2"/>
+      ${rows.map((r, i) => { const x = gap / 2 + i * (bw + gap), hh = 14 + (r.total - mn) / Math.max(1, mx - mn) * (H - 52), y = H - 20 - hh, on = r === w;
+        return `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="8" fill="${on ? "#1f7fea" : "#dceaff"}"/>
+        <text x="${x + bw / 2}" y="${H + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="${on ? "#1f6fe0" : "#9aa5b4"}" font-family="Onest">${i + 1}</text>
+        ${on ? `<text x="${x + bw / 2}" y="${y - 8}" text-anchor="middle" font-size="16" font-weight="800" fill="#1f6fe0" font-family="Onest">${dec(r.total)}</text>` : ""}`; }).join("")}
+    </svg>`;
+  }
+
+  function posterHtml(S, all) {
+    const w = winnerOf(S);
+    if (!w) return null;
+    const x = w.x, m = S.m, isCur = m === CUR_M;
+    const monthName = MON[+m.slice(5) - 1];
+    const okRows = S.rows.filter(r => r.ok);
+    const place = S.rows.indexOf(w) + 1;
+    const top3 = [w, ...S.rows.filter(r => r !== w && r.ok)].slice(0, 3);
+    // o'quvchining oylik ballari (oxirgi 5 oy)
+    const hist = all.filter(z => z.m <= m).slice(-5).map(z => { const r = z.rows.find(r => r.x.id === x.id); return r ? { l: MON[+z.m.slice(5) - 1].slice(0, 3), v: r.total } : null; }).filter(Boolean);
+    const prev = hist.length >= 2 ? hist[hist.length - 2].v : null;
+    const delta = prev != null ? w.total - prev : null;
+    const trendTop = delta != null
+      ? `<div><div class="big">${delta >= 0 ? "+" : "−"}${dec(Math.abs(delta))}</div><div class="cap">o'tgan oyga nisbatan ball</div></div><div class="arrow"><i class="ph-bold ${delta >= 0 ? "ph-arrow-up" : "ph-arrow-down"}"></i></div>`
+      : `<div><div class="big">${place}-o'rin</div><div class="cap">${S.rows.length} ta o'quvchi ichida</div></div><div class="arrow"><i class="ph-fill ph-trophy"></i></div>`;
+    const avgTxt = w.avg != null ? w.avg.toFixed(1).replace(".", ",") : "—";
+    const fivesTxt = w.fives ? `${w.fives} marta «5» oldi` : "baholar o'rtachasi";
+    const g = gName(x.g), t = x.teacher || gTeacher(x.g);
+    const n85 = okRows.filter(r => r.total >= 85).length;
+    const cards = top3.map((r, i) => `
+      <div class="t3"><div class="h"><i>0${i + 1}</i>${["Oy o'quvchisi", "Ikkinchi o'rin", "Uchinchi o'rin"][i]}</div>
+        <div class="b"><div class="ph" style="${phStyle(r.x)}">${phInner(r.x)}</div>
+          <div class="who"><span class="tag">${esc(gName(r.x.g).replace(/^Kids\s*·\s*/i, ""))}</span><span class="nm">${esc(r.x.name)}</span><span class="sc">${dec(r.total)}<small>ball</small></span></div></div></div>`).join("");
+    const mixRow = (lab, got, max) => `<div class="mx"><div class="l"><span>${lab}</span><span>${dec(got)} / ${max}</span></div><div class="tr"><div style="width:${Math.max(3, got / max * 100)}%"></div></div></div>`;
+    return `
+    <div class="poster"><div class="glow"></div>
+      <div class="p-head"><span class="pill">${esc(CENTER.toUpperCase())} · ${esc(monthName.toUpperCase())} ${m.slice(0, 4)}</span>
+        <div class="brand"><img src="icon-192.png" alt=""><div><b>${esc(CENTER)}</b><span>${esc(CFG.ADDRESS || "")}</span></div></div></div>
+      <div class="p-title"><div class="t1">${cap(monthName)} oyining o'quvchisi —</div><div class="t2">${esc(x.name)}</div></div>
+
+      <div class="r1">
+        <div class="card hero"><div class="ph" style="${phStyle(x)}">${phInner(x)}</div>
+          <div class="info"><span class="lab">Oy bali</span><div class="score">${dec(w.total)}<small>/ 100</small></div>
+            <div class="sub"><span><b>${esc(g)}</b></span>${t ? `<span>Ustozi: ${esc(t)}</span>` : ""}<span>${w.came} ta darsga keldi${w.fives ? ` · ${w.fives} marta «5»` : ""}</span></div></div></div>
+        <div class="card trend"><div class="top">${trendTop}</div>${hist.length >= 2 ? trendSvg(hist) : barsSvg(S.rows.slice(0, 6), w)}</div>
+      </div>
+
+      <div class="r2">
+        <div class="card stat"><span class="v">${w.attPct}%</span><span class="d">davomat<br>${w.came} / ${w.n} dars</span></div>
+        <div class="card stat"><span class="v">${avgTxt}</span><span class="d">o'rtacha baho<br>${fivesTxt}</span></div>
+        <div class="card stat"><span class="v">${w.actPct}%</span><span class="d">darsda faol<br>ishtirok etdi</span></div>
+      </div>
+
+      <div class="r3"><div class="hd"><b>Oyning eng yaxshi uchligi</b><span>REYTING</span></div><div class="top3">${cards}</div></div>
+
+      <div class="r4">
+        <div class="funnel"><b>Qanday tanlandi</b>
+          <div class="fs"><span class="ic"><i class="ph-fill ph-users-three"></i></span><div><div class="vv">${S.rows.length}<small>ta</small></div><div class="dd">o'quvchi ${S.lessonsN} ta darsda baholandi</div></div><span class="k">QATNASHDI</span></div>
+          <div class="fs"><span class="ic"><i class="ph-fill ph-star"></i></span><div><div class="vv">${n85}<small>ta</small></div><div class="dd">o'quvchi 85+ ball to'pladi</div></div><span class="k">85+ BALL</span></div>
+          <div class="fs last"><span class="ic"><i class="ph-fill ph-trophy"></i></span><div><div class="vv">1<small>ta</small></div><div class="dd">oy o'quvchisi tanlandi</div></div><span class="k">G'OLIB</span></div>
+        </div>
+        <div class="mix"><div class="ring"></div><b>Ball qanday yig'ildi</b>
+          ${mixRow("Davomat", w.parts.att, W.att)}${mixRow("Baholar", w.parts.grade, W.grade)}${mixRow("Faol ishtirok", w.parts.actv, W.actv)}${mixRow("Uyga vazifa", w.parts.hw, W.hw)}
+          <div class="foot">${isCur ? `Joriy oy · ${+TODAY.slice(8)}-${monthName} holatiga ko'ra` : `${cap(monthName)} oyi yakuni bo'yicha`} · davomat jurnali asosida</div></div>
+      </div>
+
+      <div class="p-foot"><div class="l"><i></i><span><b>${esc(CENTER)}</b> · Bilim — yuksaklik sari</span></div><span>${esc(CFG.PHONE || "")}</span></div>
+    </div>`;
+  }
+
+  // ================= EKRAN =================
+  let ALL = [], cur = null;
+  const $ = id => document.getElementById(id);
+  const note = t => $("note").textContent = t || "";
+
+  function render() {
+    const S = ALL.find(z => z.m === cur);
+    $("months").innerHTML = ALL.slice().reverse().map(z => `<button class="chip ${z.m === cur ? "on" : ""}" data-m="${z.m}">${mLabel(z.m)}${z.m === CUR_M ? " <small>joriy</small>" : ""}</button>`).join("");
+    [...$("months").children].forEach(b => b.onclick = () => { cur = b.dataset.m; render(); });
+    const html = S && posterHtml(S, ALL);
+    if (!html) { $("stage").innerHTML = `<div class="empty">Hali davomat olinmagan. Darslarda davomat belgilanganidan keyin oy o'quvchisi shu yerda chiqadi.</div>`; return; }
+    const w = winnerOf(S);
+    $("stage").innerHTML = `<div class="frame" id="frame">${html}</div>
+      <div class="rank"><h3>${mLabel(S.m)} reytingi</h3><p>Ball: davomat 40 + baho 30 + faollik 15 + vazifa 15. Oyda kamida ${MIN_LESSONS} ta darsda qatnashganlar g'olib bo'la oladi. Boshqa o'quvchini plakatga qo'yish uchun «Tanlash» ni bosing.</p>
+      ${S.rows.slice(0, 15).map((r, i) => `<div class="row ${r === w ? "pick" : ""}"><span class="n">${i + 1}</span><span><b>${esc(r.x.name)}</b><br><span style="font-size:12px;color:#7a8594">${esc(gName(r.x.g))} · ${r.came}/${r.n} dars${r.ok ? "" : " · kam dars"}</span></span><span class="s">${dec(r.total)}</span><button data-id="${esc(r.x.id)}">${r === w ? "Plakatda" : "Tanlash"}</button></div>`).join("")}</div>`;
+    [...document.querySelectorAll(".row button")].forEach(b => b.onclick = () => { const r = S.rows.find(z => String(z.x.id) === b.dataset.id); if (r) { pickOverride[S.m] = r.x.id; render(); } });
+    fit();
+  }
+  function fit() {
+    const f = $("frame"); if (!f) return;
+    const k = f.clientWidth / 1080; f.style.height = 1350 * k + "px";
+    f.firstElementChild.style.transform = `scale(${k})`;
+  }
+  window.addEventListener("resize", fit);
+
+  // ================= YUKLAB OLISH =================
+  async function libs() {
+    for (let i = 0; i < 80 && !(window.html2canvas && window.jspdf); i++) await new Promise(r => setTimeout(r, 100));
+    if (!(window.html2canvas && window.jspdf)) throw new Error("PDF kutubxonasi yuklanmadi, internetni tekshiring");
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  }
+  async function snap(S) {
+    const box = $("exportBox"); box.innerHTML = posterHtml(S, ALL);
+    await Promise.all([...box.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
+    const c = await window.html2canvas(box.firstElementChild, { scale: 2, backgroundColor: "#eef1f6", useCORS: true, logging: false });
+    box.innerHTML = ""; return c;
+  }
+  function saveBlob(blob, name) {
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  const fname = m => `Oy_oquvchisi_${mLabel(m).replace(" ", "_")}`;
+  async function run(btn, fn) {
+    const all = [...document.querySelectorAll(".btn")]; all.forEach(b => b.disabled = true);
+    try { await libs(); await fn(); } catch (e) { note("Xatolik: " + e.message); }
+    all.forEach(b => b.disabled = false);
+  }
+  async function makePdf(list, name) {
+    const pdf = new window.jspdf.jsPDF({ unit: "px", format: [1080, 1350], orientation: "portrait", hotfixes: ["px_scaling"], compress: true });
+    for (let i = 0; i < list.length; i++) {
+      note(`Tayyorlanmoqda… ${i + 1} / ${list.length}`);
+      const c = await snap(list[i]);
+      if (i) pdf.addPage([1080, 1350], "portrait");
+      pdf.addImage(c.toDataURL("image/jpeg", 0.93), "JPEG", 0, 0, 1080, 1350);
+    }
+    saveBlob(pdf.output("blob"), name + ".pdf");
+    note(`PDF yuklab olindi · ${list.length} bet`);
+  }
+  $("bPdf").onclick = () => run(null, () => makePdf([ALL.find(z => z.m === cur)], fname(cur)));
+  $("bAll").onclick = () => run(null, () => makePdf(ALL.filter(z => z.rows.length), `Oy_oquvchilari_${TODAY}`));
+  $("bPng").onclick = () => run(null, async () => {
+    note("Rasm tayyorlanmoqda…");
+    const c = await snap(ALL.find(z => z.m === cur));
+    const out = document.createElement("canvas"); out.width = 1080; out.height = 1350;
+    out.getContext("2d").drawImage(c, 0, 0, 1080, 1350);
+    await new Promise(r => out.toBlob(b => { saveBlob(b, fname(cur) + ".png"); r(); }, "image/png"));
+    note("PNG yuklab olindi · 1080 × 1350");
+  });
+
+  // ================= ISHGA TUSHIRISH =================
+  (async function init() {
+    D = fromStorage() || await fromApi();
+    if (!D || !(D.lessons || []).length) { D = demoData(); isDemo = true; }
+    D.groups = D.groups || []; D.att = D.att || {}; D.grades = D.grades || {}; D.actv = D.actv || {};
+    if (isDemo) $("demo").style.display = "block";
+    ALL = monthsList().map(scoreMonth);
+    cur = ALL.length ? ALL[ALL.length - 1].m : CUR_M;
+    // joriy oyda hali kam dars bo'lsa — o'tgan oyni ko'rsatamiz
+    const last = ALL[ALL.length - 1];
+    if (last && last.m === CUR_M && !last.rows.some(r => r.ok) && ALL.length > 1) cur = ALL[ALL.length - 2].m;
+    note(ALL.length ? `${ALL.length} oy · ${TODAY.split("-").reverse().join(".")} gacha` : "");
+    render();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  })();
+})();
+</script>
+</body>
+</html>
