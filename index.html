@@ -79,7 +79,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           </sc-if>
           <button onClick="{{ openOyq }}" style="background:linear-gradient(135deg,#ffc94a 0%,#ff9f1a 100%);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left;box-shadow:0 10px 24px rgba(255,150,20,0.32)">
             <span style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-trophy" style="font-size:24px"></i></span>
-            <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Oy o'quvchisi</span><span style="font-size:12px;opacity:0.95">Har oyning eng yaxshisi · plakat va PDF</span></div>
+            <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:16px;font-weight:800">Oy o'quvchisi · Davomat</span><span style="font-size:12px;opacity:0.95">Eng yaxshi o'quvchi plakati va oylik davomat PDF</span></div>
             <i class="ph-bold ph-caret-right"></i>
           </button>
           <button onClick="{{ v3.openChats }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.28);border-radius:20px;padding:14px;display:flex;gap:12px;align-items:center;color:#fff;text-align:left">
@@ -1624,7 +1624,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <sc-if value="{{ oyqOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed;inset:0;z-index:50;background:rgba(8,12,20,0.8);display:flex;flex-direction:column;align-items:center;padding:12px;gap:10px">
         <div style="width:100%;max-width:700px;display:flex;justify-content:space-between;align-items:center;color:#fff">
-          <span style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-trophy" style="color:#ffc94a"></i>Oy o'quvchisi</span>
+          <span style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-trophy" style="color:#ffc94a"></i>Oy o'quvchisi · Davomat</span>
           <button onClick="{{ closeOyq }}" style="background:rgba(255,255,255,0.15);color:#fff;border-radius:10px;height:38px;padding:0 14px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><i class="ph-bold ph-x"></i>Yopish</button>
         </div>
         <iframe src="oy-oquvchisi.html" title="Oy o'quvchisi" style="flex:1;width:100%;max-width:700px;border:none;border-radius:14px;background:#e6eaf1"></iframe>

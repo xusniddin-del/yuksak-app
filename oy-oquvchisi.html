@@ -122,11 +122,47 @@ button{font-family:inherit;cursor:pointer;border:none}
 .p-foot .l i{width:52px;height:5px;border-radius:3px;background:var(--or);display:block}
 .p-foot b{color:var(--ink)}
 
+/* ---------- DAVOMAT VARAG'I 1600 × 1131 (A4 albom) ---------- */
+.att{--or:#f26a21;--or2:#e35a12;--pe:#fde4d5;--ink:#17171c;--mut:#77777f;width:1600px;height:1131px;background:#ecedf2;padding:44px 52px 34px;display:flex;flex-direction:column;gap:18px;color:var(--ink);font-family:"Inter","Onest",system-ui,sans-serif;letter-spacing:-.01em;overflow:hidden}
+.att .hd{display:flex;justify-content:space-between;align-items:flex-start}
+.att .pill{display:inline-flex;height:34px;align-items:center;padding:0 18px;border-radius:17px;background:var(--pe);color:var(--or2);font-size:14px;font-weight:800;letter-spacing:.16em}
+.att h1{margin:12px 0 0;font-size:46px;font-weight:800;letter-spacing:-.045em;line-height:1.05}
+.att h1 span{color:var(--or)}
+.att .meta{margin-top:8px;font-size:17px;color:var(--mut)}
+.att .brand{text-align:right;line-height:1.02;font-size:28px;font-weight:800;letter-spacing:-.03em}
+.att .brand span{display:block;color:#5e5e66}
+.att .kp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.att .kp div{background:#fff;border-radius:22px;border-bottom:8px solid var(--or);padding:16px 22px;display:flex;align-items:center;gap:14px}
+.att .kp b{font-size:40px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.att .kp span{font-size:15px;color:var(--mut);line-height:1.25}
+.att .tb{background:#fff;border-radius:24px;padding:14px 18px;flex:1;min-height:0;overflow:hidden}
+.att table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.att th{font-size:13px;font-weight:700;color:var(--mut);padding:6px 0 10px;text-align:center;line-height:1.15;border-bottom:2px solid #ececf1}
+.att th b{display:block;font-size:17px;color:var(--ink);font-weight:800}
+.att th.nm,.att td.nm{text-align:left;padding-left:8px}
+.att td{height:var(--rh);text-align:center;font-size:15px;border-bottom:1px solid #f1f1f5;padding:0}
+.att td.nm{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att td.no{color:var(--mut);font-weight:700;font-size:14px}
+.att tr:nth-child(even) td{background:#fafafc}
+.att .m{display:inline-flex;width:28px;height:28px;border-radius:8px;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.att .k1{background:#22a565}.att .k2{background:#f5a524}.att .k3{background:#5b8def}.att .k4{background:#e5484d}.att .k0{background:none;color:#c9c9d1}
+.att td.tt{font-weight:800;font-size:16px}
+.att td.pc{font-weight:800;font-size:16px}
+.att .ft{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--mut);font-weight:600}
+.att .lg{display:flex;gap:18px;align-items:center}
+.att .lg span{display:flex;align-items:center;gap:7px}
+.att .lg .m{width:22px;height:22px;font-size:12px;border-radius:6px}
+.tabs{display:flex;background:#eef0f4;border-radius:13px;padding:4px;gap:4px}
+.tabs button{flex:1;height:36px;border-radius:10px;background:none;font-size:14px;font-weight:700;color:#4a5563;display:flex;align-items:center;justify-content:center;gap:6px}
+.tabs button.on{background:#fff;color:#e35a12;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.aframe{width:100%;max-width:900px;position:relative;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(20,32,46,.16)}
+.aframe > .att{position:absolute;top:0;left:0;transform-origin:0 0}
 #exportBox{position:fixed;left:-30000px;top:0}
 </style>
 </head>
 <body>
 <div class="bar" id="bar">
+  <div class="tabs" id="tabs"><button data-t="poster" class="on"><i class="ph-fill ph-trophy"></i>Oy o'quvchisi</button><button data-t="att"><i class="ph-fill ph-calendar-check"></i>Davomat</button></div>
   <div class="months" id="months"></div>
   <div class="actions">
     <button class="btn main" id="bPdf"><i class="ph-bold ph-file-pdf"></i>Shu oy · PDF</button>
@@ -134,7 +170,7 @@ button{font-family:inherit;cursor:pointer;border:none}
     <button class="btn" id="bPng"><i class="ph-bold ph-image"></i>PNG (Instagram)</button>
     <span class="note" id="note"></span>
   </div>
-  <div class="demo" id="demo" style="display:none">Bu namuna ma'lumot. Ilova ichidagi «Oy o'quvchisi» tugmasi orqali ochsangiz, haqiqiy davomat bo'yicha hisoblanadi.</div>
+  <div class="demo" id="demo" style="display:none">Bu namuna ma'lumot. Ilova ichidagi «Oy o'quvchisi · Davomat» tugmasi orqali ochsangiz, haqiqiy davomat bo'yicha chiqadi.</div>
 </div>
 <div class="stage" id="stage"></div>
 <div id="exportBox"></div>
@@ -338,8 +374,59 @@ button{font-family:inherit;cursor:pointer;border:none}
     </div>`;
   }
 
+  // ================= DAVOMAT JADVALI =================
+  const WD = ["Ya", "Du", "Se", "Ch", "Pa", "Ju", "Sh"];
+  const MK = { keldi: ["k1", "✓"], kech: ["k2", "K"], sababli: ["k3", "S"], sababsiz: ["k4", "✕"] };
+  const PER_PAGE = 18;
+  function attPages(m) {
+    const ls = D.lessons.filter(l => l.date && l.date.slice(0, 7) === m && l.date <= TODAY && l.status !== "cancel" && l.status !== "moved" && D.att[l.id] && Object.keys(D.att[l.id]).length);
+    const gids = [...new Set(ls.map(l => l.g))].sort((a, b) => gName(a).localeCompare(gName(b)));
+    const pages = [];
+    gids.forEach(gid => {
+      const L = ls.filter(l => l.g === gid).sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
+      const sids = new Set(); L.forEach(l => Object.keys(D.att[l.id]).forEach(k => sids.add(k)));
+      const st = D.students.filter(x => sids.has(String(x.id))).sort((a, b) => a.name.localeCompare(b.name));
+      if (!st.length) return;
+      const rows = st.map(x => {
+        const marks = L.map(l => D.att[l.id][x.id]);
+        const n = marks.filter(Boolean).length, came = marks.filter(v => v === "keldi" || v === "kech").length;
+        return { x, marks, n, came, pct: n ? Math.round(came / n * 100) : 0 };
+      });
+      const totalN = rows.reduce((a, r) => a + r.n, 0), totalC = rows.reduce((a, r) => a + r.came, 0);
+      const absent = rows.reduce((a, r) => a + r.marks.filter(v => v === "sababsiz").length, 0);
+      const full = rows.filter(r => r.n && r.came === r.n).length;
+      const chunks = []; for (let i = 0; i < rows.length; i += PER_PAGE) chunks.push(rows.slice(i, i + PER_PAGE));
+      chunks.forEach((ch, ci) => pages.push({ m, gid, L, rows: ch, start: ci * PER_PAGE, part: chunks.length > 1 ? `${ci + 1}/${chunks.length}` : "", kp: { lessons: L.length, avg: totalN ? Math.round(totalC / totalN * 100) : 0, absent, full, students: rows.length } }));
+    });
+    return pages;
+  }
+  function attHtml(P) {
+    const monthName = MON[+P.m.slice(5) - 1], t = gTeacher(P.gid);
+    const cw = Math.min(58, Math.floor(1080 / Math.max(1, P.L.length)));
+    const rh = Math.max(36, Math.min(44, Math.floor(700 / Math.max(P.rows.length, 12))));
+    return `<div class="att" style="--rh:${rh}px">
+      <div class="hd"><div><span class="pill">${esc(CENTER.toUpperCase())} · DAVOMAT JURNALI</span>
+        <h1>${cap(monthName)} ${P.m.slice(0, 4)} — <span>${esc(gName(P.gid))}</span></h1>
+        <div class="meta">${t ? "Ustoz: " + esc(t) + " · " : ""}${P.kp.students} ta o'quvchi${P.part ? " · " + P.part + "-bet" : ""}${P.m === CUR_M ? ` · ${+TODAY.slice(8)}-${monthName} holatiga` : ""}</div></div>
+        <div class="brand">Yuksak<span>ta'lim</span></div></div>
+      <div class="kp">
+        <div><b>${P.kp.lessons}</b><span>ta dars<br>o'tildi</span></div>
+        <div><b>${P.kp.avg}%</b><span>o'rtacha<br>davomat</span></div>
+        <div><b>${P.kp.full}</b><span>ta o'quvchi<br>birorta ham qoldirmadi</span></div>
+        <div><b>${P.kp.absent}</b><span>marta sababsiz<br>kelmagan</span></div>
+      </div>
+      <div class="tb"><table>
+        <colgroup><col style="width:44px"><col><col span="${P.L.length}" style="width:${cw}px"><col style="width:96px"><col style="width:84px"></colgroup>
+        <thead><tr><th class="no">№</th><th class="nm">O'quvchi</th>${P.L.map(l => { const d = new Date(l.date + "T00:00:00"); return `<th><b>${d.getDate()}</b>${WD[d.getDay()]}</th>`; }).join("")}<th>Keldi</th><th>%</th></tr></thead>
+        <tbody>${P.rows.map((r, i) => `<tr><td class="no">${P.start + i + 1}</td><td class="nm">${esc(r.x.name)}</td>${r.marks.map(v => { const k = MK[v] || ["k0", "·"]; return `<td><span class="m ${k[0]}">${k[1]}</span></td>`; }).join("")}<td class="tt">${r.came}/${r.n}</td><td class="pc" style="color:${r.pct >= 90 ? "#1a8f55" : r.pct >= 70 ? "#c47f00" : "#d93a3f"}">${r.pct}%</td></tr>`).join("")}</tbody>
+      </table></div>
+      <div class="ft"><div class="lg"><span><i class="m k1">✓</i>keldi</span><span><i class="m k2">K</i>kechikdi</span><span><i class="m k3">S</i>sababli</span><span><i class="m k4">✕</i>sababsiz</span></div>
+        <span>Yuklab olindi: ${TODAY.split("-").reverse().join(".")} · ${esc(CENTER)}</span></div>
+    </div>`;
+  }
+
   // ================= EKRAN =================
-  let ALL = [], cur = null;
+  let ALL = [], cur = null, mode = "poster";
   const $ = id => document.getElementById(id);
   const note = t => $("note").textContent = t || "";
 
@@ -347,6 +434,16 @@ button{font-family:inherit;cursor:pointer;border:none}
     const S = ALL.find(z => z.m === cur);
     $("months").innerHTML = ALL.slice().reverse().map(z => `<button class="chip ${z.m === cur ? "on" : ""}" data-m="${z.m}">${mLabel(z.m)}${z.m === CUR_M ? " <small>joriy</small>" : ""}</button>`).join("");
     [...$("months").children].forEach(b => b.onclick = () => { cur = b.dataset.m; render(); });
+    [...$("tabs").children].forEach(b => b.classList.toggle("on", b.dataset.t === mode));
+    $("bPng").style.display = mode === "poster" ? "" : "none";
+    $("bPdf").lastChild.textContent = mode === "poster" ? "Shu oy · PDF" : "Shu oy davomati · PDF";
+    $("bAll").lastChild.textContent = mode === "poster" ? "Barcha oylar · PDF" : "Barcha oylar davomati · PDF";
+    if (mode === "att") {
+      const P = attPages(cur);
+      if (!P.length) { $("stage").innerHTML = `<div class="empty">Bu oyda davomat belgilanmagan.</div>`; return; }
+      $("stage").innerHTML = P.map(p => `<div class="aframe">${attHtml(p)}</div>`).join("");
+      fit(); return;
+    }
     const html = S && posterHtml(S, ALL);
     if (!html) { $("stage").innerHTML = `<div class="empty">Hali davomat olinmagan. Darslarda davomat belgilanganidan keyin oy o'quvchisi shu yerda chiqadi.</div>`; return; }
     const w = winnerOf(S);
@@ -357,11 +454,13 @@ button{font-family:inherit;cursor:pointer;border:none}
     fit();
   }
   function fit() {
+    document.querySelectorAll(".aframe").forEach(f => { const k = f.clientWidth / 1600; f.style.height = 1131 * k + "px"; f.firstElementChild.style.transform = `scale(${k})`; });
     const f = $("frame"); if (!f) return;
     const k = f.clientWidth / 1080; f.style.height = 1350 * k + "px";
     f.firstElementChild.style.transform = `scale(${k})`;
   }
   window.addEventListener("resize", fit);
+  [...$("tabs").children].forEach(b => b.onclick = () => { mode = b.dataset.t; render(); });
 
   // ================= YUKLAB OLISH =================
   async function libs() {
@@ -369,8 +468,8 @@ button{font-family:inherit;cursor:pointer;border:none}
     if (!(window.html2canvas && window.jspdf)) throw new Error("PDF kutubxonasi yuklanmadi, internetni tekshiring");
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
   }
-  async function snap(S) {
-    const box = $("exportBox"); box.innerHTML = posterHtml(S, ALL);
+  async function snap(S, html) {
+    const box = $("exportBox"); box.innerHTML = html || posterHtml(S, ALL);
     await Promise.all([...box.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
     const c = await window.html2canvas(box.firstElementChild, { scale: 2, backgroundColor: "#ecedf2", useCORS: true, logging: false });
     box.innerHTML = ""; return c;
@@ -396,8 +495,21 @@ button{font-family:inherit;cursor:pointer;border:none}
     saveBlob(pdf.output("blob"), name + ".pdf");
     note(`PDF yuklab olindi · ${list.length} bet`);
   }
-  $("bPdf").onclick = () => run(null, () => makePdf([ALL.find(z => z.m === cur)], fname(cur)));
-  $("bAll").onclick = () => run(null, () => makePdf(ALL.filter(z => z.rows.length), `Oy_oquvchilari_${TODAY}`));
+  async function makeAttPdf(months, name) {
+    const pages = months.flatMap(m => attPages(m));
+    if (!pages.length) { note("Bu davrda davomat yo'q"); return; }
+    const pdf = new window.jspdf.jsPDF({ unit: "px", format: [1600, 1131], orientation: "landscape", hotfixes: ["px_scaling"], compress: true });
+    for (let i = 0; i < pages.length; i++) {
+      note(`Davomat tayyorlanmoqda… ${i + 1} / ${pages.length}`);
+      const c = await snap(null, attHtml(pages[i]));
+      if (i) pdf.addPage([1600, 1131], "landscape");
+      pdf.addImage(c.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 1600, 1131);
+    }
+    saveBlob(pdf.output("blob"), name + ".pdf");
+    note(`Davomat PDF yuklab olindi · ${pages.length} bet`);
+  }
+  $("bPdf").onclick = () => run(null, () => mode === "att" ? makeAttPdf([cur], `Davomat_${mLabel(cur).replace(" ", "_")}`) : makePdf([ALL.find(z => z.m === cur)], fname(cur)));
+  $("bAll").onclick = () => run(null, () => mode === "att" ? makeAttPdf(ALL.map(z => z.m), `Davomat_${TODAY.split("-").reverse().join(".")}_gacha`) : makePdf(ALL.filter(z => z.rows.length), `Oy_oquvchilari_${TODAY}`));
   $("bPng").onclick = () => run(null, async () => {
     note("Rasm tayyorlanmoqda…");
     const c = await snap(ALL.find(z => z.m === cur));
