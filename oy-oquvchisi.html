@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oy o'quvchisi · Yuksak ta'lim</title>
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/phosphor-fill/style.css">
+<link rel="stylesheet" href="vendor/phosphor-bold/style.css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#e6eaf1;font-family:"Onest",system-ui,sans-serif;color:#14202e;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none}
+
+/* ---------- boshqaruv paneli (PDF ga kirmaydi) ---------- */
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #dde3eb;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.months{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.months::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;height:36px;padding:0 14px;border-radius:12px;background:#eef2f7;color:#2a3746;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.chip.on{background:linear-gradient(180deg,#ff8a45,#f26a21);color:#fff}
+.chip small{font-size:11px;font-weight:600;opacity:.8}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{height:40px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;background:#eef2f7;color:#14202e}
+.btn.main{background:linear-gradient(180deg,#ff8a45,#f26a21);color:#fff}
+.btn:disabled{opacity:.55}
+.note{font-size:12.5px;color:#5a6676}
+.demo{background:#fff4dc;color:#8a5a00;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:10px}
+
+.stage{padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.frame{width:100%;max-width:640px;position:relative;border-radius:18px;overflow:hidden;box-shadow:0 18px 40px rgba(20,32,46,.18)}
+.frame > .poster{position:absolute;top:0;left:0;transform-origin:0 0}
+
+.rank{width:100%;max-width:640px;background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.rank h3{margin:0 0 4px;font-size:16px}
+.rank p{margin:0 0 6px;font-size:12.5px;color:#5a6676}
+.row{display:grid;grid-template-columns:28px 1fr auto auto;gap:10px;align-items:center;padding:8px 6px;border-radius:12px;font-size:14px}
+.row:nth-child(odd){background:#f5f7fa}
+.row b{font-weight:800}
+.row .n{color:#7a8594;font-weight:700;text-align:center}
+.row .s{font-weight:800;color:#e35a12}
+.row button{height:30px;padding:0 10px;border-radius:9px;background:#fde4d5;color:#e35a12;font-size:12px;font-weight:700}
+.row.pick button{background:#f26a21;color:#fff}
+.empty{max-width:640px;background:#fff;border-radius:18px;padding:28px;text-align:center;color:#4a5563;line-height:1.5}
+
+/* ---------- PLAKAT 1080 × 1350 (shablon uslubi: oq kartalar, to'q sariq aksent) ---------- */
+.poster{--or:#f26a21;--or2:#e35a12;--pe:#fde4d5;--bg:#ecedf2;--ink:#17171c;--mut:#77777f;--card:#fff;--soft:#f4f4f7;
+  width:1080px;height:1350px;background:var(--bg);padding:52px 64px 38px;display:flex;flex-direction:column;gap:18px;color:var(--ink);overflow:hidden;font-family:"Inter","Onest",system-ui,sans-serif;letter-spacing:-.01em}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start}
+.pill{display:inline-flex;height:38px;align-items:center;padding:0 20px;border-radius:19px;background:var(--pe);color:var(--or2);font-size:15px;font-weight:800;letter-spacing:.16em}
+.brand{text-align:right;line-height:1.02;font-size:30px;font-weight:800;letter-spacing:-.03em}
+.brand span{display:block;color:#5e5e66}
+.p-title{margin-top:-4px}
+.p-title .t1,.p-title .t2{font-size:58px;font-weight:800;letter-spacing:-.045em;line-height:1.06;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-title .t2{color:var(--or)}
+
+.card{background:var(--card);border-radius:28px;border-bottom:10px solid var(--or);overflow:hidden;position:relative}
+.r1{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;height:236px;flex-shrink:0}
+.hero{padding:30px 32px 0}
+.lab{font-size:15px;font-weight:700;letter-spacing:.16em;color:var(--mut);text-transform:uppercase}
+.score{font-size:100px;font-weight:800;letter-spacing:-.06em;color:var(--or);line-height:1;margin:8px 0 10px;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.score small{font-size:30px;color:#b4b4bc;letter-spacing:-.02em;font-weight:700}
+.hero .sub{font-size:19px;color:var(--mut);line-height:1.32;max-width:500px}
+
+.trend{padding:24px 26px 10px;display:flex;flex-direction:column}
+.trend .top{display:flex;justify-content:space-between;align-items:flex-start}
+.trend .big{font-size:58px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.trend .cap{font-size:15.5px;color:var(--mut);margin-top:5px}
+.arrow{width:46px;height:46px;border-radius:50%;background:var(--pe);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:22px}
+.trend svg{margin-top:auto}
+
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:18px;height:104px;flex-shrink:0}
+.stat{display:flex;align-items:center;gap:20px;padding:0 30px}
+.stat .v{font-size:60px;font-weight:800;letter-spacing:-.055em;line-height:1;white-space:nowrap}
+.stat .d{font-size:16.5px;color:var(--mut);line-height:1.3}
+
+.r3{background:var(--card);border-radius:28px;padding:22px 22px 22px;height:286px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+.r3 .hd{display:flex;justify-content:space-between;align-items:center;padding:0 2px}
+.r3 .hd b{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.r3 .hd span{font-size:13.5px;font-weight:700;letter-spacing:.16em;color:var(--mut)}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;min-height:0}
+.t3{background:var(--soft);border-radius:22px;padding:13px 13px 14px;display:flex;flex-direction:column;gap:11px;min-width:0}
+.t3 .h{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:700;color:var(--or2);white-space:nowrap}
+.t3 .h i{height:28px;padding:0 9px;border-radius:9px;background:var(--or);color:#fff;font-style:normal;font-size:14px;font-weight:700;display:flex;align-items:center}
+.t3 .b{display:flex;gap:12px;flex:1;min-height:0}
+.ph{border-radius:18px;flex-shrink:0;background-size:cover;background-position:center top;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;overflow:hidden}
+.t3 .ph{width:118px;height:100%;font-size:40px}
+.t3 .who{display:flex;flex-direction:column;min-width:0;flex:1}
+.tag{align-self:flex-start;max-width:100%;padding:5px 11px;border-radius:13px;background:var(--pe);color:var(--or2);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t3 .nm{font-size:19px;font-weight:800;line-height:1.16;margin-top:9px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.t3 .rl{font-size:14px;color:var(--mut);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t3 .sc{margin-top:auto;font-size:34px;font-weight:800;letter-spacing:-.04em;color:var(--or);line-height:1}
+.t3 .sc small{font-size:15px;color:#b4b4bc;font-weight:700;margin-left:3px;letter-spacing:0}
+
+.r4{display:grid;grid-template-columns:1fr 1.27fr;gap:18px;flex:1;min-height:0}
+.funnel{background:var(--card);border-radius:28px;padding:24px 24px 22px;display:flex;flex-direction:column;overflow:hidden}
+.funnel > b{font-size:25px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.fs{display:flex;align-items:center;gap:15px;background:var(--soft);border-radius:20px;padding:9px 14px;position:relative}
+.fs .ic{width:50px;height:50px;border-radius:16px;background:var(--pe);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.fs .vv{font-size:33px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.fs .vv small{font-size:18px;color:var(--mut);font-weight:600;margin-left:6px;letter-spacing:0}
+.fs .dd{font-size:15px;color:var(--mut);margin-top:4px}
+.fs .k{position:absolute;right:12px;top:12px;font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--or2);background:#fff;padding:5px 10px;border-radius:11px}
+.fs.mid .ic{background:#f7935a;color:#fff}
+.fs.last{background:var(--pe)}
+.fs.last .ic{background:var(--or);color:#fff}
+.fs.last .vv{color:var(--or)}
+.link{height:26px;margin-left:42px;border-left:4px solid #f9c3a2;display:flex;align-items:center;padding-left:14px;font-size:14px;color:var(--mut);font-weight:600}
+.link b{color:var(--or2);margin-right:5px}
+
+.shot{border-radius:28px;overflow:hidden;position:relative;background-size:cover;background-position:center 20%}
+.shot.noimg{background:linear-gradient(155deg,#ffa25e 0%,#f26a21 48%,#c9470b 100%);display:flex;align-items:center;justify-content:center}
+.shot .bigini{font-size:190px;font-weight:800;color:rgba(255,255,255,.95);letter-spacing:-.05em}
+.shot .tro{position:absolute;right:26px;top:24px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:32px}
+.shot .cap{position:absolute;left:22px;bottom:22px;background:#fff;border-radius:16px;padding:11px 18px;font-size:17px;font-weight:700;color:var(--ink);max-width:calc(100% - 44px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.p-foot{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--mut);font-weight:600}
+.p-foot .l{display:flex;align-items:center;gap:16px}
+.p-foot .l i{width:52px;height:5px;border-radius:3px;background:var(--or);display:block}
+.p-foot b{color:var(--ink)}
+
+/* ---------- DAVOMAT VARAG'I 1600 × 1131 (A4 albom) ---------- */
+.att{--or:#f26a21;--or2:#e35a12;--pe:#fde4d5;--ink:#17171c;--mut:#77777f;width:1600px;height:1131px;background:#ecedf2;padding:44px 52px 34px;display:flex;flex-direction:column;gap:18px;color:var(--ink);font-family:"Inter","Onest",system-ui,sans-serif;letter-spacing:-.01em;overflow:hidden}
+.att .hd{display:flex;justify-content:space-between;align-items:flex-start}
+.att .pill{display:inline-flex;height:34px;align-items:center;padding:0 18px;border-radius:17px;background:var(--pe);color:var(--or2);font-size:14px;font-weight:800;letter-spacing:.16em}
+.att h1{margin:12px 0 0;font-size:46px;font-weight:800;letter-spacing:-.045em;line-height:1.05}
+.att h1 span{color:var(--or)}
+.att .meta{margin-top:8px;font-size:17px;color:var(--mut)}
+.att .brand{text-align:right;line-height:1.02;font-size:28px;font-weight:800;letter-spacing:-.03em}
+.att .brand span{display:block;color:#5e5e66}
+.att .kp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.att .kp div{background:#fff;border-radius:22px;border-bottom:8px solid var(--or);padding:16px 22px;display:flex;align-items:center;gap:14px}
+.att .kp b{font-size:40px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.att .kp span{font-size:15px;color:var(--mut);line-height:1.25}
+.att .tb{background:#fff;border-radius:24px;padding:14px 18px;flex:1;min-height:0;overflow:hidden}
+.att table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.att th{font-size:13px;font-weight:700;color:var(--mut);padding:6px 0 10px;text-align:center;line-height:1.15;border-bottom:2px solid #ececf1}
+.att th b{display:block;font-size:17px;color:var(--ink);font-weight:800}
+.att th.nm,.att td.nm{text-align:left;padding-left:8px}
+.att td{height:var(--rh);text-align:center;font-size:15px;border-bottom:1px solid #f1f1f5;padding:0}
+.att td.nm{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att td.no{color:var(--mut);font-weight:700;font-size:14px}
+.att tr:nth-child(even) td{background:#fafafc}
+.att .m{display:inline-flex;width:28px;height:28px;border-radius:8px;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.att .k1{background:#22a565}.att .k2{background:#f5a524}.att .k3{background:#5b8def}.att .k4{background:#e5484d}.att .k0{background:none;color:#c9c9d1}
+.att td.tt{font-weight:800;font-size:16px}
+.att td.pc{font-weight:800;font-size:16px}
+.att .ft{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--mut);font-weight:600}
+.att .lg{display:flex;gap:18px;align-items:center}
+.att .lg span{display:flex;align-items:center;gap:7px}
+.att .lg .m{width:22px;height:22px;font-size:12px;border-radius:6px}
+.tabs{display:flex;background:#eef0f4;border-radius:13px;padding:4px;gap:4px}
+.tabs button{flex:1;height:36px;border-radius:10px;background:none;font-size:14px;font-weight:700;color:#4a5563;display:flex;align-items:center;justify-content:center;gap:6px}
+.tabs button.on{background:#fff;color:#e35a12;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.aframe{width:100%;max-width:900px;position:relative;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(20,32,46,.16)}
+.aframe > .att{position:absolute;top:0;left:0;transform-origin:0 0}
+#exportBox{position:fixed;left:-30000px;top:0}
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <div class="tabs" id="tabs"><button data-t="poster" class="on"><i class="ph-fill ph-trophy"></i>Oy o'quvchisi</button><button data-t="att"><i class="ph-fill ph-calendar-check"></i>Davomat</button></div>
+  <div class="months" id="months"></div>
+  <div class="actions">
+    <button class="btn main" id="bPdf"><i class="ph-bold ph-file-pdf"></i>Shu oy · PDF</button>
+    <button class="btn" id="bAll"><i class="ph-bold ph-files"></i>Barcha oylar · PDF</button>
+    <button class="btn" id="bPng"><i class="ph-bold ph-image"></i>PNG (Instagram)</button>
+    <span class="note" id="note"></span>
+  </div>
+  <div class="demo" id="demo" style="display:none">Bu namuna ma'lumot. Ilova ichidagi «Oy o'quvchisi · Davomat» tugmasi orqali ochsangiz, haqiqiy davomat bo'yicha chiqadi.</div>
+</div>
+<div class="stage" id="stage"></div>
+<div id="exportBox"></div>
+
+<script>
+(function () {
+  const CFG = window.APP_CONFIG || {};
+  const CENTER = CFG.CENTER || "Yuksak ta'lim";
+  const MON = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const pad = n => String(n).padStart(2, "0");
+  const now = new Date();
+  const TODAY = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const CUR_M = TODAY.slice(0, 7);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const dec = (n, d = 1) => (Math.round(n * 10 ** d) / 10 ** d).toFixed(d).replace(".", ",").replace(/,0$/, "");
+  const mLabel = m => `${cap(MON[+m.slice(5) - 1])} ${m.slice(0, 4)}`;
+  const ini = n => String(n || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  const GRADS = ["#4fb0ff,#1f6fe0", "#6a8cff,#3b5bdb", "#36c2d8,#1f7fea", "#7b8cff,#4a5fe0", "#4f9dff,#2b4fc4"];
+  const phStyle = x => x.photo
+    ? `background-image:url('${String(x.photo).replace(/'/g, "%27")}')`
+    : `background:linear-gradient(160deg,${GRADS[(String(x.id).split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % GRADS.length]})`;
+  const phInner = x => x.photo ? "" : esc(ini(x.name));
+
+  // ================= MA'LUMOT =================
+  let D = null, isDemo = false;
+  function fromStorage() { try { return JSON.parse(localStorage.getItem("yt-oyq-v1") || "null"); } catch (e) { return null; } }
+  async function fromApi() {
+    let tok = null; try { tok = localStorage.getItem("yt_token"); } catch (e) {}
+    if (!tok || !CFG.API_URL) return null;
+    try {
+      const r = await (await fetch(CFG.API_URL, { method: "POST", body: JSON.stringify({ action: "load", token: tok, initData: "" }) })).json();
+      if (!r.ok) return null;
+      const d = r.data || {};
+      return { students: d.students || [], lessons: d.lessons || [], att: d.att || {}, grades: d.grades || {}, actv: d.actv || {}, hw: d.hw || [], tasks: d.tasks || [], groups: d.groups || [], teacher: d.teacher || {} };
+    } catch (e) { return null; }
+  }
+  function demoData() {
+    const names = ["Asilbek Karimov", "Madina Yusupova", "Jasurbek Toshpo'latov", "Shahzoda Rahimova", "Behruz Qodirov", "Mohinur Ergasheva", "Sardor Aliyev", "Dilnoza Mirzayeva", "Abdulaziz Nazarov", "Sevinch Hamidova", "Ozodbek Sobirov", "Gulnoza Tursunova", "Islom Abdullayev", "Zarina Ismoilova", "Javohir Olimov", "Malika Sharipova", "Bekzod Umarov", "Nilufar Komilova"];
+    const groups = [{ id: "kd1", name: "Kids · Kompyuter savodxonligi", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }, { id: "kd2", name: "Kids · Grafik dizayn", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }, { id: "kd3", name: "Kids · Scratch", teacher: "Xusniddin Sharofiddinov", days: ["Se", "Pa", "Sh"] }];
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const students = names.map((n, i) => ({ id: i + 1, name: n, g: groups[i % 3].id, teacher: groups[i % 3].teacher, skill: 0.55 + rnd() * 0.45 }));
+    const lessons = [], att = {}, grades = {}, actv = {};
+    const start = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+    for (let d = new Date(start); d <= now; d.setDate(d.getDate() + 1)) {
+      if (![2, 4, 6].includes(d.getDay())) continue;
+      const iso = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      groups.forEach(g => {
+        const id = `${g.id}-${iso}`; lessons.push({ id, g: g.id, date: iso, status: "done" });
+        att[id] = {}; grades[id] = {}; actv[id] = {};
+        students.filter(x => x.g === g.id).forEach(x => {
+          const r = rnd(); const st = r < x.skill * 0.98 ? "keldi" : r < x.skill + 0.08 ? "kech" : rnd() < 0.5 ? "sababli" : "sababsiz";
+          att[id][x.id] = st;
+          if (st === "keldi" || st === "kech") { if (rnd() < 0.6) grades[id][x.id] = Math.min(5, Math.max(2, Math.round(2.4 + x.skill * 2.6 + (rnd() - 0.5)))); if (rnd() < x.skill * 0.8) actv[id][x.id] = true; }
+        });
+      });
+    }
+    return { students: students.map(({ skill, ...x }) => x), lessons, att, grades, actv, hw: [], tasks: [], groups, teacher: { name: "Xusniddin Sharofiddinov" } };
+  }
+
+  // ================= BALL HISOBLASH =================
+  // Davomat 40 + Baho 30 + Faol ishtirok 15 + Uyga vazifa 15 = 100
+  const W = { att: 40, grade: 30, actv: 15, hw: 15 };
+  const ATT_V = { keldi: 1, kech: 0.6, sababli: 0.5, sababsiz: 0 };
+  const MIN_LESSONS = 3;
+  const gName = id => ((D.groups || []).find(g => g.id === id) || {}).name || "—";
+  const gTeacher = id => { const g = (D.groups || []).find(z => z.id === id) || {}; return g.teacher || g.teacherName || (D.teacher && D.teacher.name) || ""; };
+  const hwMonth = h => { const t = Number(h.id); if (t > 1e12) { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; } return h.date ? String(h.date).slice(0, 7) : null; };
+
+  function monthsList() {
+    const set = new Set();
+    D.lessons.forEach(l => { if (l.date && l.date <= TODAY && D.att[l.id] && Object.keys(D.att[l.id]).length) set.add(l.date.slice(0, 7)); });
+    return [...set].sort();
+  }
+
+  function scoreMonth(m) {
+    const lessons = D.lessons.filter(l => l.date && l.date.slice(0, 7) === m && l.date <= TODAY && l.status !== "cancel" && l.status !== "moved");
+    const rows = [];
+    D.students.forEach(x => {
+      const my = lessons.filter(l => l.g === x.g && D.att[l.id] && D.att[l.id][x.id] != null);
+      if (!my.length) return;
+      const n = my.length;
+      const came = my.filter(l => ["keldi", "kech"].includes(D.att[l.id][x.id])).length;
+      const attS = my.reduce((a, l) => a + (ATT_V[D.att[l.id][x.id]] ?? 0), 0) / n;
+      const gr = my.map(l => Number((D.grades[l.id] || {})[x.id])).filter(v => v > 0);
+      const avg = gr.length ? gr.reduce((a, b) => a + b, 0) / gr.length : null;
+      const gradeS = avg != null ? avg / 5 : 0.7;
+      const act = my.filter(l => (D.actv[l.id] || {})[x.id]).length;
+      const actS = came ? act / came : 0;
+      const tasksN = (D.tasks || []).filter(t => t.g === x.g && String(t.created || t.due || "").slice(0, 7) === m).length;
+      const hwOk = (D.hw || []).filter(h => h.sid === x.id && hwMonth(h) === m && h.status === "accepted").length;
+      const hwS = tasksN ? Math.min(1, hwOk / tasksN) : (hwOk ? 1 : 0.7);
+      const parts = { att: attS * W.att, grade: gradeS * W.grade, actv: actS * W.actv, hw: hwS * W.hw };
+      const total = parts.att + parts.grade + parts.actv + parts.hw;
+      rows.push({ x, n, came, attPct: Math.round(came / n * 100), avg, fives: gr.filter(v => v === 5).length, act, actPct: came ? Math.round(act / came * 100) : 0, hwOk, tasksN, parts, total, ok: n >= MIN_LESSONS });
+    });
+    rows.sort((a, b) => (b.ok - a.ok) || (b.total - a.total) || (b.came - a.came) || (b.fives - a.fives));
+    return { m, rows, lessonsN: new Set(lessons.filter(l => D.att[l.id]).map(l => l.id)).size };
+  }
+
+  // ================= PLAKAT =================
+  const pickOverride = {};
+  function winnerOf(S) { const id = pickOverride[S.m]; return (id != null && S.rows.find(r => r.x.id === id)) || S.rows.find(r => r.ok) || S.rows[0]; }
+
+  function trendSvg(pts) {
+    const w = 330, h = 120, px = 22, py = 30;
+    const vals = pts.map(p => p.v), mn = Math.min(...vals) - 4, mx = Math.max(...vals) + 2;
+    const X = i => px + (pts.length === 1 ? (w - 2 * px) / 2 : i * (w - 2 * px) / (pts.length - 1));
+    const Y = v => py + (1 - (v - mn) / Math.max(1, mx - mn)) * (h - py - 24);
+    let d = `M${X(0)},${Y(vals[0])}`;
+    for (let i = 1; i < pts.length; i++) { const x0 = X(i - 1), x1 = X(i), cx = (x0 + x1) / 2; d += ` C${cx},${Y(vals[i - 1])} ${cx},${Y(vals[i])} ${x1},${Y(vals[i])}`; }
+    const base = h - 22, last = pts.length - 1;
+    const area = `${d} L${X(last)},${base} L${X(0)},${base} Z`;
+    return `<svg width="${w}" height="${h + 8}" viewBox="0 0 ${w} ${h + 8}">
+      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f26a21" stop-opacity=".30"/><stop offset="1" stop-color="#f26a21" stop-opacity="0"/></linearGradient></defs>
+      <line x1="${px - 10}" y1="${base}" x2="${w - px + 10}" y2="${base}" stroke="#e4e4ea" stroke-width="3"/>
+      <path d="${area}" fill="url(#ga)"/><path d="${d}" fill="none" stroke="#f26a21" stroke-width="6" stroke-linecap="round"/>
+      ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.v)}" r="${i === last || i === 0 ? 10 : 7}" fill="#fff" stroke="#f26a21" stroke-width="5"/>
+      <text x="${X(i)}" y="${h + 6}" text-anchor="middle" font-size="14" font-weight="700" fill="#77777f" font-family="Inter,Onest">${esc(p.l)}</text>`).join("")}
+      <text x="${X(0) + 8}" y="${Y(vals[0]) - 18}" text-anchor="start" font-size="17" font-weight="800" fill="#17171c" font-family="Inter,Onest">${dec(vals[0])}</text>
+      <text x="${X(last)}" y="${Y(vals[last]) - 18}" text-anchor="end" font-size="18" font-weight="800" fill="#e35a12" font-family="Inter,Onest">${dec(vals[last])}</text>
+    </svg>`;
+  }
+
+  function barsSvg(rows, w) {
+    const W2 = 330, H = 120, n = rows.length, bw = 34, gap = (W2 - n * bw) / Math.max(1, n);
+    const mx = Math.max(...rows.map(r => r.total)), mn = Math.min(...rows.map(r => r.total)) - 8;
+    return `<svg width="${W2}" height="${H + 8}" viewBox="0 0 ${W2} ${H + 8}">
+      <line x1="0" y1="${H - 22}" x2="${W2}" y2="${H - 22}" stroke="#e4e4ea" stroke-width="3"/>
+      ${rows.map((r, i) => { const x = gap / 2 + i * (bw + gap), hh = 14 + (r.total - mn) / Math.max(1, mx - mn) * (H - 74), y = H - 22 - hh, on = r === w;
+        return `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="9" fill="${on ? "#f26a21" : "#fde4d5"}"/>
+        <text x="${x + bw / 2}" y="${H + 6}" text-anchor="middle" font-size="14" font-weight="700" fill="${on ? "#e35a12" : "#a3a3ab"}" font-family="Inter,Onest">${i + 1}</text>
+        ${on ? `<text x="${x + bw / 2}" y="${y - 9}" text-anchor="middle" font-size="17" font-weight="800" fill="#e35a12" font-family="Inter,Onest">${dec(r.total)}</text>` : ""}`; }).join("")}
+    </svg>`;
+  }
+
+  const ORG = ["#ffa25e,#f26a21", "#ffb47a,#ec5e17", "#f7935a,#d9510f", "#ffc08f,#f27a35"];
+  const phOr = x => x.photo ? phStyle(x) : `background:linear-gradient(160deg,${ORG[(String(x.id).split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % ORG.length]})`;
+  const short = g => String(g || "").replace(/^Kids\s*·\s*/i, "");
+  const pct = (a, b) => b ? (a / b * 100 >= 10 ? Math.round(a / b * 100) : dec(a / b * 100)) + "%" : "0%";
+
+  function posterHtml(S, all) {
+    const w = winnerOf(S);
+    if (!w) return null;
+    const x = w.x, m = S.m, isCur = m === CUR_M;
+    const monthName = MON[+m.slice(5) - 1];
+    const okRows = S.rows.filter(r => r.ok);
+    const place = S.rows.indexOf(w) + 1;
+    const top3 = [w, ...S.rows.filter(r => r !== w && r.ok)].slice(0, 3);
+    const hist = all.filter(z => z.m <= m).slice(-5).map(z => { const r = z.rows.find(r => r.x.id === x.id); return r ? { l: cap(MON[+z.m.slice(5) - 1].slice(0, 3)), v: r.total } : null; }).filter(Boolean);
+    const prev = hist.length >= 2 ? hist[hist.length - 2].v : null;
+    const delta = prev != null ? w.total - prev : null;
+    const showTrend = delta != null && delta >= 0;
+    const trendTop = showTrend
+      ? `<div><div class="big">${delta >= 0 ? "+" : "−"}${dec(Math.abs(delta))}</div><div class="cap">o'tgan oyga nisbatan ball o'sishi</div></div><div class="arrow"><i class="ph-bold ph-arrow-up"></i></div>`
+      : `<div><div class="big">${place}-o'rin</div><div class="cap">${S.rows.length} ta o'quvchi ichida</div></div><div class="arrow"><i class="ph-fill ph-trophy"></i></div>`;
+    const avgTxt = w.avg != null ? w.avg.toFixed(1).replace(".", ",") : "—";
+    const g = gName(x.g), t = x.teacher || gTeacher(x.g);
+    const roles = ["Oy o'quvchisi", "Ikkinchi o'rin", "Uchinchi o'rin"];
+    const cards = top3.map((r, i) => `
+      <div class="t3"><div class="h"><i>0${i + 1}</i>${roles[i]}</div>
+        <div class="b"><div class="ph" style="${phOr(r.x)}">${phInner(r.x)}</div>
+          <div class="who"><span class="tag">${esc(short(gName(r.x.g)))}</span><span class="nm">${esc(r.x.name)}</span><span class="rl">${r.came} dars · ${r.attPct}%</span><span class="sc">${dec(r.total)}<small>ball</small></span></div></div></div>`).join("");
+    const shot = x.photo
+      ? `<div class="shot" style="background-image:url('${String(x.photo).replace(/'/g, "%27")}')"><div class="tro"><i class="ph-fill ph-trophy"></i></div><div class="cap">${esc(x.name)} · ${esc(short(g))}</div></div>`
+      : `<div class="shot noimg"><span class="bigini">${esc(ini(x.name))}</span><div class="tro"><i class="ph-fill ph-trophy"></i></div><div class="cap">${esc(x.name)} · ${esc(short(g))}</div></div>`;
+    const hsub = isCur
+      ? `${+TODAY.slice(8)}-${monthName}gacha ${w.came} ta darsga keldi${w.fives ? `, ${w.fives} marta «5» oldi` : ""}`
+      : `${cap(monthName)} oyida ${w.came} ta darsga keldi${w.fives ? `, ${w.fives} marta «5» oldi` : ""}`;
+    return `
+    <div class="poster">
+      <div class="p-head"><span class="pill">${esc(CENTER.toUpperCase())} · ${esc(monthName.toUpperCase())} ${m.slice(0, 4)}</span>
+        <div class="brand">Yuksak<span>ta'lim</span></div></div>
+      <div class="p-title"><div class="t1">${cap(monthName)} oyining o'quvchisi —</div><div class="t2">${esc(x.name)}</div></div>
+
+      <div class="r1">
+        <div class="card hero"><div class="lab">Oy bali</div><div class="score">${dec(w.total)}<small>/ 100</small></div>
+          <div class="sub">${esc(hsub)}<br>${esc(g)}${t ? ` · ustozi ${esc(t.split(" ")[0])}` : ""}</div></div>
+        <div class="card trend"><div class="top">${trendTop}</div>${showTrend ? trendSvg(hist) : barsSvg(S.rows.slice(0, 6), w)}</div>
+      </div>
+
+      <div class="r2">
+        <div class="card stat"><span class="v">${w.attPct}%</span><span class="d">davomat — ${w.n} ta darsdan<br>${w.came} tasiga keldi</span></div>
+        <div class="card stat"><span class="v">${avgTxt}</span><span class="d">o'rtacha baho, darslarning<br>${w.actPct}% ida faol qatnashdi</span></div>
+      </div>
+
+      <div class="r3"><div class="hd"><b>Oyning eng yaxshi uchligi</b><span>O'QUVCHILAR</span></div><div class="top3">${cards}</div></div>
+
+      <div class="r4">
+        <div class="funnel"><b>Tanlov bosqichlari</b>
+          <div class="fs"><span class="ic"><i class="ph-bold ph-users-three"></i></span><div><div class="vv">${S.rows.length}<small>ta</small></div><div class="dd">o'quvchi qatnashdi</div></div><span class="k">DAVOMAT</span></div>
+          <div class="link"><b>${pct(okRows.length, S.rows.length)}</b> saralandi</div>
+          <div class="fs mid"><span class="ic"><i class="ph-bold ph-star"></i></span><div><div class="vv">${okRows.length}<small>ta</small></div><div class="dd">o'quvchi reytingga kirdi</div></div><span class="k">REYTING</span></div>
+          <div class="link" style="height:16px"></div>
+          <div class="fs last"><span class="ic"><i class="ph-bold ph-trophy"></i></span><div><div class="vv">1<small>ta</small></div><div class="dd">oy o'quvchisi tanlandi</div></div><span class="k">G'OLIB</span></div>
+        </div>
+        ${shot}
+      </div>
+
+      <div class="p-foot"><div class="l"><i></i><span><b>${esc(CENTER)}</b> · Bilim — yuksaklik sari</span></div><span>Manba: davomat jurnali</span></div>
+    </div>`;
+  }
+
+  // ================= DAVOMAT JADVALI =================
+  const WD = ["Ya", "Du", "Se", "Ch", "Pa", "Ju", "Sh"];
+  const MK = { keldi: ["k1", "✓"], kech: ["k2", "K"], sababli: ["k3", "S"], sababsiz: ["k4", "✕"] };
+  const PER_PAGE = 18;
+  function attPages(m) {
+    const ls = D.lessons.filter(l => l.date && l.date.slice(0, 7) === m && l.date <= TODAY && l.status !== "cancel" && l.status !== "moved" && D.att[l.id] && Object.keys(D.att[l.id]).length);
+    const gids = [...new Set(ls.map(l => l.g))].sort((a, b) => gName(a).localeCompare(gName(b)));
+    const pages = [];
+    gids.forEach(gid => {
+      const L = ls.filter(l => l.g === gid).sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
+      const sids = new Set(); L.forEach(l => Object.keys(D.att[l.id]).forEach(k => sids.add(k)));
+      const st = D.students.filter(x => sids.has(String(x.id))).sort((a, b) => a.name.localeCompare(b.name));
+      if (!st.length) return;
+      const rows = st.map(x => {
+        const marks = L.map(l => D.att[l.id][x.id]);
+        const n = marks.filter(Boolean).length, came = marks.filter(v => v === "keldi" || v === "kech").length;
+        return { x, marks, n, came, pct: n ? Math.round(came / n * 100) : 0 };
+      });
+      const totalN = rows.reduce((a, r) => a + r.n, 0), totalC = rows.reduce((a, r) => a + r.came, 0);
+      const absent = rows.reduce((a, r) => a + r.marks.filter(v => v === "sababsiz").length, 0);
+      const full = rows.filter(r => r.n && r.came === r.n).length;
+      const chunks = []; for (let i = 0; i < rows.length; i += PER_PAGE) chunks.push(rows.slice(i, i + PER_PAGE));
+      chunks.forEach((ch, ci) => pages.push({ m, gid, L, rows: ch, start: ci * PER_PAGE, part: chunks.length > 1 ? `${ci + 1}/${chunks.length}` : "", kp: { lessons: L.length, avg: totalN ? Math.round(totalC / totalN * 100) : 0, absent, full, students: rows.length } }));
+    });
+    return pages;
+  }
+  function attHtml(P) {
+    const monthName = MON[+P.m.slice(5) - 1], t = gTeacher(P.gid);
+    const cw = Math.min(58, Math.floor(1080 / Math.max(1, P.L.length)));
+    const rh = Math.max(36, Math.min(44, Math.floor(700 / Math.max(P.rows.length, 12))));
+    return `<div class="att" style="--rh:${rh}px">
+      <div class="hd"><div><span class="pill">${esc(CENTER.toUpperCase())} · DAVOMAT JURNALI</span>
+        <h1>${cap(monthName)} ${P.m.slice(0, 4)} — <span>${esc(gName(P.gid))}</span></h1>
+        <div class="meta">${t ? "Ustoz: " + esc(t) + " · " : ""}${P.kp.students} ta o'quvchi${P.part ? " · " + P.part + "-bet" : ""}${P.m === CUR_M ? ` · ${+TODAY.slice(8)}-${monthName} holatiga` : ""}</div></div>
+        <div class="brand">Yuksak<span>ta'lim</span></div></div>
+      <div class="kp">
+        <div><b>${P.kp.lessons}</b><span>ta dars<br>o'tildi</span></div>
+        <div><b>${P.kp.avg}%</b><span>o'rtacha<br>davomat</span></div>
+        <div><b>${P.kp.full}</b><span>ta o'quvchi<br>birorta ham qoldirmadi</span></div>
+        <div><b>${P.kp.absent}</b><span>marta sababsiz<br>kelmagan</span></div>
+      </div>
+      <div class="tb"><table>
+        <colgroup><col style="width:44px"><col><col span="${P.L.length}" style="width:${cw}px"><col style="width:96px"><col style="width:84px"></colgroup>
+        <thead><tr><th class="no">№</th><th class="nm">O'quvchi</th>${P.L.map(l => { const d = new Date(l.date + "T00:00:00"); return `<th><b>${d.getDate()}</b>${WD[d.getDay()]}</th>`; }).join("")}<th>Keldi</th><th>%</th></tr></thead>
+        <tbody>${P.rows.map((r, i) => `<tr><td class="no">${P.start + i + 1}</td><td class="nm">${esc(r.x.name)}</td>${r.marks.map(v => { const k = MK[v] || ["k0", "·"]; return `<td><span class="m ${k[0]}">${k[1]}</span></td>`; }).join("")}<td class="tt">${r.came}/${r.n}</td><td class="pc" style="color:${r.pct >= 90 ? "#1a8f55" : r.pct >= 70 ? "#c47f00" : "#d93a3f"}">${r.pct}%</td></tr>`).join("")}</tbody>
+      </table></div>
+      <div class="ft"><div class="lg"><span><i class="m k1">✓</i>keldi</span><span><i class="m k2">K</i>kechikdi</span><span><i class="m k3">S</i>sababli</span><span><i class="m k4">✕</i>sababsiz</span></div>
+        <span>Yuklab olindi: ${TODAY.split("-").reverse().join(".")} · ${esc(CENTER)}</span></div>
+    </div>`;
+  }
+
+  // ================= EKRAN =================
+  let ALL = [], cur = null, mode = "poster";
+  const $ = id => document.getElementById(id);
+  const note = t => $("note").textContent = t || "";
+
+  function render() {
+    const S = ALL.find(z => z.m === cur);
+    $("months").innerHTML = ALL.slice().reverse().map(z => `<button class="chip ${z.m === cur ? "on" : ""}" data-m="${z.m}">${mLabel(z.m)}${z.m === CUR_M ? " <small>joriy</small>" : ""}</button>`).join("");
+    [...$("months").children].forEach(b => b.onclick = () => { cur = b.dataset.m; render(); });
+    [...$("tabs").children].forEach(b => b.classList.toggle("on", b.dataset.t === mode));
+    $("bPng").style.display = mode === "poster" ? "" : "none";
+    $("bPdf").lastChild.textContent = mode === "poster" ? "Shu oy · PDF" : "Shu oy davomati · PDF";
+    $("bAll").lastChild.textContent = mode === "poster" ? "Barcha oylar · PDF" : "Barcha oylar davomati · PDF";
+    if (mode === "att") {
+      const P = attPages(cur);
+      if (!P.length) { $("stage").innerHTML = `<div class="empty">Bu oyda davomat belgilanmagan.</div>`; return; }
+      $("stage").innerHTML = P.map(p => `<div class="aframe">${attHtml(p)}</div>`).join("");
+      fit(); return;
+    }
+    const html = S && posterHtml(S, ALL);
+    if (!html) { $("stage").innerHTML = `<div class="empty">Hali davomat olinmagan. Darslarda davomat belgilanganidan keyin oy o'quvchisi shu yerda chiqadi.</div>`; return; }
+    const w = winnerOf(S);
+    $("stage").innerHTML = `<div class="frame" id="frame">${html}</div>
+      <div class="rank"><h3>${mLabel(S.m)} reytingi</h3><p>Ball: davomat 40 + baho 30 + faollik 15 + vazifa 15. Oyda kamida ${MIN_LESSONS} ta darsda qatnashganlar g'olib bo'la oladi. Boshqa o'quvchini plakatga qo'yish uchun «Tanlash» ni bosing.</p>
+      ${S.rows.slice(0, 15).map((r, i) => `<div class="row ${r === w ? "pick" : ""}"><span class="n">${i + 1}</span><span><b>${esc(r.x.name)}</b><br><span style="font-size:12px;color:#7a8594">${esc(gName(r.x.g))} · ${r.came}/${r.n} dars${r.ok ? "" : " · kam dars"}</span></span><span class="s">${dec(r.total)}</span><button data-id="${esc(r.x.id)}">${r === w ? "Plakatda" : "Tanlash"}</button></div>`).join("")}</div>`;
+    [...document.querySelectorAll(".row button")].forEach(b => b.onclick = () => { const r = S.rows.find(z => String(z.x.id) === b.dataset.id); if (r) { pickOverride[S.m] = r.x.id; render(); } });
+    fit();
+  }
+  function fit() {
+    document.querySelectorAll(".aframe").forEach(f => { const k = f.clientWidth / 1600; f.style.height = 1131 * k + "px"; f.firstElementChild.style.transform = `scale(${k})`; });
+    const f = $("frame"); if (!f) return;
+    const k = f.clientWidth / 1080; f.style.height = 1350 * k + "px";
+    f.firstElementChild.style.transform = `scale(${k})`;
+  }
+  window.addEventListener("resize", fit);
+  [...$("tabs").children].forEach(b => b.onclick = () => { mode = b.dataset.t; render(); });
+
+  // ================= YUKLAB OLISH =================
+  async function libs() {
+    for (let i = 0; i < 80 && !(window.html2canvas && window.jspdf); i++) await new Promise(r => setTimeout(r, 100));
+    if (!(window.html2canvas && window.jspdf)) throw new Error("PDF kutubxonasi yuklanmadi, internetni tekshiring");
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  }
+  async function snap(S, html) {
+    const box = $("exportBox"); box.innerHTML = html || posterHtml(S, ALL);
+    await Promise.all([...box.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
+    const c = await window.html2canvas(box.firstElementChild, { scale: 2, backgroundColor: "#ecedf2", useCORS: true, logging: false });
+    box.innerHTML = ""; return c;
+  }
+  function saveBlob(blob, name) {
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  const fname = m => `Oy_oquvchisi_${mLabel(m).replace(" ", "_")}`;
+  async function run(btn, fn) {
+    const all = [...document.querySelectorAll(".btn")]; all.forEach(b => b.disabled = true);
+    try { await libs(); await fn(); } catch (e) { note("Xatolik: " + e.message); }
+    all.forEach(b => b.disabled = false);
+  }
+  async function makePdf(list, name) {
+    const pdf = new window.jspdf.jsPDF({ unit: "px", format: [1080, 1350], orientation: "portrait", hotfixes: ["px_scaling"], compress: true });
+    for (let i = 0; i < list.length; i++) {
+      note(`Tayyorlanmoqda… ${i + 1} / ${list.length}`);
+      const c = await snap(list[i]);
+      if (i) pdf.addPage([1080, 1350], "portrait");
+      pdf.addImage(c.toDataURL("image/jpeg", 0.93), "JPEG", 0, 0, 1080, 1350);
+    }
+    saveBlob(pdf.output("blob"), name + ".pdf");
+    note(`PDF yuklab olindi · ${list.length} bet`);
+  }
+  async function makeAttPdf(months, name) {
+    const pages = months.flatMap(m => attPages(m));
+    if (!pages.length) { note("Bu davrda davomat yo'q"); return; }
+    const pdf = new window.jspdf.jsPDF({ unit: "px", format: [1600, 1131], orientation: "landscape", hotfixes: ["px_scaling"], compress: true });
+    for (let i = 0; i < pages.length; i++) {
+      note(`Davomat tayyorlanmoqda… ${i + 1} / ${pages.length}`);
+      const c = await snap(null, attHtml(pages[i]));
+      if (i) pdf.addPage([1600, 1131], "landscape");
+      pdf.addImage(c.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 1600, 1131);
+    }
+    saveBlob(pdf.output("blob"), name + ".pdf");
+    note(`Davomat PDF yuklab olindi · ${pages.length} bet`);
+  }
+  $("bPdf").onclick = () => run(null, () => mode === "att" ? makeAttPdf([cur], `Davomat_${mLabel(cur).replace(" ", "_")}`) : makePdf([ALL.find(z => z.m === cur)], fname(cur)));
+  $("bAll").onclick = () => run(null, () => mode === "att" ? makeAttPdf(ALL.map(z => z.m), `Davomat_${TODAY.split("-").reverse().join(".")}_gacha`) : makePdf(ALL.filter(z => z.rows.length), `Oy_oquvchilari_${TODAY}`));
+  $("bPng").onclick = () => run(null, async () => {
+    note("Rasm tayyorlanmoqda…");
+    const c = await snap(ALL.find(z => z.m === cur));
+    const out = document.createElement("canvas"); out.width = 1080; out.height = 1350;
+    out.getContext("2d").drawImage(c, 0, 0, 1080, 1350);
+    await new Promise(r => out.toBlob(b => { saveBlob(b, fname(cur) + ".png"); r(); }, "image/png"));
+    note("PNG yuklab olindi · 1080 × 1350");
+  });
+
+  // ================= ISHGA TUSHIRISH =================
+  (async function init() {
+    D = fromStorage() || await fromApi();
+    if (!D || !(D.lessons || []).length) { D = demoData(); isDemo = true; }
+    D.groups = D.groups || []; D.att = D.att || {}; D.grades = D.grades || {}; D.actv = D.actv || {};
+    if (isDemo) $("demo").style.display = "block";
+    ALL = monthsList().map(scoreMonth);
+    cur = ALL.length ? ALL[ALL.length - 1].m : CUR_M;
+    // joriy oyda hali kam dars bo'lsa — o'tgan oyni ko'rsatamiz
+    const last = ALL[ALL.length - 1];
+    if (last && last.m === CUR_M && !last.rows.some(r => r.ok) && ALL.length > 1) cur = ALL[ALL.length - 2].m;
+    note(ALL.length ? `${ALL.length} oy · ${TODAY.split("-").reverse().join(".")} gacha` : "");
+    render();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  })();
+})();
+</script>
+</body>
+</html>
