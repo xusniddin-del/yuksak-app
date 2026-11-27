@@ -6,7 +6,7 @@
 <title>Oy o'quvchisi · Yuksak ta'lim</title>
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="vendor/phosphor-fill/style.css">
 <link rel="stylesheet" href="vendor/phosphor-bold/style.css">
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
@@ -21,11 +21,11 @@ button{font-family:inherit;cursor:pointer;border:none}
 .months{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .months::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;height:36px;padding:0 14px;border-radius:12px;background:#eef2f7;color:#2a3746;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
-.chip.on{background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff}
+.chip.on{background:linear-gradient(180deg,#ff8a45,#f26a21);color:#fff}
 .chip small{font-size:11px;font-weight:600;opacity:.8}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{height:40px;padding:0 14px;border-radius:12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;background:#eef2f7;color:#14202e}
-.btn.main{background:linear-gradient(180deg,#4fb0ff,#1f7fea);color:#fff}
+.btn.main{background:linear-gradient(180deg,#ff8a45,#f26a21);color:#fff}
 .btn:disabled{opacity:.55}
 .note{font-size:12.5px;color:#5a6676}
 .demo{background:#fff4dc;color:#8a5a00;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:10px}
@@ -41,93 +41,86 @@ button{font-family:inherit;cursor:pointer;border:none}
 .row:nth-child(odd){background:#f5f7fa}
 .row b{font-weight:800}
 .row .n{color:#7a8594;font-weight:700;text-align:center}
-.row .s{font-weight:800;color:#1f6fe0}
-.row button{height:30px;padding:0 10px;border-radius:9px;background:#e7f0ff;color:#1f6fe0;font-size:12px;font-weight:700}
-.row.pick button{background:#1f7fea;color:#fff}
+.row .s{font-weight:800;color:#e35a12}
+.row button{height:30px;padding:0 10px;border-radius:9px;background:#fde4d5;color:#e35a12;font-size:12px;font-weight:700}
+.row.pick button{background:#f26a21;color:#fff}
 .empty{max-width:640px;background:#fff;border-radius:18px;padding:28px;text-align:center;color:#4a5563;line-height:1.5}
 
-/* ---------- PLAKAT 1080 × 1350 ---------- */
-.poster{width:1080px;height:1350px;background:#eef1f6;padding:50px 60px 40px;display:flex;flex-direction:column;gap:18px;color:#14202e;overflow:hidden;position:relative}
-.poster .glow{position:absolute;top:-180px;right:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(79,176,255,.28),rgba(79,176,255,0) 70%)}
-.p-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
-.pill{display:inline-flex;height:40px;align-items:center;padding:0 20px;border-radius:20px;background:#dceaff;color:#1f6fe0;font-size:16px;font-weight:800;letter-spacing:.14em}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:54px;height:54px;border-radius:15px}
-.brand div{display:flex;flex-direction:column;line-height:1}
-.brand b{font-size:27px;font-weight:900;letter-spacing:-.02em}
-.brand span{font-size:15px;color:#5a6676;font-weight:600;margin-top:5px}
-.p-title{margin-top:-6px;position:relative}
-.p-title .t1{font-size:54px;font-weight:900;letter-spacing:-.035em;line-height:1.02}
-.p-title .t2{font-size:54px;font-weight:900;letter-spacing:-.035em;line-height:1.08;color:#1f6fe0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ---------- PLAKAT 1080 × 1350 (shablon uslubi: oq kartalar, to'q sariq aksent) ---------- */
+.poster{--or:#f26a21;--or2:#e35a12;--pe:#fde4d5;--bg:#ecedf2;--ink:#17171c;--mut:#77777f;--card:#fff;--soft:#f4f4f7;
+  width:1080px;height:1350px;background:var(--bg);padding:52px 64px 38px;display:flex;flex-direction:column;gap:18px;color:var(--ink);overflow:hidden;font-family:"Inter","Onest",system-ui,sans-serif;letter-spacing:-.01em}
+.p-head{display:flex;justify-content:space-between;align-items:flex-start}
+.pill{display:inline-flex;height:38px;align-items:center;padding:0 20px;border-radius:19px;background:var(--pe);color:var(--or2);font-size:15px;font-weight:800;letter-spacing:.16em}
+.brand{text-align:right;line-height:1.02;font-size:30px;font-weight:800;letter-spacing:-.03em}
+.brand span{display:block;color:#5e5e66}
+.p-title{margin-top:-4px}
+.p-title .t1,.p-title .t2{font-size:58px;font-weight:800;letter-spacing:-.045em;line-height:1.06;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-title .t2{color:var(--or)}
 
-.card{background:#fff;border-radius:30px;border-bottom:9px solid #1f7fea;box-shadow:0 14px 28px rgba(31,111,224,.10);position:relative}
-.r1{display:grid;grid-template-columns:1.72fr 1fr;gap:22px;height:268px;flex-shrink:0}
-.card{overflow:hidden}
-.hero{display:flex;gap:26px;padding:24px 28px;align-items:center}
-.ph{border-radius:24px;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;overflow:hidden}
-.hero .ph{width:206px;height:220px;font-size:76px;position:relative}
-.hero .info{display:flex;flex-direction:column;min-width:0;flex:1}
-.lab{font-size:15px;font-weight:800;letter-spacing:.14em;color:#6b7686;text-transform:uppercase}
-.score{font-size:100px;font-weight:900;letter-spacing:-.05em;color:#1f6fe0;line-height:1;margin:8px 0 10px;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
-.score small{font-size:28px;color:#9aa5b4;letter-spacing:-.01em;font-weight:800}
-.hero .sub{font-size:18px;color:#5a6676;line-height:1.4;font-weight:500;display:flex;flex-direction:column}
-.hero .sub span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hero .sub b{color:#14202e;font-weight:700}
+.card{background:var(--card);border-radius:28px;border-bottom:10px solid var(--or);overflow:hidden;position:relative}
+.r1{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;height:236px;flex-shrink:0}
+.hero{padding:30px 32px 0}
+.lab{font-size:15px;font-weight:700;letter-spacing:.16em;color:var(--mut);text-transform:uppercase}
+.score{font-size:100px;font-weight:800;letter-spacing:-.06em;color:var(--or);line-height:1;margin:8px 0 10px;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.score small{font-size:30px;color:#b4b4bc;letter-spacing:-.02em;font-weight:700}
+.hero .sub{font-size:19px;color:var(--mut);line-height:1.32;max-width:500px}
 
-.trend{padding:22px 24px 12px;display:flex;flex-direction:column}
+.trend{padding:24px 26px 10px;display:flex;flex-direction:column}
 .trend .top{display:flex;justify-content:space-between;align-items:flex-start}
-.trend .big{font-size:56px;font-weight:900;letter-spacing:-.04em;line-height:1}
-.trend .cap{font-size:15.5px;color:#6b7686;margin-top:6px;font-weight:500}
-.arrow{width:46px;height:46px;border-radius:50%;background:#dceaff;color:#1f6fe0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.trend .big{font-size:58px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.trend .cap{font-size:15.5px;color:var(--mut);margin-top:5px}
+.arrow{width:46px;height:46px;border-radius:50%;background:var(--pe);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:22px}
 .trend svg{margin-top:auto}
 
-.r2{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;height:110px;flex-shrink:0}
-.stat{display:flex;align-items:center;gap:16px;padding:0 26px}
-.stat .v{font-size:50px;font-weight:900;letter-spacing:-.04em;line-height:1;white-space:nowrap}
-.stat .d{font-size:15.5px;color:#5a6676;line-height:1.32;font-weight:500}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:18px;height:104px;flex-shrink:0}
+.stat{display:flex;align-items:center;gap:20px;padding:0 30px}
+.stat .v{font-size:60px;font-weight:800;letter-spacing:-.055em;line-height:1;white-space:nowrap}
+.stat .d{font-size:16.5px;color:var(--mut);line-height:1.3}
 
-.r3{background:#fff;border-radius:30px;padding:22px 24px 22px;height:262px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
-.r3 .hd{display:flex;justify-content:space-between;align-items:center}
-.r3 .hd b{font-size:24px;font-weight:800;letter-spacing:-.01em}
-.r3 .hd span{font-size:14px;font-weight:800;letter-spacing:.14em;color:#7a8594}
-.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1}
-.t3{background:#f3f6fa;border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.t3 .h{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;color:#1f6fe0;white-space:nowrap}
-.t3 .h i{width:34px;height:28px;border-radius:9px;background:#1f7fea;color:#fff;font-style:normal;font-size:14px;display:flex;align-items:center;justify-content:center}
+.r3{background:var(--card);border-radius:28px;padding:22px 22px 22px;height:286px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+.r3 .hd{display:flex;justify-content:space-between;align-items:center;padding:0 2px}
+.r3 .hd b{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.r3 .hd span{font-size:13.5px;font-weight:700;letter-spacing:.16em;color:var(--mut)}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;min-height:0}
+.t3{background:var(--soft);border-radius:22px;padding:13px 13px 14px;display:flex;flex-direction:column;gap:11px;min-width:0}
+.t3 .h{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:700;color:var(--or2);white-space:nowrap}
+.t3 .h i{height:28px;padding:0 9px;border-radius:9px;background:var(--or);color:#fff;font-style:normal;font-size:14px;font-weight:700;display:flex;align-items:center}
 .t3 .b{display:flex;gap:12px;flex:1;min-height:0}
-.t3 .ph{width:104px;height:120px;font-size:38px;border-radius:18px}
+.ph{border-radius:18px;flex-shrink:0;background-size:cover;background-position:center top;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;overflow:hidden}
+.t3 .ph{width:118px;height:100%;font-size:40px}
 .t3 .who{display:flex;flex-direction:column;min-width:0;flex:1}
-.tag{align-self:flex-start;max-width:100%;padding:5px 11px;border-radius:12px;background:#dceaff;color:#1f6fe0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.t3 .nm{font-size:19px;font-weight:800;line-height:1.15;margin-top:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.t3 .sc{margin-top:auto;font-size:34px;font-weight:900;letter-spacing:-.03em;color:#1f6fe0;line-height:1}
-.t3 .sc small{font-size:15px;color:#9aa5b4;font-weight:800;margin-left:3px}
+.tag{align-self:flex-start;max-width:100%;padding:5px 11px;border-radius:13px;background:var(--pe);color:var(--or2);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t3 .nm{font-size:19px;font-weight:800;line-height:1.16;margin-top:9px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.t3 .rl{font-size:14px;color:var(--mut);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t3 .sc{margin-top:auto;font-size:34px;font-weight:800;letter-spacing:-.04em;color:var(--or);line-height:1}
+.t3 .sc small{font-size:15px;color:#b4b4bc;font-weight:700;margin-left:3px;letter-spacing:0}
 
-.r4{display:grid;grid-template-columns:1fr 1.08fr;gap:22px;flex:1;min-height:0}
-.funnel{background:#fff;border-radius:30px;padding:22px 24px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
-.funnel > b{font-size:23px;font-weight:800;margin-bottom:4px}
-.fs{display:flex;align-items:center;gap:14px;background:#f3f6fa;border-radius:18px;padding:9px 14px;position:relative}
-.fs .ic{width:48px;height:48px;border-radius:16px;background:#dceaff;color:#1f6fe0;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0}
-.fs .vv{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1}
-.fs .vv small{font-size:16px;color:#7a8594;font-weight:700;margin-left:5px}
-.fs .dd{font-size:14.5px;color:#5a6676;margin-top:3px;font-weight:500}
-.fs .k{position:absolute;right:14px;top:11px;font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#1f6fe0;background:#fff;padding:4px 9px;border-radius:10px}
-.fs.last{background:#dceaff}
-.fs.last .ic{background:#1f7fea;color:#fff}
+.r4{display:grid;grid-template-columns:1fr 1.27fr;gap:18px;flex:1;min-height:0}
+.funnel{background:var(--card);border-radius:28px;padding:24px 24px 22px;display:flex;flex-direction:column;overflow:hidden}
+.funnel > b{font-size:25px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.fs{display:flex;align-items:center;gap:15px;background:var(--soft);border-radius:20px;padding:9px 14px;position:relative}
+.fs .ic{width:50px;height:50px;border-radius:16px;background:var(--pe);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.fs .vv{font-size:33px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.fs .vv small{font-size:18px;color:var(--mut);font-weight:600;margin-left:6px;letter-spacing:0}
+.fs .dd{font-size:15px;color:var(--mut);margin-top:4px}
+.fs .k{position:absolute;right:12px;top:12px;font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--or2);background:#fff;padding:5px 10px;border-radius:11px}
+.fs.mid .ic{background:#f7935a;color:#fff}
+.fs.last{background:var(--pe)}
+.fs.last .ic{background:var(--or);color:#fff}
+.fs.last .vv{color:var(--or)}
+.link{height:26px;margin-left:42px;border-left:4px solid #f9c3a2;display:flex;align-items:center;padding-left:14px;font-size:14px;color:var(--mut);font-weight:600}
+.link b{color:var(--or2);margin-right:5px}
 
-.mix{border-radius:30px;padding:22px 26px;color:#fff;background:linear-gradient(150deg,#2f86f0 0%,#1f5fd0 55%,#173f9e 100%);display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
-.mix .ring{position:absolute;right:-70px;bottom:-90px;width:280px;height:280px;border-radius:50%;border:42px solid rgba(255,255,255,.07)}
-.mix > b{font-size:23px;font-weight:800;position:relative}
-.mx{position:relative;display:flex;flex-direction:column;gap:7px}
-.mx .l{display:flex;justify-content:space-between;font-size:16px;font-weight:600}
-.mx .l span:last-child{font-weight:800}
-.mx .tr{height:12px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}
-.mx .tr div{height:100%;border-radius:6px;background:linear-gradient(90deg,#9ed8ff,#ffffff)}
-.mix .foot{margin-top:auto;font-size:13.5px;opacity:.85;position:relative;line-height:1.35}
+.shot{border-radius:28px;overflow:hidden;position:relative;background-size:cover;background-position:center 20%}
+.shot.noimg{background:linear-gradient(155deg,#ffa25e 0%,#f26a21 48%,#c9470b 100%);display:flex;align-items:center;justify-content:center}
+.shot .bigini{font-size:190px;font-weight:800;color:rgba(255,255,255,.95);letter-spacing:-.05em}
+.shot .tro{position:absolute;right:26px;top:24px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--or);display:flex;align-items:center;justify-content:center;font-size:32px}
+.shot .cap{position:absolute;left:22px;bottom:22px;background:#fff;border-radius:16px;padding:11px 18px;font-size:17px;font-weight:700;color:var(--ink);max-width:calc(100% - 44px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.p-foot{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;font-size:16px;color:#6b7686;font-weight:600}
-.p-foot .l{display:flex;align-items:center;gap:14px}
-.p-foot .l i{width:44px;height:4px;border-radius:2px;background:#1f7fea;display:block}
-.p-foot b{color:#14202e}
+.p-foot{flex-shrink:0;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--mut);font-weight:600}
+.p-foot .l{display:flex;align-items:center;gap:16px}
+.p-foot .l i{width:52px;height:5px;border-radius:3px;background:var(--or);display:block}
+.p-foot b{color:var(--ink)}
 
 #exportBox{position:fixed;left:-30000px;top:0}
 </style>
@@ -247,35 +240,41 @@ button{font-family:inherit;cursor:pointer;border:none}
   function winnerOf(S) { const id = pickOverride[S.m]; return (id != null && S.rows.find(r => r.x.id === id)) || S.rows.find(r => r.ok) || S.rows[0]; }
 
   function trendSvg(pts) {
-    const w = 290, h = 112, px = 18, py = 24;
+    const w = 330, h = 120, px = 22, py = 30;
     const vals = pts.map(p => p.v), mn = Math.min(...vals) - 4, mx = Math.max(...vals) + 2;
     const X = i => px + (pts.length === 1 ? (w - 2 * px) / 2 : i * (w - 2 * px) / (pts.length - 1));
-    const Y = v => py + (1 - (v - mn) / Math.max(1, mx - mn)) * (h - py - 22);
+    const Y = v => py + (1 - (v - mn) / Math.max(1, mx - mn)) * (h - py - 24);
     let d = `M${X(0)},${Y(vals[0])}`;
     for (let i = 1; i < pts.length; i++) { const x0 = X(i - 1), x1 = X(i), cx = (x0 + x1) / 2; d += ` C${cx},${Y(vals[i - 1])} ${cx},${Y(vals[i])} ${x1},${Y(vals[i])}`; }
-    const area = `${d} L${X(pts.length - 1)},${h - 20} L${X(0)},${h - 20} Z`;
-    const last = pts.length - 1;
-    return `<svg width="${w}" height="${h + 6}" viewBox="0 0 ${w} ${h + 6}">
-      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f7fea" stop-opacity=".28"/><stop offset="1" stop-color="#1f7fea" stop-opacity="0"/></linearGradient></defs>
-      <line x1="${px - 6}" y1="${h - 20}" x2="${w - px + 6}" y2="${h - 20}" stroke="#e3e8ef" stroke-width="2"/>
-      <path d="${area}" fill="url(#ga)"/><path d="${d}" fill="none" stroke="#1f7fea" stroke-width="5" stroke-linecap="round"/>
-      ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.v)}" r="${i === last ? 9 : 6}" fill="#fff" stroke="#1f7fea" stroke-width="${i === last ? 5 : 4}"/>
-      <text x="${X(i)}" y="${h + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="#7a8594" font-family="Onest">${esc(p.l)}</text>`).join("")}
-      <text x="${X(last)}" y="${Y(vals[last]) - 16}" text-anchor="${pts.length === 1 ? "middle" : "end"}" font-size="17" font-weight="800" fill="#1f6fe0" font-family="Onest">${dec(vals[last])}</text>
+    const base = h - 22, last = pts.length - 1;
+    const area = `${d} L${X(last)},${base} L${X(0)},${base} Z`;
+    return `<svg width="${w}" height="${h + 8}" viewBox="0 0 ${w} ${h + 8}">
+      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f26a21" stop-opacity=".30"/><stop offset="1" stop-color="#f26a21" stop-opacity="0"/></linearGradient></defs>
+      <line x1="${px - 10}" y1="${base}" x2="${w - px + 10}" y2="${base}" stroke="#e4e4ea" stroke-width="3"/>
+      <path d="${area}" fill="url(#ga)"/><path d="${d}" fill="none" stroke="#f26a21" stroke-width="6" stroke-linecap="round"/>
+      ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.v)}" r="${i === last || i === 0 ? 10 : 7}" fill="#fff" stroke="#f26a21" stroke-width="5"/>
+      <text x="${X(i)}" y="${h + 6}" text-anchor="middle" font-size="14" font-weight="700" fill="#77777f" font-family="Inter,Onest">${esc(p.l)}</text>`).join("")}
+      <text x="${X(0) + 8}" y="${Y(vals[0]) - 18}" text-anchor="start" font-size="17" font-weight="800" fill="#17171c" font-family="Inter,Onest">${dec(vals[0])}</text>
+      <text x="${X(last)}" y="${Y(vals[last]) - 18}" text-anchor="end" font-size="18" font-weight="800" fill="#e35a12" font-family="Inter,Onest">${dec(vals[last])}</text>
     </svg>`;
   }
 
   function barsSvg(rows, w) {
-    const W2 = 290, H = 112, n = rows.length, bw = 30, gap = (W2 - n * bw) / Math.max(1, n);
+    const W2 = 330, H = 120, n = rows.length, bw = 34, gap = (W2 - n * bw) / Math.max(1, n);
     const mx = Math.max(...rows.map(r => r.total)), mn = Math.min(...rows.map(r => r.total)) - 8;
-    return `<svg width="${W2}" height="${H + 6}" viewBox="0 0 ${W2} ${H + 6}">
-      <line x1="0" y1="${H - 20}" x2="${W2}" y2="${H - 20}" stroke="#e3e8ef" stroke-width="2"/>
-      ${rows.map((r, i) => { const x = gap / 2 + i * (bw + gap), hh = 14 + (r.total - mn) / Math.max(1, mx - mn) * (H - 52), y = H - 20 - hh, on = r === w;
-        return `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="8" fill="${on ? "#1f7fea" : "#dceaff"}"/>
-        <text x="${x + bw / 2}" y="${H + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="${on ? "#1f6fe0" : "#9aa5b4"}" font-family="Onest">${i + 1}</text>
-        ${on ? `<text x="${x + bw / 2}" y="${y - 8}" text-anchor="middle" font-size="16" font-weight="800" fill="#1f6fe0" font-family="Onest">${dec(r.total)}</text>` : ""}`; }).join("")}
+    return `<svg width="${W2}" height="${H + 8}" viewBox="0 0 ${W2} ${H + 8}">
+      <line x1="0" y1="${H - 22}" x2="${W2}" y2="${H - 22}" stroke="#e4e4ea" stroke-width="3"/>
+      ${rows.map((r, i) => { const x = gap / 2 + i * (bw + gap), hh = 14 + (r.total - mn) / Math.max(1, mx - mn) * (H - 74), y = H - 22 - hh, on = r === w;
+        return `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="9" fill="${on ? "#f26a21" : "#fde4d5"}"/>
+        <text x="${x + bw / 2}" y="${H + 6}" text-anchor="middle" font-size="14" font-weight="700" fill="${on ? "#e35a12" : "#a3a3ab"}" font-family="Inter,Onest">${i + 1}</text>
+        ${on ? `<text x="${x + bw / 2}" y="${y - 9}" text-anchor="middle" font-size="17" font-weight="800" fill="#e35a12" font-family="Inter,Onest">${dec(r.total)}</text>` : ""}`; }).join("")}
     </svg>`;
   }
+
+  const ORG = ["#ffa25e,#f26a21", "#ffb47a,#ec5e17", "#f7935a,#d9510f", "#ffc08f,#f27a35"];
+  const phOr = x => x.photo ? phStyle(x) : `background:linear-gradient(160deg,${ORG[(String(x.id).split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % ORG.length]})`;
+  const short = g => String(g || "").replace(/^Kids\s*·\s*/i, "");
+  const pct = (a, b) => b ? (a / b * 100 >= 10 ? Math.round(a / b * 100) : dec(a / b * 100)) + "%" : "0%";
 
   function posterHtml(S, all) {
     const w = winnerOf(S);
@@ -285,55 +284,57 @@ button{font-family:inherit;cursor:pointer;border:none}
     const okRows = S.rows.filter(r => r.ok);
     const place = S.rows.indexOf(w) + 1;
     const top3 = [w, ...S.rows.filter(r => r !== w && r.ok)].slice(0, 3);
-    // o'quvchining oylik ballari (oxirgi 5 oy)
-    const hist = all.filter(z => z.m <= m).slice(-5).map(z => { const r = z.rows.find(r => r.x.id === x.id); return r ? { l: MON[+z.m.slice(5) - 1].slice(0, 3), v: r.total } : null; }).filter(Boolean);
+    const hist = all.filter(z => z.m <= m).slice(-5).map(z => { const r = z.rows.find(r => r.x.id === x.id); return r ? { l: cap(MON[+z.m.slice(5) - 1].slice(0, 3)), v: r.total } : null; }).filter(Boolean);
     const prev = hist.length >= 2 ? hist[hist.length - 2].v : null;
     const delta = prev != null ? w.total - prev : null;
-    const trendTop = delta != null
-      ? `<div><div class="big">${delta >= 0 ? "+" : "−"}${dec(Math.abs(delta))}</div><div class="cap">o'tgan oyga nisbatan ball</div></div><div class="arrow"><i class="ph-bold ${delta >= 0 ? "ph-arrow-up" : "ph-arrow-down"}"></i></div>`
+    const showTrend = delta != null && delta >= 0;
+    const trendTop = showTrend
+      ? `<div><div class="big">${delta >= 0 ? "+" : "−"}${dec(Math.abs(delta))}</div><div class="cap">o'tgan oyga nisbatan ball o'sishi</div></div><div class="arrow"><i class="ph-bold ph-arrow-up"></i></div>`
       : `<div><div class="big">${place}-o'rin</div><div class="cap">${S.rows.length} ta o'quvchi ichida</div></div><div class="arrow"><i class="ph-fill ph-trophy"></i></div>`;
     const avgTxt = w.avg != null ? w.avg.toFixed(1).replace(".", ",") : "—";
-    const fivesTxt = w.fives ? `${w.fives} marta «5» oldi` : "baholar o'rtachasi";
     const g = gName(x.g), t = x.teacher || gTeacher(x.g);
-    const n85 = okRows.filter(r => r.total >= 85).length;
+    const roles = ["Oy o'quvchisi", "Ikkinchi o'rin", "Uchinchi o'rin"];
     const cards = top3.map((r, i) => `
-      <div class="t3"><div class="h"><i>0${i + 1}</i>${["Oy o'quvchisi", "Ikkinchi o'rin", "Uchinchi o'rin"][i]}</div>
-        <div class="b"><div class="ph" style="${phStyle(r.x)}">${phInner(r.x)}</div>
-          <div class="who"><span class="tag">${esc(gName(r.x.g).replace(/^Kids\s*·\s*/i, ""))}</span><span class="nm">${esc(r.x.name)}</span><span class="sc">${dec(r.total)}<small>ball</small></span></div></div></div>`).join("");
-    const mixRow = (lab, got, max) => `<div class="mx"><div class="l"><span>${lab}</span><span>${dec(got)} / ${max}</span></div><div class="tr"><div style="width:${Math.max(3, got / max * 100)}%"></div></div></div>`;
+      <div class="t3"><div class="h"><i>0${i + 1}</i>${roles[i]}</div>
+        <div class="b"><div class="ph" style="${phOr(r.x)}">${phInner(r.x)}</div>
+          <div class="who"><span class="tag">${esc(short(gName(r.x.g)))}</span><span class="nm">${esc(r.x.name)}</span><span class="rl">${r.came} dars · ${r.attPct}%</span><span class="sc">${dec(r.total)}<small>ball</small></span></div></div></div>`).join("");
+    const shot = x.photo
+      ? `<div class="shot" style="background-image:url('${String(x.photo).replace(/'/g, "%27")}')"><div class="tro"><i class="ph-fill ph-trophy"></i></div><div class="cap">${esc(x.name)} · ${esc(short(g))}</div></div>`
+      : `<div class="shot noimg"><span class="bigini">${esc(ini(x.name))}</span><div class="tro"><i class="ph-fill ph-trophy"></i></div><div class="cap">${esc(x.name)} · ${esc(short(g))}</div></div>`;
+    const hsub = isCur
+      ? `${+TODAY.slice(8)}-${monthName}gacha ${w.came} ta darsga keldi${w.fives ? `, ${w.fives} marta «5» oldi` : ""}`
+      : `${cap(monthName)} oyida ${w.came} ta darsga keldi${w.fives ? `, ${w.fives} marta «5» oldi` : ""}`;
     return `
-    <div class="poster"><div class="glow"></div>
+    <div class="poster">
       <div class="p-head"><span class="pill">${esc(CENTER.toUpperCase())} · ${esc(monthName.toUpperCase())} ${m.slice(0, 4)}</span>
-        <div class="brand"><img src="icon-192.png" alt=""><div><b>${esc(CENTER)}</b><span>${esc(CFG.ADDRESS || "")}</span></div></div></div>
+        <div class="brand">Yuksak<span>ta'lim</span></div></div>
       <div class="p-title"><div class="t1">${cap(monthName)} oyining o'quvchisi —</div><div class="t2">${esc(x.name)}</div></div>
 
       <div class="r1">
-        <div class="card hero"><div class="ph" style="${phStyle(x)}">${phInner(x)}</div>
-          <div class="info"><span class="lab">Oy bali</span><div class="score">${dec(w.total)}<small>/ 100</small></div>
-            <div class="sub"><span><b>${esc(g)}</b></span>${t ? `<span>Ustozi: ${esc(t)}</span>` : ""}<span>${w.came} ta darsga keldi${w.fives ? ` · ${w.fives} marta «5»` : ""}</span></div></div></div>
-        <div class="card trend"><div class="top">${trendTop}</div>${hist.length >= 2 ? trendSvg(hist) : barsSvg(S.rows.slice(0, 6), w)}</div>
+        <div class="card hero"><div class="lab">Oy bali</div><div class="score">${dec(w.total)}<small>/ 100</small></div>
+          <div class="sub">${esc(hsub)}<br>${esc(g)}${t ? ` · ustozi ${esc(t.split(" ")[0])}` : ""}</div></div>
+        <div class="card trend"><div class="top">${trendTop}</div>${showTrend ? trendSvg(hist) : barsSvg(S.rows.slice(0, 6), w)}</div>
       </div>
 
       <div class="r2">
-        <div class="card stat"><span class="v">${w.attPct}%</span><span class="d">davomat<br>${w.came} / ${w.n} dars</span></div>
-        <div class="card stat"><span class="v">${avgTxt}</span><span class="d">o'rtacha baho<br>${fivesTxt}</span></div>
-        <div class="card stat"><span class="v">${w.actPct}%</span><span class="d">darsda faol<br>ishtirok etdi</span></div>
+        <div class="card stat"><span class="v">${w.attPct}%</span><span class="d">davomat — ${w.n} ta darsdan<br>${w.came} tasiga keldi</span></div>
+        <div class="card stat"><span class="v">${avgTxt}</span><span class="d">o'rtacha baho, darslarning<br>${w.actPct}% ida faol qatnashdi</span></div>
       </div>
 
-      <div class="r3"><div class="hd"><b>Oyning eng yaxshi uchligi</b><span>REYTING</span></div><div class="top3">${cards}</div></div>
+      <div class="r3"><div class="hd"><b>Oyning eng yaxshi uchligi</b><span>O'QUVCHILAR</span></div><div class="top3">${cards}</div></div>
 
       <div class="r4">
-        <div class="funnel"><b>Qanday tanlandi</b>
-          <div class="fs"><span class="ic"><i class="ph-fill ph-users-three"></i></span><div><div class="vv">${S.rows.length}<small>ta</small></div><div class="dd">o'quvchi ${S.lessonsN} ta darsda baholandi</div></div><span class="k">QATNASHDI</span></div>
-          <div class="fs"><span class="ic"><i class="ph-fill ph-star"></i></span><div><div class="vv">${n85}<small>ta</small></div><div class="dd">o'quvchi 85+ ball to'pladi</div></div><span class="k">85+ BALL</span></div>
-          <div class="fs last"><span class="ic"><i class="ph-fill ph-trophy"></i></span><div><div class="vv">1<small>ta</small></div><div class="dd">oy o'quvchisi tanlandi</div></div><span class="k">G'OLIB</span></div>
+        <div class="funnel"><b>Tanlov bosqichlari</b>
+          <div class="fs"><span class="ic"><i class="ph-bold ph-users-three"></i></span><div><div class="vv">${S.rows.length}<small>ta</small></div><div class="dd">o'quvchi qatnashdi</div></div><span class="k">DAVOMAT</span></div>
+          <div class="link"><b>${pct(okRows.length, S.rows.length)}</b> saralandi</div>
+          <div class="fs mid"><span class="ic"><i class="ph-bold ph-star"></i></span><div><div class="vv">${okRows.length}<small>ta</small></div><div class="dd">o'quvchi reytingga kirdi</div></div><span class="k">REYTING</span></div>
+          <div class="link" style="height:16px"></div>
+          <div class="fs last"><span class="ic"><i class="ph-bold ph-trophy"></i></span><div><div class="vv">1<small>ta</small></div><div class="dd">oy o'quvchisi tanlandi</div></div><span class="k">G'OLIB</span></div>
         </div>
-        <div class="mix"><div class="ring"></div><b>Ball qanday yig'ildi</b>
-          ${mixRow("Davomat", w.parts.att, W.att)}${mixRow("Baholar", w.parts.grade, W.grade)}${mixRow("Faol ishtirok", w.parts.actv, W.actv)}${mixRow("Uyga vazifa", w.parts.hw, W.hw)}
-          <div class="foot">${isCur ? `Joriy oy · ${+TODAY.slice(8)}-${monthName} holatiga ko'ra` : `${cap(monthName)} oyi yakuni bo'yicha`} · davomat jurnali asosida</div></div>
+        ${shot}
       </div>
 
-      <div class="p-foot"><div class="l"><i></i><span><b>${esc(CENTER)}</b> · Bilim — yuksaklik sari</span></div><span>${esc(CFG.PHONE || "")}</span></div>
+      <div class="p-foot"><div class="l"><i></i><span><b>${esc(CENTER)}</b> · Bilim — yuksaklik sari</span></div><span>Manba: davomat jurnali</span></div>
     </div>`;
   }
 
@@ -371,7 +372,7 @@ button{font-family:inherit;cursor:pointer;border:none}
   async function snap(S) {
     const box = $("exportBox"); box.innerHTML = posterHtml(S, ALL);
     await Promise.all([...box.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
-    const c = await window.html2canvas(box.firstElementChild, { scale: 2, backgroundColor: "#eef1f6", useCORS: true, logging: false });
+    const c = await window.html2canvas(box.firstElementChild, { scale: 2, backgroundColor: "#ecedf2", useCORS: true, logging: false });
     box.innerHTML = ""; return c;
   }
   function saveBlob(blob, name) {
